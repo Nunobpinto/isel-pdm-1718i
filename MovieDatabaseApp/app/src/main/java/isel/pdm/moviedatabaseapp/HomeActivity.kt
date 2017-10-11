@@ -11,5 +11,11 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         search.setOnClickListener({})
+
+        nowPlaying.setOnClickListener({})
+
+        upoming.setOnClickListener({})
+
+        mostPopular.setOnClickListener({})
     }
 }

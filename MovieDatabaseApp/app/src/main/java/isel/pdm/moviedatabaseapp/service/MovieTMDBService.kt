@@ -32,7 +32,7 @@ class MovieTMDBService : MovieProvider{
     }
 
     private fun readAPIKEY():String{
-        val bufferedReader: BufferedReader = File("api_key.txt").bufferedReader()
+        val bufferedReader = File("api_key.txt").bufferedReader()
         return bufferedReader.use { it.readText() }
     }
 
