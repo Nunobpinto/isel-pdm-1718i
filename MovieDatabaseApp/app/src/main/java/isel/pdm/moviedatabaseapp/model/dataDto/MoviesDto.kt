@@ -1,14 +1,23 @@
 package isel.pdm.moviedatabaseapp.model.dataDto
 
+import com.fasterxml.jackson.annotation.JsonProperty
 
-data class SearchDto(val result: Array<MovieDto>,
-                     val page:Int,
-                     val total_result : Int,
-                     val total_pages:Int)
 
-data class MovieDto(val id:Int,
-                    val title:String,
-                    val release_date:String,
-                    val poster_path:String,
-                    val vote_average:Int)
+data class SearchDto(
+        val result: Array<MovieDto>,
+        val page:Int,
+        @JsonProperty("total_result") val totalResult : Int,
+        @JsonProperty("total_pages") val totalPages:Int
+)
+
+data class MovieDto(
+        val id:Int,
+        val title:String,
+        @JsonProperty("release_date")
+        val releaseDate:String,
+        @JsonProperty("poster_path")
+        val poster_path:String,
+        @JsonProperty("vote_average")
+        val vote_average:Int
+)
 

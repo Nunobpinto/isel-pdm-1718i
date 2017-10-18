@@ -7,11 +7,11 @@ import java.io.File
 class MovieTMDBService : MovieProvider{
 
     private var API_KEY = readAPIKEY()
-    private val MOVIESBYNAMEURL = "https://api.themoviedb.org/3/search/movie?api_key=$(api_key)&language=en-US&page=1&include_adult=false&query=$(name)"
-    private val MOVIEDETAILSURL = "https://api.themoviedb.org/3/movie/$(id)?api_key= $(api_key)d&language=en-US"
-    private val NOWPLAYINGRURL = "https://api.themoviedb.org/3/movie/now_playing?api_key=$(api_key)&language=en-US&page=1"
-    private val UPCOMINGURL = "https://api.themoviedb.org/3/movie/upcoming?api_key=$(api_key)&language=en-US&page=1"
-    private val MOSTPOPULARURL = "https://api.themoviedb.org/3/movie/popular?api_key=$(api_key)&language=en-US&page=1"
+    private val MOVIESBYNAMEURL = "https://api.themoviedb.org/3/search/movie?api_key=$API_KEY&language=en-US&page=1&include_adult=false&query=$(name)"
+    private val MOVIEDETAILSURL = "https://api.themoviedb.org/3/movie/$(id)?api_key= $API_KEY&language=en-US"
+    private val NOWPLAYINGRURL = "https://api.themoviedb.org/3/movie/now_playing?api_key=$API_KEY&language=en-US&page=1"
+    private val UPCOMINGURL = "https://api.themoviedb.org/3/movie/upcoming?api_key=$API_KEY&language=en-US&page=1"
+    private val MOSTPOPULARURL = "https://api.themoviedb.org/3/movie/popular?api_key=$API_KEY&language=en-US&page=1"
 
 
 
