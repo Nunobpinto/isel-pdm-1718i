@@ -19,7 +19,14 @@
         <activity android:name=".AboutActivity" />
         <activity android:name=".MovieDetailsActivity" />
         <activity android:name=".MovieListActivity" />
-        <activity android:name=".ReferencesActivity"></activity>
+        <activity android:name=".ReferencesActivity" />
+        <activity android:name=".SearchMoviesActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH"/>
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                        android:resource="@xml/searchable"/>
+        </activity>
     </application>
 
 </manifest>
