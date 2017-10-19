@@ -33,3 +33,6 @@ proguard/
 # For Mac OS
 *~
 .DS_Store
+
+# APIKEY
+MovieDatabaseApp/app/src/main/res/api_key.txt
