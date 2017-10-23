@@ -33,7 +33,15 @@ class MovieTMDBService : MovieProvider {
     }
 
     override fun getNowPlayingMovies(ctx: Context, cb: (MovieListDto) -> Unit) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val req = HttpRequest(
+                NOW_PLAYING_URL,
+                MovieListDto::class.java,
+                cb,
+                {
+                    VolleyError()
+                }
+        )
+        (ctx as MovieApplication).let { it.requestQueue.add(req) }
     }
 
     override fun getMovieDetails(id: Int, ctx: Context, cb: (MovieDto) -> Unit) {
