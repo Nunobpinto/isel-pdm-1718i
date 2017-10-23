@@ -14,10 +14,18 @@ class MovieTMDBService : MovieProvider {
     private val MOVIE_DETAILS_URL = "https://api.themoviedb.org/3/movie/%d?api_key= $API_KEY&language=en-US"
     private val NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=$API_KEY&language=en-US&page=1"
     private val UPCOMING_URL = "https://api.themoviedb.org/3/movie/upcoming?api_key=$API_KEY&language=en-US&page=1"
-    private val MOST_POPULAR_URL = "https://api.themoviedb.org/3/movie/popular?api_key=$API_KEY&language=en-US&page=1"
+    private val MOST_POPULAR_URL = "https://api.themoviedb.org/3/movie/popular?api_key=$API_KEY&language=en-US&page=1   "
 
     override fun getUpComingMovies(ctx: Context, cb: (MovieListDto) -> Unit) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val req = HttpRequest(
+                UPCOMING_URL,
+                MovieListDto::class.java,
+                cb,
+                {
+                    VolleyError()
+                }
+        )
+        (ctx as MovieApplication).let { it.requestQueue.add(req) }
     }
 
     override fun getMoviesByName(name: String, ctx: Context, cb: (MovieListDto) -> Unit) {
@@ -33,7 +41,15 @@ class MovieTMDBService : MovieProvider {
     }
 
     override fun getNowPlayingMovies(ctx: Context, cb: (MovieListDto) -> Unit) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val req = HttpRequest(
+                NOW_PLAYING_URL,
+                MovieListDto::class.java,
+                cb,
+                {
+                    VolleyError()
+                }
+        )
+        (ctx as MovieApplication).let { it.requestQueue.add(req) }
     }
 
     override fun getMovieDetails(id: Int, ctx: Context, cb: (MovieDto) -> Unit) {
