@@ -1,7 +1,8 @@
-package pdm.isel.moviedatabaseapp
+package pdm.isel.moviedatabaseapp.presentation
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import pdm.isel.moviedatabaseapp.R
 
 class MovieListActivity : AppCompatActivity() {
 

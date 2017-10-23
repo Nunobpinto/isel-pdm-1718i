@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="pdm.isel.moviedatabaseapp.HomeActivity"
+    tools:context="pdm.isel.moviedatabaseapp.presentation.HomeActivity"
     tools:layout_editor_absoluteY="81dp"
     tools:layout_editor_absoluteX="0dp">
 
@@ -17,15 +17,15 @@
         android:ems="10"
         android:hint="Search Movie By Name..."
         android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="@+id/search"
+        app:layout_constraintBottom_toBottomOf="@+id/searchButton"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/search"
+        app:layout_constraintTop_toTopOf="@+id/searchButton"
         tools:layout_constraintBottom_creator="1"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintTop_creator="1" />
 
     <Button
-        android:id="@+id/search"
+        android:id="@+id/searchButton"
         android:layout_width="88dp"
         android:layout_height="48dp"
         android:text="Search"
@@ -38,11 +38,11 @@
         android:layout_marginRight="16dp" />
 
     <Button
-        android:id="@+id/nowPlaying"
+        android:id="@+id/nowPlayingButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Now Playing"
-        app:layout_constraintBottom_toTopOf="@+id/upoming"
+        app:layout_constraintBottom_toTopOf="@+id/upcomingMoviesButton"
         app:layout_constraintTop_toBottomOf="@+id/editText"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -50,12 +50,12 @@
         tools:layout_constraintLeft_creator="1" />
 
     <Button
-        android:id="@+id/upoming"
+        android:id="@+id/upcomingMoviesButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Upcoming"
-        app:layout_constraintBottom_toTopOf="@+id/mostPopular"
-        app:layout_constraintTop_toBottomOf="@+id/nowPlaying"
+        app:layout_constraintBottom_toTopOf="@+id/mostPopularMoviesButton"
+        app:layout_constraintTop_toBottomOf="@+id/nowPlayingButton"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
@@ -63,12 +63,12 @@
         tools:layout_constraintLeft_creator="1" />
 
     <Button
-        android:id="@+id/mostPopular"
+        android:id="@+id/mostPopularMoviesButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Most Popular"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/upoming"
+        app:layout_constraintTop_toBottomOf="@+id/upcomingMoviesButton"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
@@ -76,7 +76,7 @@
         tools:layout_constraintLeft_creator="1" />
 
     <Button
-        android:id="@+id/about_button"
+        android:id="@+id/aboutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -92,7 +92,7 @@
         app:layout_constraintVertical_bias="0.982" />
 
     <Button
-        android:id="@+id/reference_button"
+        android:id="@+id/referencesButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"

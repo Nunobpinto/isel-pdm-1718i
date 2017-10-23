@@ -1,10 +1,11 @@
-package pdm.isel.moviedatabaseapp
+package pdm.isel.moviedatabaseapp.presentation
 
 import android.content.Intent
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_references.*
+import pdm.isel.moviedatabaseapp.R
 
 class ReferencesActivity : AppCompatActivity() {
 
@@ -16,7 +17,7 @@ class ReferencesActivity : AppCompatActivity() {
             startActivity(intent)
         }
         back.setOnClickListener{
-            val intent = Intent(this,HomeActivity::class.java)
+            val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         }
     }
