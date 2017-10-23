@@ -1,16 +1,14 @@
 package pdm.isel.moviedatabaseapp.service
 
 import android.content.Context
-import pdm.isel.moviedatabaseapp.MovieApplication
-import pdm.isel.moviedatabaseapp.model.Movie
 import pdm.isel.moviedatabaseapp.model.dataDto.MovieDto
-import pdm.isel.moviedatabaseapp.model.dataDto.SearchDto
+import pdm.isel.moviedatabaseapp.model.dataDto.MovieListDto
 
 interface MovieProvider {
 
-    fun getMoviesByName(name:String,ctx: Context,cb : (SearchDto)->Unit)
-    fun getNowPlayingMovies(ctx:Context,cb : (SearchDto)->Unit)
+    fun getMoviesByName(name:String,ctx: Context,cb : (MovieListDto)->Unit)
+    fun getNowPlayingMovies(ctx:Context,cb : (MovieListDto)->Unit)
     fun getMovieDetails(id:Int,ctx:Context,cb : (MovieDto)->Unit )
-    fun getMostPopularMovies(ctx: Context,cb : (SearchDto)->Unit)
-    fun getUpComingMovies(ctx:Context,cb : (SearchDto)->Unit)
+    fun getMostPopularMovies(ctx: Context,cb : (MovieListDto)->Unit)
+    fun getUpComingMovies(ctx:Context,cb : (MovieListDto)->Unit)
 }
