@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 
 data class SearchDto(
-        val result: Array<MovieDto>,
+        val results: Array<MovieDto>,
         val page:Int,
         @JsonProperty("total_result") val totalResult : Int,
         @JsonProperty("total_pages") val totalPages:Int
@@ -19,6 +19,14 @@ data class MovieDto(
         val poster:String,
         @JsonProperty("vote_average")
         val voteAverage:Int,
-        val overview : String
+        val overview : String,
+        val popularity : Float
 )
+
+data class UpComingDto(
+        val result: Array<MovieDto>,
+        val dates : MyDate
+)
+
+data class MyDate(val maximum : String, val minimum : String)
 

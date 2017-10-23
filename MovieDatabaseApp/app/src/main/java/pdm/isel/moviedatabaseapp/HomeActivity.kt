@@ -13,11 +13,29 @@ class HomeActivity : AppCompatActivity() {
 
         search.setOnClickListener({})
 
-        nowPlaying.setOnClickListener({})
+        nowPlaying.setOnClickListener({
+            (application as MovieApplication).let {
+                it.service.getNowPlayingMovies(
+                        application,
+                        {movies->startActivity(MovieListActivity.createIntent(this,movies))})
+            }
+        })
 
-        upoming.setOnClickListener({})
+        upoming.setOnClickListener({
+            (application as MovieApplication).let {
+                it.service.getUpcoming(
+                        application,
+                        {movies->startActivity(MovieListActivity.createIntent(this,movies))})
+            }
+        })
 
-        mostPopular.setOnClickListener({})
+        mostPopular.setOnClickListener({
+            (application as MovieApplication).let {
+                it.service.getMostPopularMovies(
+                        application,
+                        {movies->startActivity(MovieListActivity.createIntent(this,movies))})
+            }
+        })
 
         about_button.setOnClickListener{
             val intent = Intent(this,AboutActivity::class.java)

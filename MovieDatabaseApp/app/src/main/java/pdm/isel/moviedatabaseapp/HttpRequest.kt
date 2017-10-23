@@ -7,8 +7,8 @@ import com.android.volley.toolbox.HttpHeaderParser
 import java.nio.charset.Charset
 
 
-class HttpRequest <T>(url : String, private val klass: Class<T>, successListener : (T)-> Unit, errorListener: (VolleyError)->Unit) :
-        JsonRequest<T>(Request.Method.GET,url,"",successListener,errorListener) {
+data class HttpRequest <T>(val urlPath: String, private val klass: Class<T>, val successListener : (T)-> Unit, val errorListener: (VolleyError)->Unit) :
+        JsonRequest<T>(Request.Method.GET, urlPath,"",successListener,errorListener) {
 
     private val mapper : ObjectMapper = ObjectMapper()
 
@@ -18,13 +18,18 @@ class HttpRequest <T>(url : String, private val klass: Class<T>, successListener
                     response?.data!!,
                     Charset.forName(HttpHeaderParser.parseCharset(response.headers))
             )
-            Response.success(
-                    mapper.readValue(json, klass),
-                    HttpHeaderParser.parseCacheHeaders(response))
+            Response.success(mapper.readValue(json, klass),HttpHeaderParser.parseCacheHeaders(response))
+
         }catch (e : IOException){
             Response.error(ParseError(e))
         }
-
     }
 
+    override fun deliverResponse(response: T) {
+        successListener(response)
+    }
+
+    override fun deliverError(error: VolleyError?) {
+        errorListener(error!!)
+    }
 }
