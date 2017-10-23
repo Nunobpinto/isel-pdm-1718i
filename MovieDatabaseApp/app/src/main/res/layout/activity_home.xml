@@ -9,7 +9,7 @@
     tools:layout_editor_absoluteX="0dp">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/inputEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="27dp"
@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:text="Now Playing"
         app:layout_constraintBottom_toTopOf="@+id/upcomingMoviesButton"
-        app:layout_constraintTop_toBottomOf="@+id/editText"
+        app:layout_constraintTop_toBottomOf="@+id/inputEditText"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         tools:layout_constraintRight_creator="1"

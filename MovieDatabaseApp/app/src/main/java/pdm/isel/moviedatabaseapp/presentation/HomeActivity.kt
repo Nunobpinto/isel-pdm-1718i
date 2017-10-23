@@ -16,14 +16,20 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         searchButton.setOnClickListener({
-            onSearchRequested()
+            val query: String = inputEditText.text.toString()
+            (application as MovieApplication).let {
+                it.service.getMoviesByName(
+                        query,
+                        application,
+                        {movies -> startActivity(createIntent(MovieListActivity::class.java, movies))})
+            }
         })
 
         nowPlayingButton.setOnClickListener({
             (application as MovieApplication).let {
                 it.service.getNowPlayingMovies(
                         application,
-                        {movies->startActivity(createIntent(ListActivity::class.java, movies))})
+                        {movies->startActivity(createIntent(MovieListActivity::class.java, movies))})
             }
         })
 
@@ -31,7 +37,7 @@ class HomeActivity : AppCompatActivity() {
             (application as MovieApplication).let {
                 it.service.getUpComingMovies(
                         application,
-                        {movies->startActivity(createIntent(ListActivity::class.java,movies))})
+                        {movies->startActivity(createIntent(MovieListActivity::class.java,movies))})
             }
         })
 
@@ -39,7 +45,7 @@ class HomeActivity : AppCompatActivity() {
             (application as MovieApplication).let {
                 it.service.getMostPopularMovies(
                         application,
-                        {movies->startActivity(createIntent(ListActivity::class.java,movies))})
+                        {movies->startActivity(createIntent(MovieListActivity::class.java,movies))})
             }
         })
 
@@ -54,11 +60,9 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun createIntent(destClass: Class<ListActivity>, dto: MovieListDto): Intent? {
+    private fun createIntent(destClass: Class<MovieListActivity>, dto: MovieListDto): Intent? {
         val i = Intent(this, destClass)
-        val bundle = Bundle()
-        bundle.putParcelableArray("data", dto.results)
-        i.putExtra("data", bundle)
+        i.putExtra("results", dto)
         return i
     }
 }
