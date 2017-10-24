@@ -1,6 +1,7 @@
 package pdm.isel.moviedatabaseapp.service
 
 import android.content.Context
+import android.widget.Toast
 import com.android.volley.VolleyError
 import pdm.isel.moviedatabaseapp.HttpRequest
 import pdm.isel.moviedatabaseapp.MovieApplication
@@ -34,7 +35,7 @@ class MovieTMDBService : MovieProvider {
                 MovieListDto::class.java,
                 cb,
                 {
-                    VolleyError()
+                    generateErrorWarning(ctx)
                 }
         )
         (ctx as MovieApplication).requestQueue.add(req)
@@ -46,10 +47,14 @@ class MovieTMDBService : MovieProvider {
                 MovieListDto::class.java,
                 cb,
                 {
-                    VolleyError()
+                    generateErrorWarning(ctx)
                 }
         )
         (ctx as MovieApplication).let { it.requestQueue.add(req) }
+    }
+
+    private fun generateErrorWarning(ctx: Context) {
+        Toast.makeText(ctx,"Error getting information",Toast.LENGTH_LONG).show()
     }
 
     override fun getMovieDetails(id: Int, ctx: Context, cb: (MovieDto) -> Unit) {
@@ -58,7 +63,7 @@ class MovieTMDBService : MovieProvider {
                 MovieDto::class.java,
                 cb,
                 {
-                    VolleyError()
+                    generateErrorWarning(ctx)
                 }
         )
         (ctx as MovieApplication).requestQueue.add(req)
@@ -70,7 +75,7 @@ class MovieTMDBService : MovieProvider {
                 MovieListDto::class.java,
                 cb,
                 {
-                    VolleyError()
+                    generateErrorWarning(ctx)
                 }
         )
         (ctx as MovieApplication).requestQueue.add(req)
