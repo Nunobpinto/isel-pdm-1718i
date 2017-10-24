@@ -19,8 +19,7 @@ class MovieListDto(
                 parcel.readInt(),
                 parcel.readInt(),
                 parcel.createTypedArray(MovieDto),
-                parcel.readParcelable(MyDate::class.java.classLoader)) {
-        }
+                parcel.readParcelable(MyDate::class.java.classLoader))
 
         override fun writeToParcel(parcel: Parcel, flags: Int) {
                 parcel.writeInt(page)
@@ -49,7 +48,8 @@ data class MovieDto(
         @JsonProperty("vote_average")
         val voteAverage:Int,
         val overview : String,
-        val popularity : Float
+        val popularity : Float,
+        val genres : Array<Genres>
 ) : Parcelable {
         constructor(parcel: Parcel) : this(
                 parcel.readInt(),
@@ -58,9 +58,8 @@ data class MovieDto(
                 parcel.readString(),
                 parcel.readInt(),
                 parcel.readString(),
-                parcel.readFloat()) {
-        }
-
+                parcel.readFloat(),
+                parcel.createTypedArray(Genres))
         override fun writeToParcel(parcel: Parcel, flags: Int) {
                 parcel.writeInt(id)
                 parcel.writeString(title)
@@ -69,6 +68,7 @@ data class MovieDto(
                 parcel.writeInt(voteAverage)
                 parcel.writeString(overview)
                 parcel.writeFloat(popularity)
+                parcel.writeTypedArray(genres, flags)
         }
 
         override fun describeContents() = 0
@@ -94,5 +94,25 @@ data class MyDate(val maximum : String, val minimum : String) : Parcelable {
                 override fun createFromParcel(parcel: Parcel) = MyDate(parcel)
                 override fun newArray(size: Int): Array<MyDate?> = arrayOfNulls(size)
         }
+}
+
+data class Genres(val id: Int, val name: String) : Parcelable{
+        constructor(parcel: Parcel) : this(
+                parcel.readInt(),
+                parcel.readString())
+
+        override fun writeToParcel(parcel: Parcel, flags: Int) {
+                parcel.writeInt(id)
+                parcel.writeString(name)
+        }
+
+        override fun describeContents(): Int = 0
+
+        companion object CREATOR : Parcelable.Creator<Genres> {
+                override fun createFromParcel(parcel: Parcel): Genres = Genres(parcel)
+
+                override fun newArray(size: Int): Array<Genres?> = arrayOfNulls(size)
+        }
+
 }
 
