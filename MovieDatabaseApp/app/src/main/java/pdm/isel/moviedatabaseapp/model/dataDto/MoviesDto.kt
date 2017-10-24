@@ -12,7 +12,7 @@ class MovieListDto(
         @JsonProperty("total_pages")
         val totalPages:Int,
         val results: Array<MovieDto>,
-        val dates : MyDate = MyDate("", "")
+        val dates : MyDate?
 ) : Parcelable {
         constructor(parcel: Parcel) : this(
                 parcel.readInt(),
@@ -49,7 +49,7 @@ data class MovieDto(
         val voteAverage:Int,
         val overview : String,
         val popularity : Float,
-        val genres : Array<Genres>
+        val genres : Array<Genres>?
 ) : Parcelable {
         constructor(parcel: Parcel) : this(
                 parcel.readInt(),
