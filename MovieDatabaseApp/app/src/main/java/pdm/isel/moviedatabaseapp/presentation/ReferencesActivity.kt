@@ -12,14 +12,10 @@ import pdm.isel.moviedatabaseapp.R
 class ReferencesActivity : BaseLayoutActivity() {
     override val toolbar: Int? = R.id.my_toolbar
     override val menu: Int? = R.menu.menu
-    override  val layout : Int = R.layout.activity_home
+    override  val layout : Int = R.layout.activity_references
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(layout)
-        val toolbar = findViewById(R.id.my_toolbar)
-        setSupportActionBar(toolbar as Toolbar)
-
         link.setOnClickListener{
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.themoviedb.org/"))
             startActivity(intent)

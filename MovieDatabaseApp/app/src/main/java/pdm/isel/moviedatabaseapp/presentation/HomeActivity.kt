@@ -17,11 +17,6 @@ class HomeActivity : BaseLayoutActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(layout)
-        val toolbar = findViewById(R.id.my_toolbar)
-        setSupportActionBar(toolbar as Toolbar)
-
-
         searchButton.setOnClickListener({
             val query: String = inputEditText.text.toString()
             (application as MovieApplication).let {
