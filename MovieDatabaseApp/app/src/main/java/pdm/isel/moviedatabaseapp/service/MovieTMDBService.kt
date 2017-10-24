@@ -10,8 +10,8 @@ import java.io.File
 
 class MovieTMDBService : MovieProvider {
     private var API_KEY = readAPIKEY()
-    private val MOVIES_BY_NAME_URL = "https://api.themoviedb.org/3/search/movie?api_key=$API_KEY&language=en-US&page=1&include_adult=false&query=§(name)"
-    private val MOVIE_DETAILS_URL = "https://api.themoviedb.org/3/movie/$(id)?api_key= $API_KEY&language=en-US"
+    private val MOVIES_BY_NAME_URL = "https://api.themoviedb.org/3/search/movie?api_key=$API_KEY&language=en-US&page=1&include_adult=false&query=%s"
+    private val MOVIE_DETAILS_URL = "https://api.themoviedb.org/3/movie/%d?api_key= $API_KEY&language=en-US"
     private val NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=$API_KEY&language=en-US&page=1"
     private val UPCOMING_URL = "https://api.themoviedb.org/3/movie/upcoming?api_key=$API_KEY&language=en-US&page=1"
     private val MOST_POPULAR_URL = "https://api.themoviedb.org/3/movie/popular?api_key=$API_KEY&language=en-US&page=1   "
@@ -29,7 +29,15 @@ class MovieTMDBService : MovieProvider {
     }
 
     override fun getMoviesByName(name: String, ctx: Context, cb: (MovieListDto) -> Unit) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val req = HttpRequest(
+                java.lang.String.format(MOVIES_BY_NAME_URL, name),
+                MovieListDto::class.java,
+                cb,
+                {
+                    VolleyError()
+                }
+        )
+        (ctx as MovieApplication).requestQueue.add(req)
     }
 
     override fun getNowPlayingMovies(ctx: Context, cb: (MovieListDto) -> Unit) {
@@ -45,7 +53,15 @@ class MovieTMDBService : MovieProvider {
     }
 
     override fun getMovieDetails(id: Int, ctx: Context, cb: (MovieDto) -> Unit) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val req = HttpRequest(
+                java.lang.String.format(MOVIE_DETAILS_URL, id),
+                MovieDto::class.java,
+                cb,
+                {
+                    VolleyError()
+                }
+        )
+        (ctx as MovieApplication).requestQueue.add(req)
     }
 
     override fun getMostPopularMovies(ctx: Context, cb: (MovieListDto) -> Unit) {
@@ -57,7 +73,7 @@ class MovieTMDBService : MovieProvider {
                     VolleyError()
                 }
         )
-        (ctx as MovieApplication).let { it.requestQueue.add(req) }
+        (ctx as MovieApplication).requestQueue.add(req)
     }
 
     private fun readAPIKEY():String{
