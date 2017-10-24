@@ -8,6 +8,8 @@ import android.view.MenuItem
 import android.widget.ArrayAdapter
 import com.fasterxml.jackson.databind.deser.Deserializers
 import kotlinx.android.synthetic.main.activity_movie_list.*
+import pdm.isel.moviedatabaseapp.MovieAdapter
+import pdm.isel.moviedatabaseapp.MovieApplication
 import pdm.isel.moviedatabaseapp.R
 import pdm.isel.moviedatabaseapp.model.dataDto.MovieDto
 import pdm.isel.moviedatabaseapp.model.dataDto.MovieListDto
@@ -24,7 +26,7 @@ class MovieListActivity : BaseLayoutActivity() {
         val intent = intent
         val movieList : MovieListDto = intent.getParcelableExtra("results")
 
-        val movieAdapter: ArrayAdapter<MovieDto> = ArrayAdapter(this, android.R.layout.simple_list_item_1, movieList.results)
+        val movieAdapter = MovieAdapter(this, R.layout.movie_list_entry_layout, movieList.results, (application as MovieApplication))
 
         movieListView.adapter = movieAdapter
     }
