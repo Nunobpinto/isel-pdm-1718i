@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.activity_references.*
 import pdm.isel.moviedatabaseapp.R
 
 class ReferencesActivity : BaseLayoutActivity() {
+
     override val toolbar: Int? = R.id.my_toolbar
     override val menu: Int? = R.menu.menu
     override  val layout : Int = R.layout.activity_references
@@ -18,10 +19,6 @@ class ReferencesActivity : BaseLayoutActivity() {
         super.onCreate(savedInstanceState)
         link.setOnClickListener{
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.themoviedb.org/"))
-            startActivity(intent)
-        }
-        back.setOnClickListener{
-            val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         }
     }

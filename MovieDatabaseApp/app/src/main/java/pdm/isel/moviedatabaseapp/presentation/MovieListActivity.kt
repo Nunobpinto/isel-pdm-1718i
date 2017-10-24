@@ -20,10 +20,6 @@ class MovieListActivity : BaseLayoutActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(layout)
-        val toolbar = findViewById(R.id.my_toolbar)
-        setSupportActionBar(toolbar as Toolbar)
-
 
         val intent = intent
         val movieList : MovieListDto = intent.getParcelableExtra("results")
