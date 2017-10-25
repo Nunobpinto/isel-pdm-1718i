@@ -6,6 +6,9 @@ import com.android.volley.toolbox.ImageLoader
 import com.android.volley.toolbox.Volley
 import pdm.isel.moviedatabaseapp.service.MovieProvider
 import pdm.isel.moviedatabaseapp.service.MovieTMDBService
+import java.io.BufferedReader
+import java.io.InputStream
+import java.io.InputStreamReader
 
 class MovieApplication : Application() {
     @Volatile lateinit var requestQueue: RequestQueue
@@ -20,7 +23,11 @@ class MovieApplication : Application() {
         imageLoader = ImageLoader(requestQueue,DefaultCache())
     }
 
-    private fun readAPIKEY():String =  resources.getString(R.raw.api_key)
+    private fun readAPIKEY():String {
+        val ip  = resources.openRawResource(R.raw.api_key)
+        val buffer  = BufferedReader(InputStreamReader(ip))
+        return buffer.readLine()
+    }
 
 
 
