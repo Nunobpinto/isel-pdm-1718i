@@ -21,6 +21,7 @@ class MovieListActivity : BaseLayoutActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
         val intent = intent
         val movieList : MovieListDto = intent.getParcelableExtra("results")
         val toolbarText: String = intent.getStringExtra("toolbarText")
