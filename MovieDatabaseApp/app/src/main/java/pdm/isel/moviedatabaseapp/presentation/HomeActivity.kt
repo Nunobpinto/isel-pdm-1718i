@@ -1,16 +1,16 @@
 package pdm.isel.moviedatabaseapp.presentation
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
+import com.android.volley.VolleyError
 import kotlinx.android.synthetic.main.activity_home.*
 import pdm.isel.moviedatabaseapp.MovieApplication
 import pdm.isel.moviedatabaseapp.R
 import pdm.isel.moviedatabaseapp.model.dataDto.MovieListDto
 
 class HomeActivity : BaseLayoutActivity() {
-
     override val toolbar: Int? = R.id.my_toolbar
     override val menu: Int? = R.menu.menu
     override  val layout : Int = R.layout.activity_home
@@ -20,12 +20,13 @@ class HomeActivity : BaseLayoutActivity() {
 
         my_toolbar.title = "Home"
         searchButton.setOnClickListener({
-            val query: String = inputEditText.text.toString()
+            val query: String = inputEditText.text.toString().replace(" ", "+")
             (application as MovieApplication).let {
                 it.service.getMoviesByName(
                         query,
                         application,
-                        {movie -> startActivity(createIntent(Intent(this, MovieListActivity::class.java), movie, "Search Results"))})
+                        {movie -> startActivity(createIntent(Intent(this, MovieListActivity::class.java), movie, "Search Results"))},
+                        {volleyError -> generateErrorWarning(volleyError)})
             }
         })
 
@@ -33,7 +34,8 @@ class HomeActivity : BaseLayoutActivity() {
             (application as MovieApplication).let {
                 it.service.getNowPlayingMovies(
                         application,
-                        {movies->startActivity(createIntent(Intent(this, MovieListActivity::class.java), movies, "Movies Now Playing"))})
+                        {movies->startActivity(createIntent(Intent(this, MovieListActivity::class.java), movies, "Movies Now Playing"))},
+                        {volleyError -> generateErrorWarning(volleyError)})
             }
         })
 
@@ -41,7 +43,8 @@ class HomeActivity : BaseLayoutActivity() {
             (application as MovieApplication).let {
                 it.service.getUpComingMovies(
                         application,
-                        {movies->startActivity(createIntent(Intent(this, MovieListActivity::class.java), movies, "Upcoming Movies"))})
+                        {movies->startActivity(createIntent(Intent(this, MovieListActivity::class.java), movies, "Upcoming Movies"))},
+                        {volleyError -> generateErrorWarning(volleyError)})
             }
         })
 
@@ -49,7 +52,8 @@ class HomeActivity : BaseLayoutActivity() {
             (application as MovieApplication).let {
                 it.service.getMostPopularMovies(
                         application,
-                        {movies->startActivity(createIntent(Intent(this, MovieListActivity::class.java),movies, "Most Popular Movies"))})
+                        {movies->startActivity(createIntent(Intent(this, MovieListActivity::class.java),movies, "Most Popular Movies"))},
+                        {volleyError -> generateErrorWarning(volleyError)})
             }
         })
     }
@@ -71,5 +75,9 @@ class HomeActivity : BaseLayoutActivity() {
         }
         startActivity(intent!!)
         return true
+    }
+
+    private fun generateErrorWarning(volleyError: VolleyError) {
+        Toast.makeText(this,"Error getting information", Toast.LENGTH_LONG).show()
     }
 }
