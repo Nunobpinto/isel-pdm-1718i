@@ -22,13 +22,13 @@ class MovieAdapter(private val ctx: Context, private val resource: Int, private 
         }
         else {
             rowView = convertView
-            holder = convertView.getTag() as ViewHolder
+            holder = convertView.tag as ViewHolder
         }
 
         val item = items[position]
-        holder.extraInfo.text = String.format("%s (%d/10)", item.releaseDate, item.voteAverage)
+        holder.extraInfo.text = String.format("(%0.1f/10) %s ", item.voteAverage, item.releaseDate)
         holder.movieTitle.text = item.title
-        holder.imgView.setImageUrl(urlBuilder(item.poster), app.imageLoader)
+        holder.imgView.setImageUrl(urlBuilder(item.poster!!), app.imageLoader)
 
         return rowView
     }

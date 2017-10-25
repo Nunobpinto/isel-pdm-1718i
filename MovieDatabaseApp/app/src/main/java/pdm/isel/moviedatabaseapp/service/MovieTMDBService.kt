@@ -11,7 +11,7 @@ import java.io.File
 
 class MovieTMDBService : MovieProvider {
     private var API_KEY = readAPIKEY()
-    private val MOVIES_BY_NAME_URL = "https://api.themoviedb.org/3/search/movie?api_key=$API_KEY&language=en-US&page=1&include_adult=false&query=%s"
+    private val MOVIES_BY_NAME_URL = "https://api.themoviedb.org/3/search/movie?api_key=$API_KEY&language=en-US&page=1&query=%s"
     private val MOVIE_DETAILS_URL = "https://api.themoviedb.org/3/movie/%d?api_key= $API_KEY&language=en-US"
     private val NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=$API_KEY&language=en-US&page=1"
     private val UPCOMING_URL = "https://api.themoviedb.org/3/movie/upcoming?api_key=$API_KEY&language=en-US&page=1"
@@ -29,10 +29,10 @@ class MovieTMDBService : MovieProvider {
         (ctx as MovieApplication).let { it.requestQueue.add(req) }
     }
 
-    override fun getMoviesByName(name: String, ctx: Context, cb: (MovieDto) -> Unit) {
+    override fun getMoviesByName(name: String, ctx: Context, cb: (MovieListDto) -> Unit) {
         val req = HttpRequest(
                 java.lang.String.format(MOVIES_BY_NAME_URL, name),
-                MovieDto::class.java,
+                MovieListDto::class.java,
                 cb,
                 {
                     generateErrorWarning(ctx)

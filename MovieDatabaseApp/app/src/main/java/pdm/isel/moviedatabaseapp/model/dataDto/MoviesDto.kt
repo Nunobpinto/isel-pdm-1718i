@@ -44,7 +44,7 @@ data class MovieDto(
         @JsonProperty("release_date")
         val releaseDate:String,
         @JsonProperty("poster_path")
-        val poster:String,
+        val poster:String?,
         @JsonProperty("vote_average")
         val voteAverage:Int,
         val overview : String,
