@@ -17,6 +17,7 @@ class ReferencesActivity : BaseLayoutActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        my_toolbar.title = resources.getString(R.string.references)
         link.setOnClickListener{
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.themoviedb.org/"))
             startActivity(intent)

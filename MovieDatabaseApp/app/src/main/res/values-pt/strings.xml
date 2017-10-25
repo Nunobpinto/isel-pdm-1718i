@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MovieDatabaseApp</string>
+    <string name="search_title">Search TMDb</string>
+    <string name="nowPlayingButton">Em Exibição</string>
+    <string name="searchButton">Procurar</string>
+    <string name="upcomingMoviesButton">Brevemente</string>
+    <string name="mostPopularMoviesButton">Mais Populares</string>
+    <string name="inputEditText">Insira o Nome do Filme...</string>
+    <string name="home">Início</string>
+    <string name="references">Acerca</string>
+    <string name="ref">TMDB -> The Movie Database(TMDb) é uma base de dados de filmes e séries popular, editável.</string>
+    <string name="searchResults">Resultados da Pesquisa</string>
+    <string name="moviesNowPlaying">Em Exibição</string>
+    <string name="upcomingMoviesList">Brevemente</string>
+    <string name="mostPopularMoviesList">Mais Populares</string>
+
+
+</resources>

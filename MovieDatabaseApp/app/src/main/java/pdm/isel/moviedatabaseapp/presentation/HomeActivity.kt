@@ -18,14 +18,14 @@ class HomeActivity : BaseLayoutActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        my_toolbar.title = "Home"
+        my_toolbar.title = resources.getString(R.string.home)
         searchButton.setOnClickListener({
             val query: String = inputEditText.text.toString().replace(" ", "+")
             (application as MovieApplication).let {
                 it.service.getMoviesByName(
                         query,
                         application,
-                        {movie -> startActivity(createIntent(Intent(this, MovieListActivity::class.java), movie, "Search Results"))},
+                        {movie -> startActivity(createIntent(Intent(this, MovieListActivity::class.java), movie, resources.getString(R.string.searchResults)))},
                         {volleyError -> generateErrorWarning(volleyError)})
             }
         })
@@ -34,7 +34,7 @@ class HomeActivity : BaseLayoutActivity() {
             (application as MovieApplication).let {
                 it.service.getNowPlayingMovies(
                         application,
-                        {movies->startActivity(createIntent(Intent(this, MovieListActivity::class.java), movies, "Movies Now Playing"))},
+                        {movies->startActivity(createIntent(Intent(this, MovieListActivity::class.java), movies, resources.getString(R.string.moviesNowPlaying)))},
                         {volleyError -> generateErrorWarning(volleyError)})
             }
         })
@@ -43,7 +43,7 @@ class HomeActivity : BaseLayoutActivity() {
             (application as MovieApplication).let {
                 it.service.getUpComingMovies(
                         application,
-                        {movies->startActivity(createIntent(Intent(this, MovieListActivity::class.java), movies, "Upcoming Movies"))},
+                        {movies->startActivity(createIntent(Intent(this, MovieListActivity::class.java), movies, resources.getString(R.string.upcomingMoviesList)))},
                         {volleyError -> generateErrorWarning(volleyError)})
             }
         })
@@ -52,7 +52,7 @@ class HomeActivity : BaseLayoutActivity() {
             (application as MovieApplication).let {
                 it.service.getMostPopularMovies(
                         application,
-                        {movies->startActivity(createIntent(Intent(this, MovieListActivity::class.java),movies, "Most Popular Movies"))},
+                        {movies->startActivity(createIntent(Intent(this, MovieListActivity::class.java),movies, resources.getString(R.string.mostPopularMoviesList)))},
                         {volleyError -> generateErrorWarning(volleyError)})
             }
         })
