@@ -7,7 +7,6 @@ import pdm.isel.moviedatabaseapp.HttpRequest
 import pdm.isel.moviedatabaseapp.MovieApplication
 import pdm.isel.moviedatabaseapp.model.dataDto.MovieDto
 import pdm.isel.moviedatabaseapp.model.dataDto.MovieListDto
-import java.io.File
 
 class MovieTMDBService : MovieProvider {
     private var API_KEY = readAPIKEY()
@@ -17,38 +16,32 @@ class MovieTMDBService : MovieProvider {
     private val UPCOMING_URL = "https://api.themoviedb.org/3/movie/upcoming?api_key=$API_KEY&language=en-US&page=1"
     private val MOST_POPULAR_URL = "https://api.themoviedb.org/3/movie/popular?api_key=$API_KEY&language=en-US&page=1   "
 
-    override fun getUpComingMovies(ctx: Context, cb: (MovieListDto) -> Unit) {
+    override fun getUpComingMovies(ctx: Context, successCb: (MovieListDto) -> Unit, errorCb:(VolleyError)-> Unit) {
         val req = HttpRequest(
                 UPCOMING_URL,
                 MovieListDto::class.java,
-                cb,
-                {
-                    VolleyError()
-                }
+                successCb,
+                errorCb
         )
         (ctx as MovieApplication).let { it.requestQueue.add(req) }
     }
 
-    override fun getMoviesByName(name: String, ctx: Context, cb: (MovieListDto) -> Unit) {
+    override fun getMoviesByName(name: String, ctx: Context, successCb: (MovieListDto) -> Unit, errorCb:(VolleyError)-> Unit) {
         val req = HttpRequest(
                 java.lang.String.format(MOVIES_BY_NAME_URL, name),
                 MovieListDto::class.java,
-                cb,
-                {
-                    generateErrorWarning(ctx)
-                }
+                successCb,
+                errorCb
         )
         (ctx as MovieApplication).requestQueue.add(req)
     }
 
-    override fun getNowPlayingMovies(ctx: Context, cb: (MovieListDto) -> Unit) {
+    override fun getNowPlayingMovies(ctx: Context, successCb: (MovieListDto) -> Unit, errorCb:(VolleyError)-> Unit) {
         val req = HttpRequest(
                 NOW_PLAYING_URL,
                 MovieListDto::class.java,
-                cb,
-                {
-                    generateErrorWarning(ctx)
-                }
+                successCb,
+                errorCb
         )
         (ctx as MovieApplication).let { it.requestQueue.add(req) }
     }
@@ -57,26 +50,22 @@ class MovieTMDBService : MovieProvider {
         Toast.makeText(ctx,"Error getting information",Toast.LENGTH_LONG).show()
     }
 
-    override fun getMovieDetails(id: Int, ctx: Context, cb: (MovieDto) -> Unit) {
+    override fun getMovieDetails(id: Int, ctx: Context, successCb: (MovieDto) -> Unit, errorCb:(VolleyError)-> Unit) {
         val req = HttpRequest(
                 java.lang.String.format(MOVIE_DETAILS_URL, id),
                 MovieDto::class.java,
-                cb,
-                {
-                    generateErrorWarning(ctx)
-                }
+                successCb,
+                errorCb
         )
         (ctx as MovieApplication).requestQueue.add(req)
     }
 
-    override fun getMostPopularMovies(ctx: Context, cb: (MovieListDto) -> Unit) {
+    override fun getMostPopularMovies(ctx: Context, successCb: (MovieListDto) -> Unit, errorCb:(VolleyError)-> Unit) {
         val req = HttpRequest(
                 MOST_POPULAR_URL,
                 MovieListDto::class.java,
-                cb,
-                {
-                    generateErrorWarning(ctx)
-                }
+                successCb,
+                errorCb
         )
         (ctx as MovieApplication).requestQueue.add(req)
     }

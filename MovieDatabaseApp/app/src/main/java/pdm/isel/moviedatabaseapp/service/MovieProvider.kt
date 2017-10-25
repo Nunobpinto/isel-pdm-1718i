@@ -1,14 +1,15 @@
 package pdm.isel.moviedatabaseapp.service
 
 import android.content.Context
+import com.android.volley.VolleyError
 import pdm.isel.moviedatabaseapp.model.dataDto.MovieDto
 import pdm.isel.moviedatabaseapp.model.dataDto.MovieListDto
 
 interface MovieProvider {
 
-    fun getMoviesByName(name:String,ctx: Context,cb : (MovieListDto)->Unit)
-    fun getNowPlayingMovies(ctx:Context,cb : (MovieListDto)->Unit)
-    fun getMovieDetails(id:Int,ctx:Context,cb : (MovieDto)->Unit )
-    fun getMostPopularMovies(ctx: Context,cb : (MovieListDto)->Unit)
-    fun getUpComingMovies(ctx:Context,cb : (MovieListDto)->Unit)
+    fun getMoviesByName(name:String, ctx: Context, successCb: (MovieListDto)->Unit, errorCb: (VolleyError)->Unit)
+    fun getNowPlayingMovies(ctx:Context, successCb: (MovieListDto)->Unit, errorCb: (VolleyError)->Unit)
+    fun getMovieDetails(id:Int, ctx:Context, successCb: (MovieDto)->Unit, errorCb: (VolleyError)->Unit )
+    fun getMostPopularMovies(ctx: Context, successCb: (MovieListDto)->Unit, errorCb: (VolleyError)->Unit)
+    fun getUpComingMovies(ctx:Context, successCb: (MovieListDto)->Unit, errorCb: (VolleyError)->Unit)
 }
