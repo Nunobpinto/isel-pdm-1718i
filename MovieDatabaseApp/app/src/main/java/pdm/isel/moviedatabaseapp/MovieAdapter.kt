@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.android.volley.toolbox.NetworkImageView
 import pdm.isel.moviedatabaseapp.model.dataDto.MovieDto
-import pdm.isel.moviedatabaseapp.presentation.widget.MovieListEntryView
 
 class MovieAdapter(private val ctx: Context, private val resource: Int, private val items: Array<MovieDto>, private val app: MovieApplication)
     : ArrayAdapter<MovieDto>(ctx, resource, items) {
