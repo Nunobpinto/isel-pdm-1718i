@@ -7,20 +7,22 @@ import com.android.volley.toolbox.Volley
 import pdm.isel.moviedatabaseapp.service.MovieProvider
 import pdm.isel.moviedatabaseapp.service.MovieTMDBService
 import java.io.BufferedReader
-import java.io.InputStream
 import java.io.InputStreamReader
 
 class MovieApplication : Application() {
     @Volatile lateinit var requestQueue: RequestQueue
     @Volatile  lateinit var service : MovieProvider
     @Volatile lateinit var imageLoader : ImageLoader
+    lateinit var lang : String
     lateinit var apiKey : String
     override fun onCreate() {
         super.onCreate()
         apiKey = readAPIKEY()
-        service = MovieTMDBService(apiKey)
+        lang = getLanguage()
+        service = MovieTMDBService(apiKey, lang)
         requestQueue = Volley.newRequestQueue(this)
         imageLoader = ImageLoader(requestQueue,DefaultCache())
+
     }
 
     private fun readAPIKEY():String {
@@ -29,6 +31,9 @@ class MovieApplication : Application() {
         return buffer.readLine()
     }
 
+    private fun getLanguage() : String {
+        return resources.getString(R.string.language)
+    }
 
 
 }

@@ -7,7 +7,6 @@ import kotlinx.android.synthetic.main.activity_movie_details.*
 import pdm.isel.moviedatabaseapp.MovieApplication
 import pdm.isel.moviedatabaseapp.R
 import pdm.isel.moviedatabaseapp.model.dataDto.MovieDto
-import pdm.isel.moviedatabaseapp.model.dataDto.MovieListDto
 
 class MovieDetailsActivity : BaseLayoutActivity() {
     override val toolbar: Int? = R.id.my_toolbar
@@ -18,8 +17,6 @@ class MovieDetailsActivity : BaseLayoutActivity() {
         super.onCreate(savedInstanceState)
         val intent = intent
         val movie : MovieDto = intent.getParcelableExtra("movie")
-        val toolbarText: String = intent.getStringExtra("toolbarText")
-        this.my_toolbar.title = toolbarText
 
         title_value.text = movie.title
         overview_value.text = movie.overview
