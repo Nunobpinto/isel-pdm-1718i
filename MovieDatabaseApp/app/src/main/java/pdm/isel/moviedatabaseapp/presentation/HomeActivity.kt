@@ -2,11 +2,11 @@ package pdm.isel.moviedatabaseapp.presentation
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_home.*
 import pdm.isel.moviedatabaseapp.MovieApplication
 import pdm.isel.moviedatabaseapp.R
+import pdm.isel.moviedatabaseapp.model.dataDto.MovieDto
 import pdm.isel.moviedatabaseapp.model.dataDto.MovieListDto
 
 class HomeActivity : BaseLayoutActivity() {
@@ -23,7 +23,7 @@ class HomeActivity : BaseLayoutActivity() {
                 it.service.getMoviesByName(
                         query,
                         application,
-                        {movies -> startActivity(createIntent(MovieListActivity::class.java, movies))})
+                        {movie -> startActivity(createIntent(MovieDetailsActivity::class.java, movie))})
             }
         })
 
@@ -31,7 +31,7 @@ class HomeActivity : BaseLayoutActivity() {
             (application as MovieApplication).let {
                 it.service.getNowPlayingMovies(
                         application,
-                        {movies->startActivity(createIntent(MovieListActivity::class.java, movies))})
+                        {movies->startActivity(createIntentList(MovieListActivity::class.java, movies))})
             }
         })
 
@@ -39,7 +39,7 @@ class HomeActivity : BaseLayoutActivity() {
             (application as MovieApplication).let {
                 it.service.getUpComingMovies(
                         application,
-                        {movies->startActivity(createIntent(MovieListActivity::class.java,movies))})
+                        {movies->startActivity(createIntentList(MovieListActivity::class.java,movies))})
             }
         })
 
@@ -47,14 +47,20 @@ class HomeActivity : BaseLayoutActivity() {
             (application as MovieApplication).let {
                 it.service.getMostPopularMovies(
                         application,
-                        {movies->startActivity(createIntent(MovieListActivity::class.java,movies))})
+                        {movies->startActivity(createIntentList(MovieListActivity::class.java,movies))})
             }
         })
     }
 
-    private fun createIntent(destClass: Class<MovieListActivity>, dto: MovieListDto): Intent? {
+    private fun createIntentList(destClass: Class<MovieListActivity>, dto: MovieListDto): Intent? {
         val i = Intent(this, destClass)
         i.putExtra("results", dto)
+        return i
+    }
+
+    private fun createIntent(destClass: Class<MovieDetailsActivity>,dto:MovieDto) : Intent{
+        val i = Intent(this, destClass)
+        i.putExtra("movie", dto)
         return i
     }
 

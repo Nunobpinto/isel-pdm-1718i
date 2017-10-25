@@ -29,10 +29,10 @@ class MovieTMDBService : MovieProvider {
         (ctx as MovieApplication).let { it.requestQueue.add(req) }
     }
 
-    override fun getMoviesByName(name: String, ctx: Context, cb: (MovieListDto) -> Unit) {
+    override fun getMoviesByName(name: String, ctx: Context, cb: (MovieDto) -> Unit) {
         val req = HttpRequest(
                 java.lang.String.format(MOVIES_BY_NAME_URL, name),
-                MovieListDto::class.java,
+                MovieDto::class.java,
                 cb,
                 {
                     generateErrorWarning(ctx)

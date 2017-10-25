@@ -22,13 +22,6 @@ abstract class BaseLayoutActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
-        toolbar?.let {
-            setSupportActionBar(findViewById(it) as Toolbar)
-        }
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         this.menu?.let {
             menuInflater.inflate(it, menu)
