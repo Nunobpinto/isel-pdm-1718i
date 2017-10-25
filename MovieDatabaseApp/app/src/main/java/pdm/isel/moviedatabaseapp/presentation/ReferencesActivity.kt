@@ -2,9 +2,7 @@ package pdm.isel.moviedatabaseapp.presentation
 
 import android.content.Intent
 import android.net.Uri
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_references.*
 import pdm.isel.moviedatabaseapp.R

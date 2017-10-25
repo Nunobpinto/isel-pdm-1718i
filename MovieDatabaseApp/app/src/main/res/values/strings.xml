@@ -13,4 +13,5 @@
     <string name="moviesNowPlaying">Movies Now Playing</string>
     <string name="upcomingMoviesList">Upcoming Movies</string>
     <string name="mostPopularMoviesList">Most Popular Movies</string>
+    <string name="language">en-US</string>
 </resources>

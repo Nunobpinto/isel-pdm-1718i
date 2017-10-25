@@ -8,14 +8,13 @@ import pdm.isel.moviedatabaseapp.model.dataDto.MovieDto
 import pdm.isel.moviedatabaseapp.model.dataDto.MovieListDto
 import android.net.ConnectivityManager
 
-
-class MovieTMDBService (apikey:String): MovieProvider {
+class MovieTMDBService (apikey:String, lang:String): MovieProvider {
     private var API_KEY :String = apikey
-    private val MOVIES_BY_NAME_URL = "https://api.themoviedb.org/3/search/movie?api_key=$API_KEY&language=en-US&page=1&query=%s"
-    private val MOVIE_DETAILS_URL = "https://api.themoviedb.org/3/movie/%d?api_key=$API_KEY&language=en-US"
-    private val NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=$API_KEY&language=en-US&page=1"
-    private val UPCOMING_URL = "https://api.themoviedb.org/3/movie/upcoming?api_key=$API_KEY&language=en-US&page=1"
-    private val MOST_POPULAR_URL = "https://api.themoviedb.org/3/movie/popular?api_key=$API_KEY&language=en-US&page=1   "
+    private val MOVIES_BY_NAME_URL = "https://api.themoviedb.org/3/search/movie?api_key=$API_KEY&language=" + lang + "&page=1&query=%s"
+    private val MOVIE_DETAILS_URL = "https://api.themoviedb.org/3/movie/%d?api_key=$API_KEY&language=" + lang
+    private val NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=$API_KEY&language=" + lang + "&page=1"
+    private val UPCOMING_URL = "https://api.themoviedb.org/3/movie/upcoming?api_key=$API_KEY&language=" + lang + "&page=1"
+    private val MOST_POPULAR_URL = "https://api.themoviedb.org/3/movie/popular?api_key=$API_KEY&language=" + lang + "&page=1"
 
     override fun getUpComingMovies(ctx: Context, successCb: (MovieListDto) -> Unit, errorCb:(VolleyError)-> Unit) {
         if(!isConnected(ctx))
