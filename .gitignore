@@ -35,4 +35,4 @@ proguard/
 .DS_Store
 
 # APIKEY
-MovieDatabaseApp/app/src/main/res/api_key.txt
+MovieDatabaseApp/app/src/main/res/raw/api_key.txt
