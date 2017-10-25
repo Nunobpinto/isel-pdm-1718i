@@ -12,7 +12,7 @@ import android.net.ConnectivityManager
 class MovieTMDBService (apikey:String): MovieProvider {
     private var API_KEY :String = apikey
     private val MOVIES_BY_NAME_URL = "https://api.themoviedb.org/3/search/movie?api_key=$API_KEY&language=en-US&page=1&query=%s"
-    private val MOVIE_DETAILS_URL = "https://api.themoviedb.org/3/movie/%d?api_key= $API_KEY&language=en-US"
+    private val MOVIE_DETAILS_URL = "https://api.themoviedb.org/3/movie/%d?api_key=$API_KEY&language=en-US"
     private val NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=$API_KEY&language=en-US&page=1"
     private val UPCOMING_URL = "https://api.themoviedb.org/3/movie/upcoming?api_key=$API_KEY&language=en-US&page=1"
     private val MOST_POPULAR_URL = "https://api.themoviedb.org/3/movie/popular?api_key=$API_KEY&language=en-US&page=1   "
@@ -56,8 +56,9 @@ class MovieTMDBService (apikey:String): MovieProvider {
     override fun getMovieDetails(id: Int, ctx: Context, successCb: (MovieDto) -> Unit, errorCb:(VolleyError)-> Unit) {
         if(!isConnected(ctx))
             return errorCb(VolleyError())
+        val uri = java.lang.String.format(MOVIE_DETAILS_URL, id)
         val req = HttpRequest(
-                java.lang.String.format(MOVIE_DETAILS_URL, id),
+                uri,
                 MovieDto::class.java,
                 successCb,
                 errorCb
