@@ -26,9 +26,12 @@ class MovieAdapter(private val ctx: Context, private val resource: Int, private 
         }
 
         val item = items[position]
-        holder.extraInfo.text = String.format("(%0.1f/10) %s ", item.voteAverage, item.releaseDate)
+        //TODO: limitar o numero de algarismos do voteAverage lança excepção
+        holder.extraInfo.text = String.format("(%f/10) %s ", item.voteAverage, item.releaseDate)
         holder.movieTitle.text = item.title
-        holder.imgView.setImageUrl(urlBuilder(item.poster!!), app.imageLoader)
+        //TODO: quando não há foto, é carregada uma aleatoria das que ja existem na lista
+        if (item.poster != null )
+            holder.imgView.setImageUrl(urlBuilder(item.poster), app.imageLoader)
 
         return rowView
     }
@@ -41,6 +44,7 @@ class MovieAdapter(private val ctx: Context, private val resource: Int, private 
                 convertView.findViewById(R.id.movieTitle) as TextView,
                 convertView.findViewById(R.id.extraInfo) as TextView
         )
+        holder.imgView.setDefaultImageResId(R.drawable.default_poster)
         convertView.tag = holder
         return holder
     }
