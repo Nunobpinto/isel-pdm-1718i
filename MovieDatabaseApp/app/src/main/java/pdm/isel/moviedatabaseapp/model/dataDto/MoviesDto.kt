@@ -5,71 +5,78 @@ import android.os.Parcelable
 import com.fasterxml.jackson.annotation.JsonProperty
 
 class MovieListDto(
-        val page: Int,
+        val page: Int?,
         @JsonProperty("total_result")
-        val totalResult: Int,
+        val totalResult: Int?,
         @JsonProperty("total_pages")
-        val totalPages: Int,
+        val totalPages: Int?,
         val results: Array<MovieDto>,
         val dates: MyDate?
 ) : Parcelable {
         constructor(parcel: Parcel) : this(
-                parcel.readInt(),
-                parcel.readInt(),
-                parcel.readInt(),
+                parcel.readValue(Int::class.java.classLoader) as? Int,
+                parcel.readValue(Int::class.java.classLoader) as? Int,
+                parcel.readValue(Int::class.java.classLoader) as? Int,
                 parcel.createTypedArray(MovieDto),
-                parcel.readParcelable(MyDate::class.java.classLoader))
+                parcel.readParcelable(MyDate::class.java.classLoader)) {
+        }
 
         override fun writeToParcel(parcel: Parcel, flags: Int) {
-                parcel.writeInt(page)
-                parcel.writeInt(totalResult)
-                parcel.writeInt(totalPages)
+                parcel.writeValue(page)
+                parcel.writeValue(totalResult)
+                parcel.writeValue(totalPages)
                 parcel.writeTypedArray(results, flags)
                 parcel.writeParcelable(dates, flags)
         }
 
-        override fun describeContents() = 0
+        override fun describeContents(): Int = 0
 
         companion object CREATOR : Parcelable.Creator<MovieListDto> {
-                override fun createFromParcel(parcel: Parcel) = MovieListDto(parcel)
+                override fun createFromParcel(parcel: Parcel): MovieListDto {
+                        return MovieListDto(parcel)
+                }
 
-                override fun newArray(size: Int): Array<MovieListDto?> = arrayOfNulls(size)
+                override fun newArray(size: Int): Array<MovieListDto?> {
+                        return arrayOfNulls(size)
+                }
         }
 }
 
 data class MovieDto(
         val id: Int,
-        val title: String,
-        val runtime: Int,
+        val title: String?,
+        val runtime: Int?,
         @JsonProperty("release_date")
-        val releaseDate: String,
+        val releaseDate: String?,
         @JsonProperty("poster_path")
         val poster:String?,
         @JsonProperty("vote_average")
-        val voteAverage: Float,
-        val overview: String,
-        val popularity: Float,
+        val voteAverage: Float?,
+        val overview: String?,
+        val popularity: Float?,
         val genres: Array<Genres>?
 ) : Parcelable {
         constructor(parcel: Parcel) : this(
                 parcel.readInt(),
                 parcel.readString(),
-                parcel.readInt(),
+                parcel.readValue(Int::class.java.classLoader) as? Int,
                 parcel.readString(),
                 parcel.readString(),
-                parcel.readFloat(),
+                parcel.readValue(Float::class.java.classLoader) as? Float,
                 parcel.readString(),
-                parcel.readFloat(),
-                parcel.createTypedArray(Genres))
+                parcel.readValue(Float::class.java.classLoader) as? Float,
+                parcel.createTypedArray(Genres)) {
+        }
+
         override fun writeToParcel(parcel: Parcel, flags: Int) {
                 parcel.writeInt(id)
                 parcel.writeString(title)
-                parcel.writeInt(runtime)
+                parcel.writeValue(runtime)
                 parcel.writeString(releaseDate)
                 parcel.writeString(poster)
-                parcel.writeFloat(voteAverage)
+                parcel.writeValue(voteAverage)
                 parcel.writeString(overview)
-                parcel.writeFloat(popularity)
+                parcel.writeValue(popularity)
                 parcel.writeTypedArray(genres, flags)
         }
 
@@ -82,19 +89,29 @@ data class MovieDto(
         }
 }
 
-data class MyDate(val maximum: String, val minimum: String) : Parcelable {
-
-        constructor(parcel: Parcel) : this(parcel.readString(),parcel.readString())
-
-        override fun writeToParcel(parcel: Parcel, flags: Int) {
-                parcel.writeStringArray(Array<String>(2) {this.maximum; this.minimum})
+data class MyDate(val maximum: String?, val minimum: String?) : Parcelable {
+        constructor(parcel: Parcel) : this(
+                parcel.readString(),
+                parcel.readString()) {
         }
 
-        override fun describeContents() = 0
+        override fun writeToParcel(parcel: Parcel, flags: Int) {
+                parcel.writeString(maximum)
+                parcel.writeString(minimum)
+        }
+
+        override fun describeContents(): Int {
+                return 0
+        }
 
         companion object CREATOR : Parcelable.Creator<MyDate> {
-                override fun createFromParcel(parcel: Parcel) = MyDate(parcel)
-                override fun newArray(size: Int): Array<MyDate?> = arrayOfNulls(size)
+                override fun createFromParcel(parcel: Parcel): MyDate {
+                        return MyDate(parcel)
+                }
+
+                override fun newArray(size: Int): Array<MyDate?> {
+                        return arrayOfNulls(size)
+                }
         }
 }
 
