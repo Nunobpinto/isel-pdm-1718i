@@ -11,11 +11,9 @@ import kotlinx.android.synthetic.main.activity_movie_list.*
 import pdm.isel.moviedatabaseapp.MovieAdapter
 import pdm.isel.moviedatabaseapp.MovieApplication
 import pdm.isel.moviedatabaseapp.R
-import pdm.isel.moviedatabaseapp.model.dataDto.MovieDto
 import pdm.isel.moviedatabaseapp.model.dataDto.MovieListDto
 
 class MovieListActivity : BaseLayoutActivity() {
-
     override val toolbar: Int? = R.id.my_toolbar
     override val menu: Int? = R.menu.menu
     override  val layout : Int = R.layout.activity_movie_list
@@ -25,6 +23,9 @@ class MovieListActivity : BaseLayoutActivity() {
 
         val intent = intent
         val movieList : MovieListDto = intent.getParcelableExtra("results")
+        val toolbarText: String = intent.getStringExtra("toolbarText")
+        my_toolbar.title = toolbarText
+
 
         val movieAdapter = MovieAdapter(this, R.layout.movie_list_entry_layout, movieList.results, (application as MovieApplication))
 

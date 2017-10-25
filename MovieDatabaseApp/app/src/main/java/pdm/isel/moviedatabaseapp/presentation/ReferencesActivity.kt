@@ -26,7 +26,10 @@ class ReferencesActivity : BaseLayoutActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         var intent : Intent?=null
         when(item?.itemId){
-            R.id.action_about -> intent = Intent(this,ReferencesActivity::class.java)
+            R.id.action_about -> {
+                intent = Intent(this,ReferencesActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+            }
             R.id.action_home -> intent = Intent(this,HomeActivity::class.java)
         }
         startActivity(intent!!)

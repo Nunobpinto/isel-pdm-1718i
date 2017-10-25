@@ -19,6 +19,7 @@ abstract class BaseLayoutActivity : AppCompatActivity() {
         setContentView(layout)
         toolbar?.let {
             setSupportActionBar(findViewById(it) as Toolbar)
+            supportActionBar?.title = null
         }
     }
 
