@@ -9,12 +9,19 @@ import pdm.isel.moviedatabaseapp.service.MovieTMDBService
 
 class MovieApplication : Application() {
     @Volatile lateinit var requestQueue: RequestQueue
-    @Volatile  var service : MovieProvider = MovieTMDBService()
+    @Volatile  lateinit var service : MovieProvider
     @Volatile lateinit var imageLoader : ImageLoader
+    lateinit var apiKey : String
     override fun onCreate() {
         super.onCreate()
-        service = MovieTMDBService()
+        apiKey = readAPIKEY()
+        service = MovieTMDBService(apiKey)
         requestQueue = Volley.newRequestQueue(this)
         imageLoader = ImageLoader(requestQueue,DefaultCache())
     }
+
+    private fun readAPIKEY():String =  resources.getString(R.raw.api_key)
+
+
+
 }

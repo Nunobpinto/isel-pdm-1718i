@@ -8,8 +8,9 @@ import pdm.isel.moviedatabaseapp.model.dataDto.MovieDto
 import pdm.isel.moviedatabaseapp.model.dataDto.MovieListDto
 import android.net.ConnectivityManager
 
-class MovieTMDBService : MovieProvider {
-    private var API_KEY = readAPIKEY()
+
+class MovieTMDBService (apikey:String): MovieProvider {
+    private var API_KEY :String = apikey
     private val MOVIES_BY_NAME_URL = "https://api.themoviedb.org/3/search/movie?api_key=$API_KEY&language=en-US&page=1&query=%s"
     private val MOVIE_DETAILS_URL = "https://api.themoviedb.org/3/movie/%d?api_key= $API_KEY&language=en-US"
     private val NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=$API_KEY&language=en-US&page=1"
@@ -75,17 +76,11 @@ class MovieTMDBService : MovieProvider {
         )
         (ctx as MovieApplication).requestQueue.add(req)
     }
-
+    
     private fun isConnected(context: Context): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetworkInfo = connectivityManager.activeNetworkInfo
         return activeNetworkInfo != null && activeNetworkInfo.isConnected
-    }
-
-    private fun readAPIKEY():String{
-        //val bufferedReader = File(MovieTMDBService::class.java.getResource("/res/api_key.txt")).bufferedReader()
-        //return bufferedReader.use { it.readText() }
-        return "af53a8fb127279b18d0cdbd065d80e2d"
     }
 
 }
