@@ -3,6 +3,7 @@ package pdm.isel.moviedatabaseapp.presentation
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import com.android.volley.VolleyError
 import kotlinx.android.synthetic.main.activity_home.*
@@ -17,9 +18,11 @@ class HomeActivity : BaseLayoutActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        progressBar.visibility = View.INVISIBLE
 
         my_toolbar.title = resources.getString(R.string.home)
         searchButton.setOnClickListener({
+            progressBar.visibility = View.VISIBLE
             val query: String = inputEditText.text.toString().replace(" ", "+")
             (application as MovieApplication).let {
                 it.service.getMoviesByName(
@@ -31,6 +34,7 @@ class HomeActivity : BaseLayoutActivity() {
         })
 
         nowPlayingButton.setOnClickListener({
+            progressBar.visibility = View.VISIBLE
             (application as MovieApplication).let {
                 it.service.getNowPlayingMovies(
                         application,
@@ -40,6 +44,7 @@ class HomeActivity : BaseLayoutActivity() {
         })
 
         upcomingMoviesButton.setOnClickListener({
+            progressBar.visibility = View.VISIBLE
             (application as MovieApplication).let {
                 it.service.getUpComingMovies(
                         application,
@@ -49,6 +54,7 @@ class HomeActivity : BaseLayoutActivity() {
         })
 
         mostPopularMoviesButton.setOnClickListener({
+            progressBar.visibility = View.VISIBLE
             (application as MovieApplication).let {
                 it.service.getMostPopularMovies(
                         application,
@@ -61,6 +67,7 @@ class HomeActivity : BaseLayoutActivity() {
     private fun createIntent(intent: Intent, dto: MovieListDto, toolbarText: String): Intent? {
         intent.putExtra("toolbarText", toolbarText)
         intent.putExtra("results", dto)
+        progressBar.visibility = View.INVISIBLE
         return intent
     }
 
