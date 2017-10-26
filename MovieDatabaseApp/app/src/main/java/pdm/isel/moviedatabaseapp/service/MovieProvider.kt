@@ -2,8 +2,8 @@ package pdm.isel.moviedatabaseapp.service
 
 import android.content.Context
 import com.android.volley.VolleyError
-import pdm.isel.moviedatabaseapp.model.dataDto.MovieDto
-import pdm.isel.moviedatabaseapp.model.dataDto.MovieListDto
+import pdm.isel.moviedatabaseapp.model.MovieDto
+import pdm.isel.moviedatabaseapp.model.MovieListDto
 
 interface MovieProvider {
 

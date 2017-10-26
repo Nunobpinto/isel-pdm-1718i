@@ -8,7 +8,7 @@ import com.android.volley.VolleyError
 import kotlinx.android.synthetic.main.activity_home.*
 import pdm.isel.moviedatabaseapp.MovieApplication
 import pdm.isel.moviedatabaseapp.R
-import pdm.isel.moviedatabaseapp.model.dataDto.MovieListDto
+import pdm.isel.moviedatabaseapp.model.MovieListDto
 
 class HomeActivity : BaseLayoutActivity() {
     override val toolbar: Int? = R.id.my_toolbar

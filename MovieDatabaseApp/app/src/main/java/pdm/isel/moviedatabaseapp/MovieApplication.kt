@@ -4,6 +4,7 @@ import android.app.Application
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.ImageLoader
 import com.android.volley.toolbox.Volley
+import pdm.isel.moviedatabaseapp.cache.DefaultCache
 import pdm.isel.moviedatabaseapp.service.MovieProvider
 import pdm.isel.moviedatabaseapp.service.MovieTMDBService
 import java.io.BufferedReader
@@ -21,7 +22,7 @@ class MovieApplication : Application() {
         lang = getLanguage()
         service = MovieTMDBService(apiKey, lang)
         requestQueue = Volley.newRequestQueue(this)
-        imageLoader = ImageLoader(requestQueue,DefaultCache())
+        imageLoader = ImageLoader(requestQueue, DefaultCache())
 
     }
 

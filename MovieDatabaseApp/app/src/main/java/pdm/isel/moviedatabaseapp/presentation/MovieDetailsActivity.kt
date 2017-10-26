@@ -6,7 +6,7 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_movie_details.*
 import pdm.isel.moviedatabaseapp.MovieApplication
 import pdm.isel.moviedatabaseapp.R
-import pdm.isel.moviedatabaseapp.model.dataDto.MovieDto
+import pdm.isel.moviedatabaseapp.model.MovieDto
 
 class MovieDetailsActivity : BaseLayoutActivity() {
     override val toolbar: Int? = R.id.my_toolbar

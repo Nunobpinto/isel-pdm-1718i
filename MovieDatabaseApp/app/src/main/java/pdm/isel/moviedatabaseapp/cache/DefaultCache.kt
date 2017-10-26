@@ -1,4 +1,4 @@
-package pdm.isel.moviedatabaseapp
+package pdm.isel.moviedatabaseapp.cache
 
 import android.graphics.Bitmap
 import com.android.volley.toolbox.ImageLoader

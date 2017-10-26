@@ -1,4 +1,4 @@
-package pdm.isel.moviedatabaseapp
+package pdm.isel.moviedatabaseapp.comms
 
 import com.android.volley.*
 import com.android.volley.toolbox.JsonRequest

@@ -1,17 +1,15 @@
 package pdm.isel.moviedatabaseapp.presentation
 
-import android.app.ListActivity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Toast
 import com.android.volley.VolleyError
 import kotlinx.android.synthetic.main.activity_movie_list.*
-import pdm.isel.moviedatabaseapp.MovieAdapter
+import pdm.isel.moviedatabaseapp.view.MovieAdapter
 import pdm.isel.moviedatabaseapp.MovieApplication
 import pdm.isel.moviedatabaseapp.R
-import pdm.isel.moviedatabaseapp.model.dataDto.MovieDto
-import pdm.isel.moviedatabaseapp.model.dataDto.MovieListDto
+import pdm.isel.moviedatabaseapp.model.MovieDto
+import pdm.isel.moviedatabaseapp.model.MovieListDto
 
 class MovieListActivity : BaseLayoutActivity() {
     override val toolbar: Int? = R.id.my_toolbar
@@ -21,10 +19,12 @@ class MovieListActivity : BaseLayoutActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         val intent = intent
         val movieList : MovieListDto = intent.getParcelableExtra("results")
         val toolbarText: String = intent.getStringExtra("toolbarText")
+
+        if (movieList.dates != null )
+            this.my_toolbar.subtitle = "From " + movieList.dates.minimum + " to " + movieList.dates.maximum
         this.my_toolbar.title = toolbarText
 
 

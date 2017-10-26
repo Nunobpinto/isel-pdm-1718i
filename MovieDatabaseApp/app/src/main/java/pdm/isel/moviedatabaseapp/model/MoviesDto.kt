@@ -1,4 +1,4 @@
-package pdm.isel.moviedatabaseapp.model.dataDto
+package pdm.isel.moviedatabaseapp.model
 
 import android.os.Parcel
 import android.os.Parcelable

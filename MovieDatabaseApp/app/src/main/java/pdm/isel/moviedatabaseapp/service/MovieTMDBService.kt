@@ -2,10 +2,10 @@ package pdm.isel.moviedatabaseapp.service
 
 import android.content.Context
 import com.android.volley.VolleyError
-import pdm.isel.moviedatabaseapp.HttpRequest
+import pdm.isel.moviedatabaseapp.comms.HttpRequest
 import pdm.isel.moviedatabaseapp.MovieApplication
-import pdm.isel.moviedatabaseapp.model.dataDto.MovieDto
-import pdm.isel.moviedatabaseapp.model.dataDto.MovieListDto
+import pdm.isel.moviedatabaseapp.model.MovieDto
+import pdm.isel.moviedatabaseapp.model.MovieListDto
 import android.net.ConnectivityManager
 
 class MovieTMDBService (apikey:String, lang:String): MovieProvider {
