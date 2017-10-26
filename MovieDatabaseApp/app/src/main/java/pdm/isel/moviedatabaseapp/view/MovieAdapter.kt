@@ -28,27 +28,24 @@ class MovieAdapter(private val ctx: Context, private val resource: Int, private 
         }
 
         val item = items[position]
-        //TODO: limitar o numero de algarismos do voteAverage lança excepção
-        holder.extraInfo.text = String.format("(%f/10) %s ", item.voteAverage, item.releaseDate)
+        holder.extraInfo.text = String.format("(%.1f/10) %s ", item.voteAverage, item.releaseDate)
         holder.movieTitle.text = item.title
-        holder.id = item.id
-        //TODO: quando não há foto, é carregada uma aleatoria das que ja existem na lista
-        if (item.poster != null )
-            holder.imgView.setImageUrl(urlBuilder(item.poster), app.imageLoader)
-
+        holder.imgView.setImageUrl(urlBuilder(item), app.imageLoader)
         return rowView
     }
 
-    private fun urlBuilder(path: String) = "http://image.tmdb.org/t/p/w185/$path?$"
+
+
+    private fun urlBuilder(item: MovieDto): String? =
+            if( item.poster == null ) item.value else "http://image.tmdb.org/t/p/w185/${item.poster}?$"
 
     private fun fillHolder(convertView: View): ViewHolder {
         val holder = ViewHolder(
                 convertView.findViewById(R.id.posterImageView) as NetworkImageView,
                 convertView.findViewById(R.id.movieTitle) as TextView,
-                convertView.findViewById(R.id.extraInfo) as TextView,
-                0
+                convertView.findViewById(R.id.extraInfo) as TextView
         )
-        holder.imgView.setDefaultImageResId(R.drawable.default_poster)
+        //holder.imgView.setDefaultImageResId(R.drawable.default_poster)
         convertView.tag = holder
         return holder
     }
@@ -57,7 +54,6 @@ class MovieAdapter(private val ctx: Context, private val resource: Int, private 
 class ViewHolder(
         val imgView: NetworkImageView,
         val movieTitle: TextView,
-        val extraInfo: TextView,
-        var id : Int
+        val extraInfo: TextView
 )
 

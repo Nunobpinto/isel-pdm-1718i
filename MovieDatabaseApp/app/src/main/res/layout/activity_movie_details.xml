@@ -28,7 +28,7 @@
 
     <TextView
         android:id="@+id/movieTitleView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="20dp"
@@ -62,7 +62,7 @@
 
     <TextView
         android:id="@+id/genresView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -72,8 +72,8 @@
 
     <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/posterView"
-        android:layout_width="160dp"
-        android:layout_height="218dp"
+        android:layout_width="150dp"
+        android:layout_height="205dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="44dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -82,9 +82,9 @@
 
     <TextView
         android:id="@+id/overviewView"
-        android:layout_width="184dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="25dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="44dp"
         android:text="Overview"
