@@ -15,13 +15,20 @@ class MovieDetailsActivity : BaseLayoutActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        posterView.setDefaultImageResId(R.drawable.default_poster)
         val intent = intent
         val movie : MovieDto = intent.getParcelableExtra("movie")
 
-        title_value.text = movie.title
-        overview_value.text = movie.overview
-        rating_value.text = movie.voteAverage.toString()
-        posterImageView.setImageUrl(urlBuilder(movie.poster!!), (application as MovieApplication).imageLoader)
+        movieTitleView.text = movie.title
+        overviewView.text = movie.overview
+        rateView.text = movie.voteAverage.toString() + "/10"
+        if ( movie.poster != null )
+            posterView.setImageUrl(urlBuilder(movie.poster), (application as MovieApplication).imageLoader)
+        releaseDateView.text = movie.releaseDate
+        runtimeView.text = movie.runtime.toString() + "min"
+        if ( movie.genres != null )
+            genresView.text = movie.genres.map { it.name }.joinToString(", ")
     }
 
 
