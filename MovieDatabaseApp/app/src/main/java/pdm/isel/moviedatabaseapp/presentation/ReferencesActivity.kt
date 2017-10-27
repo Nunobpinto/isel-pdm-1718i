@@ -16,9 +16,24 @@ class ReferencesActivity : BaseLayoutActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         my_toolbar.title = resources.getString(R.string.references)
-        link.setOnClickListener{
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.themoviedb.org/"))
-            startActivity(intent)
+        tmdb_logo.setOnClickListener {
+            val url = Uri.parse("https://www.themoviedb.org/")
+            startActivity(Intent(Intent.ACTION_VIEW, url))
+        }
+
+        nuno_github.setOnClickListener {
+            val url = Uri.parse(resources.getString(R.string.github_nuno))
+            startActivity(Intent(Intent.ACTION_VIEW, url))
+        }
+
+        gameiro_github.setOnClickListener {
+            val url = Uri.parse(resources.getString(R.string.github_gameiro))
+            startActivity(Intent(Intent.ACTION_VIEW, url))
+        }
+
+        bruno_github.setOnClickListener {
+            val url = Uri.parse(resources.getString(R.string.github_bruno))
+            startActivity(Intent(Intent.ACTION_VIEW, url))
         }
     }
 

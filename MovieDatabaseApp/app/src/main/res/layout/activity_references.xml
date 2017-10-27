@@ -25,72 +25,137 @@
         app:layout_constraintHorizontal_bias="0.0">
     </android.support.v7.widget.Toolbar>
 
-    <TextView
-        android:id="@+id/first_author"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="> Bruno Filipe, 41484"
-        android:layout_marginStart="16dp"
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintBottom_creator="1"
-        app:layout_constraintBottom_toTopOf="@+id/ref"
-        android:layout_marginTop="153dp"
-        tools:layout_constraintLeft_creator="1"
-        android:layout_marginBottom="153dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="16dp" />
-
-    <TextView
-        android:id="@+id/second_author"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="> Nuno Pinto, 41529"
-        android:textSize="14sp"
-        android:layout_marginStart="16dp"
-        tools:layout_constraintTop_creator="1"
-        android:layout_marginTop="19dp"
-        app:layout_constraintTop_toBottomOf="@+id/first_author"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="16dp" />
-
-    <TextView
-        android:id="@+id/third_autor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="> João Gameiro, 41893"
-        android:layout_marginStart="16dp"
-        tools:layout_constraintTop_creator="1"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/second_author"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="16dp" />
-    <TextView
-        android:id="@+id/ref"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:text="@string/ref"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintBottom_creator="1"
+    <ImageView
+        android:id="@+id/tmdb_logo"
+        android:layout_width="211dp"
+        android:layout_height="71dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="28dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_constraintLeft_creator="1"
-        android:layout_marginBottom="140dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/powered_by_rectangle_green" />
+
+    <ImageView
+        android:id="@+id/nuno_image"
+        android:layout_width="124dp"
+        android:layout_height="122dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/dev1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/my_toolbar"
+        tools:src="@drawable/dev1" />
 
     <TextView
-        android:id="@+id/link"
-        android:layout_width="wrap_content"
+        android:id="@+id/nuno_name"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text='"https://www.themoviedb.org/"'
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintRight_creator="1"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="31dp"
-        app:layout_constraintTop_toBottomOf="@+id/ref"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Nuno Pinto"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/nuno_image"
+        app:layout_constraintTop_toTopOf="@+id/nuno_image" />
+
+    <ImageView
+        android:id="@+id/gameiro_image"
+        android:layout_width="124dp"
+        android:layout_height="122dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/dev2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nuno_image"
+        tools:src="@drawable/dev2" />
+
+    <TextView
+        android:id="@+id/gameiro_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="João Gameiro"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/gameiro_image"
+        app:layout_constraintTop_toTopOf="@+id/gameiro_image" />
+
+    <ImageView
+        android:id="@+id/bruno_image"
+        android:layout_width="124dp"
+        android:layout_height="122dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/dev3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gameiro_image"
+        tools:src="@drawable/dev3" />
+
+    <TextView
+        android:id="@+id/bruno_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Bruno Filipe"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/bruno_image"
+        app:layout_constraintTop_toTopOf="@+id/bruno_image" />
+
+    <ImageView
+        android:id="@+id/nuno_github"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toEndOf="@+id/nuno_image"
+        app:layout_constraintTop_toBottomOf="@+id/nuno_name"
+        app:srcCompat="@drawable/github_logo" />
+
+    <ImageView
+        android:id="@+id/gameiro_github"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toEndOf="@+id/gameiro_image"
+        app:layout_constraintTop_toBottomOf="@+id/gameiro_name"
+        app:srcCompat="@drawable/github_logo" />
+
+    <ImageView
+        android:id="@+id/bruno_github"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/bruno_image"
+        app:layout_constraintTop_toBottomOf="@+id/bruno_name"
+        app:srcCompat="@drawable/github_logo" />
 
 </android.support.constraint.ConstraintLayout>
