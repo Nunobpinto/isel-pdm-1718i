@@ -3,6 +3,7 @@ package pdm.isel.moviedatabaseapp.presentation
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import kotlinx.android.synthetic.main.activity_movie_details.*
 import pdm.isel.moviedatabaseapp.MovieApplication
 import pdm.isel.moviedatabaseapp.R
@@ -15,7 +16,8 @@ class MovieDetailsActivity : BaseLayoutActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        my_toolbar.setNavigationIcon(R.drawable.ic_keyboard_backspace_black_24dp)
+        my_toolbar.setNavigationOnClickListener( { onBackPressed() })
         posterView.setDefaultImageResId(R.drawable.default_poster)
         val intent = intent
         val movie : MovieDto = intent.getParcelableExtra("movie")
