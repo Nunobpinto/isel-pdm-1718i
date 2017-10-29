@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">MovieDatabaseApp</string>
+    <string name="app_name" translatable="false">YAMA</string>
     <string name="search_title" translatable="false">Search TMDb</string>
     <string name="nowPlayingButton">Now Playing</string>
     <string name="searchButton">Search</string>
