@@ -24,13 +24,19 @@ class HomeActivity : BaseLayoutActivity() {
         searchButton.setOnClickListener({
             progressBar.visibility = View.VISIBLE
             val query: String = inputEditText.text.toString().replace(" ", "+")
-            (application as MovieApplication).let {
-                it.service.getMoviesByName(
-                        query,
-                        application,
-                        {movie -> startActivity(createIntent(Intent(this, MovieListActivity::class.java), movie, resources.getString(R.string.searchResults)))},
-                        {volleyError -> generateErrorWarning(volleyError)})
+            if(query == ""){
+                Toast.makeText(this, R.string.non_query, Toast.LENGTH_LONG).show()
             }
+            else{
+                (application as MovieApplication).let {
+                    it.service.getMoviesByName(
+                            query,
+                            application,
+                            {movie -> startActivity(createIntent(Intent(this, MovieListActivity::class.java), movie, resources.getString(R.string.searchResults)))},
+                            {volleyError -> generateErrorWarning(volleyError)})
+                }
+            }
+
         })
 
         nowPlayingButton.setOnClickListener({
