@@ -34,10 +34,8 @@ class MovieAdapter(private val ctx: Context, private val resource: Int, private 
         return rowView
     }
 
-
-
     private fun urlBuilder(item: MovieDto): String? =
-            if( item.poster == null ) item.value else "http://image.tmdb.org/t/p/w185/${item.poster}?$"
+            if( item.poster == null ) null else "http://image.tmdb.org/t/p/w185/${item.poster}?$"
 
     private fun fillHolder(convertView: View): ViewHolder {
         val holder = ViewHolder(
@@ -45,7 +43,7 @@ class MovieAdapter(private val ctx: Context, private val resource: Int, private 
                 convertView.findViewById(R.id.movieTitle) as TextView,
                 convertView.findViewById(R.id.extraInfo) as TextView
         )
-        //holder.imgView.setDefaultImageResId(R.drawable.default_poster)
+        holder.imgView.setDefaultImageResId(R.drawable.default_poster)
         convertView.tag = holder
         return holder
     }

@@ -57,10 +57,6 @@ data class MovieDto(
         val genres: Array<Genres>?
 ) : Parcelable {
 
-        val value = poster
-                get(): String? {
-                        return field?: "https://cdn.amctheatres.com/Media/Default/Images/noposter.jpg"
-                }
         constructor(parcel: Parcel) : this(
                 parcel.readInt(),
                 parcel.readString(),
