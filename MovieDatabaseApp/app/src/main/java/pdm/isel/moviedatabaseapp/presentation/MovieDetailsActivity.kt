@@ -3,7 +3,6 @@ package pdm.isel.moviedatabaseapp.presentation
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import kotlinx.android.synthetic.main.activity_movie_details.*
 import pdm.isel.moviedatabaseapp.MovieApplication
 import pdm.isel.moviedatabaseapp.R
@@ -24,7 +23,7 @@ class MovieDetailsActivity : BaseLayoutActivity() {
 
         movieTitleView.text = movie.title
         overviewView.text = movie.overview
-        rateView.text = movie.voteAverage.toString() + "/10"
+        ratingView.text = movie.voteAverage.toString() + "/10"
         if ( movie.poster != null )
             posterView.setImageUrl(urlBuilder(movie.poster), (application as MovieApplication).imageLoader)
         releaseDateView.text = movie.releaseDate

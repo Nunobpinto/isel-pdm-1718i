@@ -28,7 +28,7 @@ class MovieListActivity : BaseLayoutActivity() {
         this.my_toolbar.title = toolbarText
 
 
-        val movieAdapter = MovieAdapter(this, R.layout.movie_list_entry_layout, movieList.results, (application as MovieApplication))
+        val movieAdapter = MovieAdapter(this, R.layout.movie_list_entry_layout, movieList.results, (application as MovieApplication).imageLoader)
 
         movieListView.adapter = movieAdapter
         movieListView.emptyView = empty

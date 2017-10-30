@@ -6,12 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import com.android.volley.toolbox.ImageLoader
 import com.android.volley.toolbox.NetworkImageView
-import pdm.isel.moviedatabaseapp.MovieApplication
 import pdm.isel.moviedatabaseapp.R
 import pdm.isel.moviedatabaseapp.model.MovieDto
 
-class MovieAdapter(private val ctx: Context, private val resource: Int, private val items: Array<MovieDto>, private val app: MovieApplication)
+class MovieAdapter(private val ctx: Context, private val resource: Int, private val items: Array<MovieDto>, private val imageLoader: ImageLoader)
     : ArrayAdapter<MovieDto>(ctx, resource, items) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
@@ -19,7 +19,7 @@ class MovieAdapter(private val ctx: Context, private val resource: Int, private 
         val rowView: View
         if ( convertView == null )  {
             val inflater: LayoutInflater = ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            rowView = inflater.inflate(R.layout.movie_list_entry_layout, parent, false)
+            rowView = inflater.inflate(resource, parent, false)
             holder = fillHolder(rowView)
         }
         else {
@@ -30,7 +30,7 @@ class MovieAdapter(private val ctx: Context, private val resource: Int, private 
         val item = items[position]
         holder.extraInfo.text = String.format("(%.1f/10) %s ", item.voteAverage, item.releaseDate)
         holder.movieTitle.text = item.title
-        holder.imgView.setImageUrl(urlBuilder(item), app.imageLoader)
+        holder.imgView.setImageUrl(urlBuilder(item), imageLoader)
         return rowView
     }
 

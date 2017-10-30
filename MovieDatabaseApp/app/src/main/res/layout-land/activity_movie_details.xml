@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_movie_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    tools:context="pdm.isel.moviedatabaseapp.presentation.MovieDetailsActivity"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="81dp">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
@@ -26,27 +27,103 @@
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintTop_creator="1"></android.support.v7.widget.Toolbar>
 
-    <com.android.volley.toolbox.NetworkImageView
-        android:id="@+id/posterView"
-        android:layout_width="196dp"
-        android:layout_height="313dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/my_toolbar"
-        android:layout_marginLeft="18dp"
-        android:layout_marginStart="18dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/default_poster" />
+
+    <TextView
+        android:id="@+id/runtimeView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/movieTitleView"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_toLeftOf="@+id/releaseDateView"
+        android:layout_toStartOf="@+id/releaseDateView"
+        android:text="Runtime"
+        app:layout_constraintStart_toEndOf="@+id/releaseDateView"
+        app:layout_constraintTop_toBottomOf="@+id/movieTitleView" />
+
+    <TextView
+        android:id="@+id/releaseDateView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/runtimeView"
+        android:layout_alignBottom="@+id/runtimeView"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Date"
+        app:layout_constraintStart_toEndOf="@+id/posterView"
+        app:layout_constraintTop_toBottomOf="@+id/movieTitleView" />
+
+    <TextView
+        android:id="@+id/movieTitleView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="title"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/posterView"
+        app:layout_constraintTop_toBottomOf="@+id/my_toolbar" />
+
+    <TextView
+        android:id="@+id/genresView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/runtimeView"
+        android:layout_alignBottom="@+id/runtimeView"
+        android:layout_alignLeft="@+id/movieTitleView"
+        android:layout_alignStart="@+id/movieTitleView"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="genres"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/runtimeView"
+        app:layout_constraintTop_toBottomOf="@+id/movieTitleView" />
+
+    <TextView
+        android:id="@+id/ratingView"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_alignTop="@+id/starRating"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="4dp"
+        android:layout_toEndOf="@+id/starRating"
+        android:layout_toRightOf="@+id/starRating"
+        android:text="Rate"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/starRating" />
+
+    <ImageView
+        android:id="@+id/starRating"
+        android:layout_width="18dp"
+        android:layout_height="21dp"
+        android:layout_alignLeft="@+id/posterView"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/posterView"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/ratingView"
+        app:layout_constraintStart_toStartOf="@+id/posterView"
+        app:layout_constraintTop_toTopOf="@+id/ratingView"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/rating_star" />
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/my_toolbar"
+        android:layout_marginEnd="8dp"
         android:layout_toEndOf="@+id/posterView"
-        android:layout_toRightOf="@+id/posterView">
+        android:layout_toRightOf="@+id/posterView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/posterView"
+        app:layout_constraintTop_toBottomOf="@+id/genresView">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/constraintLayout"
@@ -58,107 +135,34 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/movieTitleView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:text="title"
-                android:textSize="30sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/releaseDateView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/runtimeView"
-                android:layout_alignBottom="@+id/runtimeView"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginStart="8dp"
-                android:text="Date"
-                app:layout_constraintStart_toEndOf="@+id/runtimeView"
-                app:layout_constraintTop_toBottomOf="@+id/movieTitleView"
-                android:layout_marginLeft="8dp" />
-
-            <TextView
-                android:id="@+id/runtimeView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/movieTitleView"
-                android:layout_marginStart="8dp"
-                android:layout_toLeftOf="@+id/releaseDateView"
-                android:layout_toStartOf="@+id/releaseDateView"
-                android:text="Runtime"
-                app:layout_constraintStart_toEndOf="@+id/genresView"
-                app:layout_constraintTop_toTopOf="@+id/genresView"
-                android:layout_marginLeft="8dp" />
-
-            <TextView
                 android:id="@+id/overviewView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/genresView"
-                android:layout_alignStart="@+id/genresView"
-                android:layout_below="@+id/runtimeView"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
                 android:text="overview"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/genresView"
-                app:layout_constraintVertical_bias="0.0" />
-
-            <TextView
-                android:id="@+id/genresView"
-                android:layout_width="wrap_content"
-                android:layout_height="18dp"
-                android:layout_alignBaseline="@+id/runtimeView"
-                android:layout_alignBottom="@+id/runtimeView"
-                android:layout_alignLeft="@+id/movieTitleView"
-                android:layout_alignStart="@+id/movieTitleView"
-                android:layout_marginStart="8dp"
-                android:text="genres"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/movieTitleView"
-                android:layout_marginLeft="8dp" />
-
-            <TextView
-                android:id="@+id/rateView"
-                android:layout_width="302dp"
-                android:layout_height="25dp"
-                android:layout_alignBottom="@+id/starView"
-                android:layout_alignEnd="@+id/runtimeView"
-                android:layout_alignRight="@+id/runtimeView"
-                android:layout_marginBottom="36dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:text="Rate"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/starView"
-                app:layout_constraintTop_toBottomOf="@+id/overviewView" />
+                app:layout_constraintStart_toStartOf="parent" />
 
-            <ImageView
-                android:id="@+id/starView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/overviewView"
-                android:layout_alignStart="@+id/overviewView"
-                android:layout_below="@+id/overviewView"
-                android:layout_marginBottom="36dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/overviewView"
-                app:srcCompat="@android:drawable/star_off"
-                android:layout_marginLeft="8dp" />
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
-</RelativeLayout>
+
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/posterView"
+        android:layout_width="190dp"
+        android:layout_height="0dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/my_toolbar"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/ratingView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/my_toolbar"
+        app:srcCompat="@drawable/default_poster" />
+</android.support.constraint.ConstraintLayout>
