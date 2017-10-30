@@ -18,4 +18,5 @@
     <string name="github_bruno" translatable="false">https://github.com/brunofilipe</string>
     <string name="github_gameiro" translatable="false">https://github.com/JpmGameiro</string>
     <string name="noResultsFound">No Results Found</string>
+    <string name="non_query">You did not enter a name for a movie</string>
 </resources>

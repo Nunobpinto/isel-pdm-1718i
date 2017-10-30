@@ -16,6 +16,5 @@
     <string name="mostPopularMoviesList">Mais Populares</string>
     <string name="language">pt-PT</string>
     <string name="noResultsFound">Pesquisa Sem Resultados</string>
-
-
+    <string name="non_query">Introduza o nome do filme!</string>
 </resources>
