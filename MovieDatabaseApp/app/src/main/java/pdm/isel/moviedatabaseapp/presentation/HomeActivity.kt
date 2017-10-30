@@ -25,6 +25,7 @@ class HomeActivity : BaseLayoutActivity() {
             progressBar.visibility = View.VISIBLE
             val query: String = inputEditText.text.toString().replace(" ", "+")
             if(query == ""){
+                progressBar.visibility = View.INVISIBLE
                 Toast.makeText(this, R.string.non_query, Toast.LENGTH_LONG).show()
             }
             else{

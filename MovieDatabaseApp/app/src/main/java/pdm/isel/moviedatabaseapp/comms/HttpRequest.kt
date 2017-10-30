@@ -15,7 +15,7 @@ data class HttpRequest <T>(val urlPath: String, private val klass: Class<T>, val
     private val mapper : ObjectMapper = jacksonObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
     override fun parseNetworkResponse(response: NetworkResponse?): Response<T> {
-        return try {
+        try {
             val json = String(
                     response?.data!!,
                     Charset.forName(HttpHeaderParser.parseCharset(response.headers))
