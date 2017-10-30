@@ -31,6 +31,7 @@ class MovieListActivity : BaseLayoutActivity() {
         val movieAdapter = MovieAdapter(this, R.layout.movie_list_entry_layout, movieList.results, (application as MovieApplication))
 
         movieListView.adapter = movieAdapter
+        movieListView.emptyView = empty
 
         movieListView.setOnItemClickListener { parent, view, position, id ->
             run {

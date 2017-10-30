@@ -17,4 +17,5 @@
     <string name="github_nuno" translatable="false">https://github.com/Nunobpinto</string>
     <string name="github_bruno" translatable="false">https://github.com/brunofilipe</string>
     <string name="github_gameiro" translatable="false">https://github.com/JpmGameiro</string>
+    <string name="noResultsFound">No Results Found</string>
 </resources>
