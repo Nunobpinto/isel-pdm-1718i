@@ -22,7 +22,7 @@ class StartActivity : BaseLayoutActivity() {
         val handler = Handler()
         handler.postDelayed( {
             startActivity(Intent(this,HomeActivity::class.java))
-        }, 1000)
+        }, 2000)
 
     }
 }
