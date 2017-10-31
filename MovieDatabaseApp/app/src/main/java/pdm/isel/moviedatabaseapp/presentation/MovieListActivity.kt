@@ -24,7 +24,7 @@ class MovieListActivity : BaseLayoutActivity() {
         val toolbarText: String = intent.getStringExtra("toolbarText")
 
         if (movieList.dates != null )
-            this.my_toolbar.subtitle = "From " + movieList.dates.minimum + " to " + movieList.dates.maximum
+            this.my_toolbar.subtitle = resources.getString(R.string.from) + " " + movieList.dates.minimum + " " +  resources.getString(R.string.to) + " " + movieList.dates.maximum
         this.my_toolbar.title = toolbarText
 
 

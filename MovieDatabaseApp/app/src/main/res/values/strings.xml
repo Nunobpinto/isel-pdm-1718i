@@ -19,4 +19,6 @@
     <string name="github_gameiro" translatable="false">https://github.com/JpmGameiro</string>
     <string name="noResultsFound">No Results Found</string>
     <string name="non_query">You did not enter a name for a movie</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
 </resources>

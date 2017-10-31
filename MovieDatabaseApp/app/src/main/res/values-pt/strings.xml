@@ -17,4 +17,6 @@
     <string name="language">pt-PT</string>
     <string name="noResultsFound">Pesquisa Sem Resultados</string>
     <string name="non_query">Introduza o nome do filme!</string>
+    <string name="from">De</string>
+    <string name="to">Até</string>
 </resources>
