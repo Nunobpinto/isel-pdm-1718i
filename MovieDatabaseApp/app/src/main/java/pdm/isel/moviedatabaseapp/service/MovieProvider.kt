@@ -12,5 +12,6 @@ interface MovieProvider {
     fun getMovieDetails(id:Int, ctx:Context, successCb: (MovieDto)->Unit, errorCb: (VolleyError)->Unit )
     fun getMostPopularMovies(ctx: Context, successCb: (MovieListDto)->Unit, errorCb: (VolleyError)->Unit)
     fun getUpComingMovies(ctx:Context, successCb: (MovieListDto)->Unit, errorCb: (VolleyError)->Unit)
+    fun getSimilarMovies(id: Int, ctx: Context, successCb: (MovieListDto) -> Unit, errorCb: (VolleyError) -> Unit)
 
 }

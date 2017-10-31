@@ -3,6 +3,7 @@ package pdm.isel.moviedatabaseapp.presentation
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import com.android.volley.VolleyError
 import kotlinx.android.synthetic.main.activity_movie_list.*
 import pdm.isel.moviedatabaseapp.view.MovieAdapter
@@ -40,8 +41,8 @@ class MovieListActivity : BaseLayoutActivity() {
                     it.service.getMovieDetails(
                             movie.id,
                             application,
-                            {movie->startActivity(createIntent(Intent(this, MovieDetailsActivity::class.java), movie, "Details of " + movie.title))},
-                            {VolleyError()})
+                            {movie->requestSimilarMovies(movie)},
+                            {generateErrorWarning(VolleyError())})
                 }
 
             }
@@ -54,6 +55,20 @@ class MovieListActivity : BaseLayoutActivity() {
         return intent
     }
 
+    private fun requestSimilarMovies(movie: MovieDto){
+        (application as MovieApplication).let {
+            it.service.getSimilarMovies(
+                    movie.id,
+                    application,
+                    {movies ->
+                            movie.similar = movies.results
+                            startActivity(createIntent(Intent(this, MovieDetailsActivity::class.java), movie, "Details of " + movie.title))
+                    },
+                    {generateErrorWarning(VolleyError())}
+            )
+        }
+    }
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         var intent : Intent?=null
         when(item?.itemId){
@@ -64,5 +79,8 @@ class MovieListActivity : BaseLayoutActivity() {
         return true
     }
 
+    private fun generateErrorWarning(volleyError: VolleyError) {
+        Toast.makeText(this,R.string.errorInfo, Toast.LENGTH_LONG).show()
+    }
 
 }

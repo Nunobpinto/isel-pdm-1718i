@@ -18,8 +18,8 @@ class MovieListDto(
                 parcel.readValue(Int::class.java.classLoader) as? Int,
                 parcel.readValue(Int::class.java.classLoader) as? Int,
                 parcel.createTypedArray(MovieDto),
-                parcel.readParcelable(MyDate::class.java.classLoader)) {
-        }
+                parcel.readParcelable(MyDate::class.java.classLoader)
+        )
 
         override fun writeToParcel(parcel: Parcel, flags: Int) {
                 parcel.writeValue(page)
@@ -54,7 +54,8 @@ data class MovieDto(
         val voteAverage: Float?,
         val overview: String?,
         val popularity: Float?,
-        val genres: Array<Genres>?
+        val genres: Array<Genres>?,
+        var similar : Array<MovieDto>?
 ) : Parcelable {
 
         constructor(parcel: Parcel) : this(
@@ -66,8 +67,8 @@ data class MovieDto(
                 parcel.readValue(Float::class.java.classLoader) as? Float,
                 parcel.readString(),
                 parcel.readValue(Float::class.java.classLoader) as? Float,
-                parcel.createTypedArray(Genres)) {
-        }
+                parcel.createTypedArray(Genres),
+                parcel.createTypedArray(MovieDto))
 
         override fun writeToParcel(parcel: Parcel, flags: Int) {
                 parcel.writeInt(id)
@@ -79,6 +80,7 @@ data class MovieDto(
                 parcel.writeString(overview)
                 parcel.writeValue(popularity)
                 parcel.writeTypedArray(genres, flags)
+                parcel.writeTypedArray(similar,flags)
         }
 
         override fun describeContents() = 0
@@ -93,8 +95,7 @@ data class MovieDto(
 data class MyDate(val maximum: String?, val minimum: String?) : Parcelable {
         constructor(parcel: Parcel) : this(
                 parcel.readString(),
-                parcel.readString()) {
-        }
+                parcel.readString())
 
         override fun writeToParcel(parcel: Parcel, flags: Int) {
                 parcel.writeString(maximum)

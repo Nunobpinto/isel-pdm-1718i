@@ -15,6 +15,7 @@ class MovieTMDBService (apikey:String, lang:String): MovieProvider {
     private val NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=$API_KEY&language=" + lang + "&page=1"
     private val UPCOMING_URL = "https://api.themoviedb.org/3/movie/upcoming?api_key=$API_KEY&language=" + lang + "&page=1"
     private val MOST_POPULAR_URL = "https://api.themoviedb.org/3/movie/popular?api_key=$API_KEY&language=" + lang + "&page=1"
+    private val SIMILAR_MOVIES_URL = "https://api.themoviedb.org/3/movie/%d/similar?api_key=$API_KEY&language=" + lang
 
     override fun getUpComingMovies(ctx: Context, successCb: (MovieListDto) -> Unit, errorCb:(VolleyError)-> Unit) {
         if(!isConnected(ctx))
@@ -76,7 +77,21 @@ class MovieTMDBService (apikey:String, lang:String): MovieProvider {
         )
         (ctx as MovieApplication).requestQueue.add(req)
     }
-    
+
+    override fun getSimilarMovies(id: Int, ctx: Context, successCb: (MovieListDto) -> Unit, errorCb:(VolleyError)-> Unit) {
+        if(!isConnected(ctx))
+            return errorCb(VolleyError())
+        val uri = java.lang.String.format(SIMILAR_MOVIES_URL, id)
+        val req = HttpRequest(
+                uri,
+                MovieListDto::class.java,
+                successCb,
+                errorCb
+        )
+        (ctx as MovieApplication).requestQueue.add(req)
+    }
+
+
     private fun isConnected(context: Context): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetworkInfo = connectivityManager.activeNetworkInfo
