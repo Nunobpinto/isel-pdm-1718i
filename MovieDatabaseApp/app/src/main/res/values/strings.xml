@@ -21,4 +21,5 @@
     <string name="non_query">You did not enter a name for a movie</string>
     <string name="from">From</string>
     <string name="to">To</string>
+    <string name="errorInfo">Error Getting Information</string>
 </resources>

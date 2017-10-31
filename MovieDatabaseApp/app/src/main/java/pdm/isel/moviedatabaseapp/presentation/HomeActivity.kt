@@ -93,6 +93,6 @@ class HomeActivity : BaseLayoutActivity() {
 
     private fun generateErrorWarning(volleyError: VolleyError) {
         progressBar.visibility = View.INVISIBLE
-        Toast.makeText(this,"Error getting information", Toast.LENGTH_LONG).show()
+        Toast.makeText(this,R.string.errorInfo, Toast.LENGTH_LONG).show()
     }
 }
