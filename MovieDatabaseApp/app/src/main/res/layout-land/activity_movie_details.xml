@@ -113,7 +113,7 @@
 
     <ScrollView
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="244dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/my_toolbar"
@@ -122,8 +122,10 @@
         android:layout_toRightOf="@+id/posterView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/posterView"
-        app:layout_constraintTop_toBottomOf="@+id/genresView">
+        app:layout_constraintTop_toBottomOf="@+id/genresView"
+        app:layout_constraintVertical_bias="0.55">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/constraintLayout"
