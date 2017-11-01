@@ -14,7 +14,7 @@ import pdm.isel.moviedatabaseapp.model.MovieListDto
 class HomeActivity : BaseLayoutActivity() {
     override val toolbar: Int? = R.id.my_toolbar
     override val menu: Int? = R.menu.menu
-    override  val layout : Int = R.layout.activity_home
+    override val layout: Int = R.layout.activity_home
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,17 +24,16 @@ class HomeActivity : BaseLayoutActivity() {
         searchButton.setOnClickListener({
             progressBar.visibility = View.VISIBLE
             val query: String = inputEditText.text.toString().replace(" ", "+")
-            if(query == ""){
+            if (query == "") {
                 progressBar.visibility = View.INVISIBLE
                 Toast.makeText(this, R.string.non_query, Toast.LENGTH_LONG).show()
-            }
-            else{
+            } else {
                 (application as MovieApplication).let {
                     it.service.getMoviesByName(
                             query,
                             application,
-                            {movie -> startActivity(createIntent(Intent(this, MovieListActivity::class.java), movie, resources.getString(R.string.searchResults)))},
-                            {volleyError -> generateErrorWarning(volleyError)})
+                            { movie -> startActivity(createIntent(Intent(this, MovieListActivity::class.java), movie, resources.getString(R.string.searchResults))) },
+                            { volleyError -> generateErrorWarning(volleyError) })
                 }
             }
 
@@ -45,8 +44,8 @@ class HomeActivity : BaseLayoutActivity() {
             (application as MovieApplication).let {
                 it.service.getNowPlayingMovies(
                         application,
-                        {movies->startActivity(createIntent(Intent(this, MovieListActivity::class.java), movies, resources.getString(R.string.moviesNowPlaying)))},
-                        {volleyError -> generateErrorWarning(volleyError)})
+                        { movies -> startActivity(createIntent(Intent(this, MovieListActivity::class.java), movies, resources.getString(R.string.moviesNowPlaying))) },
+                        { volleyError -> generateErrorWarning(volleyError) })
             }
         })
 
@@ -55,8 +54,8 @@ class HomeActivity : BaseLayoutActivity() {
             (application as MovieApplication).let {
                 it.service.getUpComingMovies(
                         application,
-                        {movies->startActivity(createIntent(Intent(this, MovieListActivity::class.java), movies, resources.getString(R.string.upcomingMoviesList)))},
-                        {volleyError -> generateErrorWarning(volleyError)})
+                        { movies -> startActivity(createIntent(Intent(this, MovieListActivity::class.java), movies, resources.getString(R.string.upcomingMoviesList))) },
+                        { volleyError -> generateErrorWarning(volleyError) })
             }
         })
 
@@ -65,8 +64,8 @@ class HomeActivity : BaseLayoutActivity() {
             (application as MovieApplication).let {
                 it.service.getMostPopularMovies(
                         application,
-                        {movies->startActivity(createIntent(Intent(this, MovieListActivity::class.java),movies, resources.getString(R.string.mostPopularMoviesList)))},
-                        {volleyError -> generateErrorWarning(volleyError)})
+                        { movies -> startActivity(createIntent(Intent(this, MovieListActivity::class.java), movies, resources.getString(R.string.mostPopularMoviesList))) },
+                        { volleyError -> generateErrorWarning(volleyError) })
             }
         })
     }
@@ -79,11 +78,11 @@ class HomeActivity : BaseLayoutActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        var intent : Intent?=null
-        when(item?.itemId){
-            R.id.action_about -> intent = Intent(this,ReferencesActivity::class.java)
+        var intent: Intent? = null
+        when (item?.itemId) {
+            R.id.action_about -> intent = Intent(this, ReferencesActivity::class.java)
             R.id.action_home -> {
-                intent = Intent(this,HomeActivity::class.java)
+                intent = Intent(this, HomeActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
             }
         }
@@ -93,6 +92,6 @@ class HomeActivity : BaseLayoutActivity() {
 
     private fun generateErrorWarning(volleyError: VolleyError) {
         progressBar.visibility = View.INVISIBLE
-        Toast.makeText(this,R.string.errorInfo, Toast.LENGTH_LONG).show()
+        Toast.makeText(this, R.string.errorInfo, Toast.LENGTH_LONG).show()
     }
 }

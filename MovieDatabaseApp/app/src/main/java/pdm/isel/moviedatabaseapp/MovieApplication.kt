@@ -12,10 +12,11 @@ import java.io.InputStreamReader
 
 class MovieApplication : Application() {
     @Volatile lateinit var requestQueue: RequestQueue
-    @Volatile  lateinit var service : MovieProvider
-    @Volatile lateinit var imageLoader : ImageLoader
-    lateinit var lang : String
-    lateinit var apiKey : String
+    @Volatile lateinit var service: MovieProvider
+    @Volatile lateinit var imageLoader: ImageLoader
+    lateinit var lang: String
+    lateinit var apiKey: String
+
     override fun onCreate() {
         super.onCreate()
         apiKey = readAPIKEY()
@@ -26,15 +27,13 @@ class MovieApplication : Application() {
 
     }
 
-    private fun readAPIKEY():String {
-        val ip  = resources.openRawResource(R.raw.api_key)
-        val buffer  = BufferedReader(InputStreamReader(ip))
+    private fun readAPIKEY(): String {
+        val ip = resources.openRawResource(R.raw.api_key)
+        val buffer = BufferedReader(InputStreamReader(ip))
         return buffer.readLine()
     }
 
-    private fun getLanguage() : String {
+    private fun getLanguage(): String {
         return resources.getString(R.string.language)
     }
-
-
 }

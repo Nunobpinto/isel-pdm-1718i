@@ -15,17 +15,17 @@ import pdm.isel.moviedatabaseapp.model.MovieListDto
 class MovieListActivity : BaseLayoutActivity() {
     override val toolbar: Int? = R.id.my_toolbar
     override val menu: Int? = R.menu.menu
-    override  val layout : Int = R.layout.activity_movie_list
+    override val layout: Int = R.layout.activity_movie_list
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val intent = intent
-        val movieList : MovieListDto = intent.getParcelableExtra("results")
+        val movieList: MovieListDto = intent.getParcelableExtra("results")
         val toolbarText: String = intent.getStringExtra("toolbarText")
 
-        if (movieList.dates != null )
-            this.my_toolbar.subtitle = resources.getString(R.string.from) + " " + movieList.dates.minimum + " " +  resources.getString(R.string.to) + " " + movieList.dates.maximum
+        if (movieList.dates != null)
+            this.my_toolbar.subtitle = resources.getString(R.string.from) + " " + movieList.dates.minimum + " " + resources.getString(R.string.to) + " " + movieList.dates.maximum
         this.my_toolbar.title = toolbarText
 
 
@@ -36,13 +36,13 @@ class MovieListActivity : BaseLayoutActivity() {
 
         movieListView.setOnItemClickListener { parent, view, position, id ->
             run {
-                var movie : MovieDto = movieAdapter.getItem(position)
+                var movie: MovieDto = movieAdapter.getItem(position)
                 (application as MovieApplication).let {
                     it.service.getMovieDetails(
                             movie.id,
                             application,
-                            {movie->requestSimilarMovies(movie)},
-                            {generateErrorWarning(VolleyError())})
+                            { movie -> requestSimilarMovies(movie) },
+                            { generateErrorWarning(VolleyError()) })
                 }
 
             }
@@ -55,32 +55,32 @@ class MovieListActivity : BaseLayoutActivity() {
         return intent
     }
 
-    private fun requestSimilarMovies(movie: MovieDto){
+    private fun requestSimilarMovies(movie: MovieDto) {
         (application as MovieApplication).let {
             it.service.getSimilarMovies(
                     movie.id,
                     application,
-                    {movies ->
-                            movie.similar = movies.results
-                            startActivity(createIntent(Intent(this, MovieDetailsActivity::class.java), movie, "Details of " + movie.title))
+                    { movies ->
+                        movie.similar = movies.results
+                        startActivity(createIntent(Intent(this, MovieDetailsActivity::class.java), movie, "Details of " + movie.title))
                     },
-                    {generateErrorWarning(VolleyError())}
+                    { generateErrorWarning(VolleyError()) }
             )
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        var intent : Intent?=null
-        when(item?.itemId){
-            R.id.action_about -> intent = Intent(this,ReferencesActivity::class.java)
-            R.id.action_home -> intent = Intent(this,HomeActivity::class.java)
+        var intent: Intent? = null
+        when (item?.itemId) {
+            R.id.action_about -> intent = Intent(this, ReferencesActivity::class.java)
+            R.id.action_home -> intent = Intent(this, HomeActivity::class.java)
         }
         startActivity(intent!!)
         return true
     }
 
     private fun generateErrorWarning(volleyError: VolleyError) {
-        Toast.makeText(this,R.string.errorInfo, Toast.LENGTH_LONG).show()
+        Toast.makeText(this, R.string.errorInfo, Toast.LENGTH_LONG).show()
     }
 
 }

@@ -17,12 +17,11 @@ class MovieAdapter(private val ctx: Context, private val resource: Int, private 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val holder: ViewHolder
         val rowView: View
-        if ( convertView == null )  {
+        if (convertView == null) {
             val inflater: LayoutInflater = ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             rowView = inflater.inflate(resource, parent, false)
             holder = fillHolder(rowView)
-        }
-        else {
+        } else {
             rowView = convertView
             holder = convertView.tag as ViewHolder
         }
@@ -34,8 +33,7 @@ class MovieAdapter(private val ctx: Context, private val resource: Int, private 
         return rowView
     }
 
-    private fun urlBuilder(item: MovieDto): String? =
-            if( item.poster == null ) null else "http://image.tmdb.org/t/p/w185/${item.poster}?$"
+    private fun urlBuilder(item: MovieDto): String? = if (item.poster == null) null else "http://image.tmdb.org/t/p/w185/${item.poster}?$"
 
     private fun fillHolder(convertView: View): ViewHolder {
         val holder = ViewHolder(
