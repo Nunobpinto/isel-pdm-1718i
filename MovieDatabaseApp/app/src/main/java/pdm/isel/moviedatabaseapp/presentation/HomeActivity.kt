@@ -32,8 +32,10 @@ class HomeActivity : BaseLayoutActivity() {
                     it.service.getMoviesByName(
                             query,
                             application,
-                            { movie -> startActivity(createIntent(Intent(this, MovieListActivity::class.java), movie, resources.getString(R.string.searchResults))) },
-                            { volleyError -> generateErrorWarning(volleyError) })
+                            { movies ->
+                                startActivity(createIntent(Intent(this, MovieListActivity::class.java), movies, resources.getString(R.string.searchResults),"getMoviesByName",query))},
+                            { volleyError -> generateErrorWarning(volleyError) },
+                            1)
                 }
             }
 
@@ -44,8 +46,8 @@ class HomeActivity : BaseLayoutActivity() {
             (application as MovieApplication).let {
                 it.service.getNowPlayingMovies(
                         application,
-                        { movies -> startActivity(createIntent(Intent(this, MovieListActivity::class.java), movies, resources.getString(R.string.moviesNowPlaying))) },
-                        { volleyError -> generateErrorWarning(volleyError) })
+                        { movies -> startActivity(createIntent(Intent(this, MovieListActivity::class.java), movies, resources.getString(R.string.moviesNowPlaying),"getNowPlayingMovies","")) },
+                        { volleyError -> generateErrorWarning(volleyError) },1)
             }
         })
 
@@ -54,8 +56,8 @@ class HomeActivity : BaseLayoutActivity() {
             (application as MovieApplication).let {
                 it.service.getUpComingMovies(
                         application,
-                        { movies -> startActivity(createIntent(Intent(this, MovieListActivity::class.java), movies, resources.getString(R.string.upcomingMoviesList))) },
-                        { volleyError -> generateErrorWarning(volleyError) })
+                        { movies -> startActivity(createIntent(Intent(this, MovieListActivity::class.java), movies, resources.getString(R.string.upcomingMoviesList),"getUpComingMovies","")) },
+                        { volleyError -> generateErrorWarning(volleyError) },1)
             }
         })
 
@@ -64,15 +66,17 @@ class HomeActivity : BaseLayoutActivity() {
             (application as MovieApplication).let {
                 it.service.getMostPopularMovies(
                         application,
-                        { movies -> startActivity(createIntent(Intent(this, MovieListActivity::class.java), movies, resources.getString(R.string.mostPopularMoviesList))) },
-                        { volleyError -> generateErrorWarning(volleyError) })
+                        { movies -> startActivity(createIntent(Intent(this, MovieListActivity::class.java), movies, resources.getString(R.string.mostPopularMoviesList),"getMostPopularMovies","")) },
+                        { volleyError -> generateErrorWarning(volleyError) },1)
             }
         })
     }
 
-    private fun createIntent(intent: Intent, dto: MovieListDto, toolbarText: String): Intent? {
+    private fun createIntent(intent: Intent, dto: MovieListDto, toolbarText: String, method : String, query : String): Intent? {
         intent.putExtra("toolbarText", toolbarText)
         intent.putExtra("results", dto)
+        intent.putExtra("method",method)
+        intent.putExtra("query",query)
         progressBar.visibility = View.INVISIBLE
         return intent
     }

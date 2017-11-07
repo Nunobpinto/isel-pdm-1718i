@@ -11,11 +11,17 @@ import pdm.isel.moviedatabaseapp.MovieApplication
 import pdm.isel.moviedatabaseapp.R
 import pdm.isel.moviedatabaseapp.model.MovieDto
 import pdm.isel.moviedatabaseapp.model.MovieListDto
+import pdm.isel.moviedatabaseapp.providers.MovieTMDBProvider
+import kotlin.reflect.declaredFunctions
 
 class MovieListActivity : BaseLayoutActivity() {
     override val toolbar: Int? = R.id.my_toolbar
     override val menu: Int? = R.menu.menu
     override val layout: Int = R.layout.activity_movie_list
+    var movieAdapter:MovieAdapter? = null
+
+    var function : String = ""
+    var query : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,20 +29,22 @@ class MovieListActivity : BaseLayoutActivity() {
         val intent = intent
         val movieList: MovieListDto = intent.getParcelableExtra("results")
         val toolbarText: String = intent.getStringExtra("toolbarText")
+        function = intent.getStringExtra("method")
+        query = intent.getStringExtra("query")
 
         if (movieList.dates != null)
             this.my_toolbar.subtitle = resources.getString(R.string.from) + " " + movieList.dates.minimum + " " + resources.getString(R.string.to) + " " + movieList.dates.maximum
         this.my_toolbar.title = toolbarText
 
 
-        val movieAdapter = MovieAdapter(this, R.layout.movie_list_entry_layout, movieList.results, (application as MovieApplication).imageLoader)
+        movieAdapter = MovieAdapter(this, R.layout.movie_list_entry_layout, movieList.results.toMutableList(), (application as MovieApplication).imageLoader)
 
         movieListView.adapter = movieAdapter
         movieListView.emptyView = empty
 
         movieListView.setOnItemClickListener { parent, view, position, id ->
             run {
-                var movie: MovieDto = movieAdapter.getItem(position)
+                var movie: MovieDto = movieAdapter!!.getItem(position)
                 (application as MovieApplication).let {
                     it.service.getMovieDetails(
                             movie.id,
@@ -47,6 +55,41 @@ class MovieListActivity : BaseLayoutActivity() {
 
             }
         }
+
+        movieListView.setOnScrollListener(object : EndlessScrollListener(20,movieList.page!!){
+            override fun onLoadMore(page: Int, totalItemsCount: Int): Boolean {
+                loadNextDataFromApi(page)
+                return true
+            }
+        })
+
+    }
+
+    private fun loadNextDataFromApi(page: Int) {
+        val service : MovieTMDBProvider = ((application as MovieApplication).service as MovieTMDBProvider)
+        var arguments:Array<Any>? = null
+        if(function=="getMoviesByName"){
+            arguments = arrayOf(
+                    service,
+                    query,
+                    application,
+                    { movies:MovieListDto -> movies.results.forEach { movieDto -> movieAdapter!!.add(movieDto) }},
+                    {volleyError:VolleyError -> generateErrorWarning(volleyError) },
+                    page
+            )
+        }
+        else {
+            arguments =
+            arrayOf(service,
+                    application,
+                    { movies: MovieListDto -> movies.results.forEach { movieDto -> movieAdapter!!.add(movieDto) } },
+                    { volleyError: VolleyError -> generateErrorWarning(volleyError) },
+                    page
+            )
+        }
+
+        val fn = (application as MovieApplication).service.javaClass.kotlin.declaredFunctions.find { it.name == function }
+        fn!!.call(*arguments)
     }
 
     private fun createIntent(intent: Intent, movie: MovieDto, s: String): Intent? {

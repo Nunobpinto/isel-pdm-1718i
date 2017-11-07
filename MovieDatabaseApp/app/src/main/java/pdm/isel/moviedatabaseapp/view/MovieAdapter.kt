@@ -11,7 +11,7 @@ import com.android.volley.toolbox.NetworkImageView
 import pdm.isel.moviedatabaseapp.R
 import pdm.isel.moviedatabaseapp.model.MovieDto
 
-class MovieAdapter(private val ctx: Context, private val resource: Int, private val items: Array<MovieDto>, private val imageLoader: ImageLoader)
+class MovieAdapter(private val ctx: Context, private val resource: Int, private val items: MutableList<MovieDto>, private val imageLoader: ImageLoader)
     : ArrayAdapter<MovieDto>(ctx, resource, items) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
@@ -32,8 +32,13 @@ class MovieAdapter(private val ctx: Context, private val resource: Int, private 
         holder.imgView.setImageUrl(urlBuilder(item), imageLoader)
         return rowView
     }
-
     private fun urlBuilder(item: MovieDto): String? = if (item.poster == null) null else "http://image.tmdb.org/t/p/w185/${item.poster}?$"
+
+     override fun add(item: MovieDto){
+         items.add(item)
+         notifyDataSetChanged()
+     }
+
 
     private fun fillHolder(convertView: View): ViewHolder {
         val holder = ViewHolder(
