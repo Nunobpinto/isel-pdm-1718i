@@ -5,8 +5,8 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.ImageLoader
 import com.android.volley.toolbox.Volley
 import pdm.isel.moviedatabaseapp.cache.DefaultCache
-import pdm.isel.moviedatabaseapp.service.MovieProvider
-import pdm.isel.moviedatabaseapp.service.MovieTMDBService
+import pdm.isel.moviedatabaseapp.providers.MovieProvider
+import pdm.isel.moviedatabaseapp.providers.MovieTMDBProvider
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
@@ -21,7 +21,7 @@ class MovieApplication : Application() {
         super.onCreate()
         apiKey = readAPIKEY()
         lang = getLanguage()
-        service = MovieTMDBService(apiKey, lang)
+        service = MovieTMDBProvider(apiKey, lang)
         requestQueue = Volley.newRequestQueue(this)
         imageLoader = ImageLoader(requestQueue, DefaultCache())
 
