@@ -25,8 +25,12 @@
         <activity android:name="pdm.isel.moviedatabaseapp.ui.activity.MovieDetailsActivity" />
         <activity android:name="pdm.isel.moviedatabaseapp.ui.activity.MovieListActivity" />
         <activity android:name="pdm.isel.moviedatabaseapp.ui.activity.ReferencesActivity" />
-        <activity android:name="pdm.isel.moviedatabaseapp.ui.activity.BaseLayoutActivity" />
         <activity android:name="pdm.isel.moviedatabaseapp.ui.activity.HomeActivity" />
+        <service
+            android:name=".services.UpdateMovieListsJobService"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>
