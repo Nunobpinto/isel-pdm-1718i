@@ -1,11 +1,11 @@
-package pdm.isel.moviedatabaseapp.providers
+package pdm.isel.moviedatabaseapp.domain.providers
 
 import android.content.Context
 import com.android.volley.VolleyError
 import pdm.isel.moviedatabaseapp.comms.HttpRequest
 import pdm.isel.moviedatabaseapp.MovieApplication
-import pdm.isel.moviedatabaseapp.model.MovieDto
-import pdm.isel.moviedatabaseapp.model.MovieListDto
+import pdm.isel.moviedatabaseapp.domain.model.MovieDto
+import pdm.isel.moviedatabaseapp.domain.model.MovieListDto
 import android.net.ConnectivityManager
 
 class MovieTMDBProvider(apikey: String, lang: String) : MovieProvider {

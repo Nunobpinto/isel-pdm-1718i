@@ -1,4 +1,4 @@
-package pdm.isel.moviedatabaseapp.view
+package pdm.isel.moviedatabaseapp.ui.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import android.widget.TextView
 import com.android.volley.toolbox.ImageLoader
 import com.android.volley.toolbox.NetworkImageView
 import pdm.isel.moviedatabaseapp.R
-import pdm.isel.moviedatabaseapp.model.MovieDto
+import pdm.isel.moviedatabaseapp.domain.model.MovieDto
 
 class MovieAdapter(private val ctx: Context, private val resource: Int, private val items: MutableList<MovieDto>, private val imageLoader: ImageLoader)
     : ArrayAdapter<MovieDto>(ctx, resource, items) {

@@ -5,8 +5,8 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.ImageLoader
 import com.android.volley.toolbox.Volley
 import pdm.isel.moviedatabaseapp.cache.DefaultCache
-import pdm.isel.moviedatabaseapp.providers.MovieProvider
-import pdm.isel.moviedatabaseapp.providers.MovieTMDBProvider
+import pdm.isel.moviedatabaseapp.domain.providers.MovieProvider
+import pdm.isel.moviedatabaseapp.domain.providers.MovieTMDBProvider
 import java.io.BufferedReader
 import java.io.InputStreamReader
 

@@ -1,4 +1,4 @@
-package pdm.isel.moviedatabaseapp.presentation
+package pdm.isel.moviedatabaseapp.ui.activity
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle

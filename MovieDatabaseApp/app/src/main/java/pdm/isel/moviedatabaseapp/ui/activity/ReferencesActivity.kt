@@ -1,4 +1,4 @@
-package pdm.isel.moviedatabaseapp.presentation
+package pdm.isel.moviedatabaseapp.ui.activity
 
 import android.content.Intent
 import android.net.Uri

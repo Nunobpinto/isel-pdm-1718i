@@ -1,4 +1,4 @@
-package pdm.isel.moviedatabaseapp.presentation
+package pdm.isel.moviedatabaseapp.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,12 +6,12 @@ import android.view.MenuItem
 import android.widget.Toast
 import com.android.volley.VolleyError
 import kotlinx.android.synthetic.main.activity_movie_list.*
-import pdm.isel.moviedatabaseapp.view.MovieAdapter
+import pdm.isel.moviedatabaseapp.ui.adapter.MovieAdapter
 import pdm.isel.moviedatabaseapp.MovieApplication
 import pdm.isel.moviedatabaseapp.R
-import pdm.isel.moviedatabaseapp.model.MovieDto
-import pdm.isel.moviedatabaseapp.model.MovieListDto
-import pdm.isel.moviedatabaseapp.providers.MovieTMDBProvider
+import pdm.isel.moviedatabaseapp.domain.model.MovieDto
+import pdm.isel.moviedatabaseapp.domain.model.MovieListDto
+import pdm.isel.moviedatabaseapp.domain.providers.MovieTMDBProvider
 import kotlin.reflect.declaredFunctions
 
 class MovieListActivity : BaseLayoutActivity() {

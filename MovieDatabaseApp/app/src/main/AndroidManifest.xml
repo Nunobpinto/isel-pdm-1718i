@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
-            android:name=".presentation.SplashActivity"
+            android:name="pdm.isel.moviedatabaseapp.ui.activity.SplashActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,11 +22,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.MovieDetailsActivity" />
-        <activity android:name=".presentation.MovieListActivity" />
-        <activity android:name=".presentation.ReferencesActivity" />
-        <activity android:name=".presentation.BaseLayoutActivity" />
-        <activity android:name=".presentation.HomeActivity" />
+        <activity android:name="pdm.isel.moviedatabaseapp.ui.activity.MovieDetailsActivity" />
+        <activity android:name="pdm.isel.moviedatabaseapp.ui.activity.MovieListActivity" />
+        <activity android:name="pdm.isel.moviedatabaseapp.ui.activity.ReferencesActivity" />
+        <activity android:name="pdm.isel.moviedatabaseapp.ui.activity.BaseLayoutActivity" />
+        <activity android:name="pdm.isel.moviedatabaseapp.ui.activity.HomeActivity" />
     </application>
 
 </manifest>
