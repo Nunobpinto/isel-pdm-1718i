@@ -46,7 +46,7 @@ class MovieListActivity : BaseLayoutActivity() {
             run {
                 var movie: MovieDto = movieAdapter!!.getItem(position)
                 (application as MovieApplication).let {
-                    it.service.getMovieDetails(
+                    it.provider.getMovieDetails(
                             movie.id,
                             application,
                             { movie -> requestSimilarMovies(movie) },
@@ -66,7 +66,7 @@ class MovieListActivity : BaseLayoutActivity() {
     }
 
     private fun loadNextDataFromApi(page: Int) {
-        val service : MovieTMDBProvider = ((application as MovieApplication).service as MovieTMDBProvider)
+        val service : MovieTMDBProvider = ((application as MovieApplication).provider as MovieTMDBProvider)
         var arguments:Array<Any>? = null
         if(function=="getMoviesByName"){
             arguments = arrayOf(
@@ -88,7 +88,7 @@ class MovieListActivity : BaseLayoutActivity() {
             )
         }
 
-        val fn = (application as MovieApplication).service.javaClass.kotlin.declaredFunctions.find { it.name == function }
+        val fn = (application as MovieApplication).provider.javaClass.kotlin.declaredFunctions.find { it.name == function }
         fn!!.call(*arguments)
     }
 
@@ -100,7 +100,7 @@ class MovieListActivity : BaseLayoutActivity() {
 
     private fun requestSimilarMovies(movie: MovieDto) {
         (application as MovieApplication).let {
-            it.service.getSimilarMovies(
+            it.provider.getSimilarMovies(
                     movie.id,
                     application,
                     { movies ->

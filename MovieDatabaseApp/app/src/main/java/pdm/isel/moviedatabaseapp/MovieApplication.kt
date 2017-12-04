@@ -11,13 +11,13 @@ import com.android.volley.toolbox.Volley
 import pdm.isel.moviedatabaseapp.cache.DefaultCache
 import pdm.isel.moviedatabaseapp.domain.providers.MovieProvider
 import pdm.isel.moviedatabaseapp.domain.providers.MovieTMDBProvider
-import pdm.isel.moviedatabaseapp.services.UpdateMovieListsJobService
+import pdm.isel.moviedatabaseapp.services.MovieListsJobService
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
 class MovieApplication : Application() {
     @Volatile lateinit var requestQueue: RequestQueue
-    @Volatile lateinit var service: MovieProvider
+    @Volatile lateinit var provider: MovieProvider
     @Volatile lateinit var imageLoader: ImageLoader
     lateinit var lang: String
     lateinit var apiKey: String
@@ -26,16 +26,16 @@ class MovieApplication : Application() {
         super.onCreate()
         apiKey = readAPIKEY()
         lang = getLanguage()
-        service = MovieTMDBProvider(apiKey, lang)
+        provider = MovieTMDBProvider(apiKey, lang)
         requestQueue = Volley.newRequestQueue(this)
         imageLoader = ImageLoader(requestQueue, DefaultCache())
         val builder = JobInfo.Builder(
-                UpdateMovieListsJobService.JOB_ID,
-                ComponentName(this, UpdateMovieListsJobService::class.java)
+                MovieListsJobService.JOB_ID,
+                ComponentName(this, MovieListsJobService::class.java)
         )
         val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
         jobScheduler.schedule(builder
-                .setMinimumLatency()
+                .setMinimumLatency(1000)
                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
                 .build()
         )
@@ -47,7 +47,5 @@ class MovieApplication : Application() {
         return buffer.readLine()
     }
 
-    private fun getLanguage(): String {
-        return resources.getString(R.string.language)
-    }
+    private fun getLanguage(): String = resources.getString(R.string.language)
 }

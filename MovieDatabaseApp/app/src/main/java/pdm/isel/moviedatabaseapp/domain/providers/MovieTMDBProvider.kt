@@ -18,7 +18,7 @@ class MovieTMDBProvider(apikey: String, lang: String) : MovieProvider {
     private val SIMILAR_MOVIES_URL = "https://api.themoviedb.org/3/movie/%d/similar?api_key=$API_KEY&language=" + lang
 
 
-    override fun getUpComingMovies(ctx: Context, successCb: (MovieListDto) -> Unit, errorCb: (VolleyError) -> Unit,page: Int ) {
+    override fun getUpComingMovies(page: Int, ctx: Context, successCb: (MovieListDto) -> Unit, errorCb: (VolleyError) -> Unit) {
         if (!isConnected(ctx))
             return errorCb(VolleyError())
         val url = UPCOMING_URL + page
@@ -31,7 +31,7 @@ class MovieTMDBProvider(apikey: String, lang: String) : MovieProvider {
         (ctx as MovieApplication).let { it.requestQueue.add(req) }
     }
 
-    override fun getMoviesByName(name: String, ctx: Context, successCb: (MovieListDto) -> Unit, errorCb: (VolleyError) -> Unit, page: Int) {
+    override fun getMoviesByName(name: String, page: Int, ctx: Context, successCb: (MovieListDto) -> Unit, errorCb: (VolleyError) -> Unit) {
         if (!isConnected(ctx))
             return errorCb(VolleyError())
         val url = java.lang.String.format(MOVIES_BY_NAME_URL, name) + page
@@ -44,7 +44,7 @@ class MovieTMDBProvider(apikey: String, lang: String) : MovieProvider {
         (ctx as MovieApplication).requestQueue.add(req)
     }
 
-    override fun getNowPlayingMovies(ctx: Context, successCb: (MovieListDto) -> Unit, errorCb: (VolleyError) -> Unit, page: Int) {
+    override fun getNowPlayingMovies(page: Int, ctx: Context, successCb: (MovieListDto) -> Unit, errorCb: (VolleyError) -> Unit) {
         if (!isConnected(ctx))
             return errorCb(VolleyError())
         val url = NOW_PLAYING_URL + page
@@ -70,7 +70,7 @@ class MovieTMDBProvider(apikey: String, lang: String) : MovieProvider {
         (ctx as MovieApplication).requestQueue.add(req)
     }
 
-    override fun getMostPopularMovies(ctx: Context, successCb: (MovieListDto) -> Unit, errorCb: (VolleyError) -> Unit, page: Int) {
+    override fun getMostPopularMovies(page: Int, ctx: Context, successCb: (MovieListDto) -> Unit, errorCb: (VolleyError) -> Unit) {
         if (!isConnected(ctx))
             return errorCb(VolleyError())
         val url =  MOST_POPULAR_URL + page

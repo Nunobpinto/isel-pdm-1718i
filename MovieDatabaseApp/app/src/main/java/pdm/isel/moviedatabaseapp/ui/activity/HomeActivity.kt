@@ -29,54 +29,79 @@ class HomeActivity : BaseLayoutActivity() {
                 Toast.makeText(this, R.string.non_query, Toast.LENGTH_LONG).show()
             } else {
                 (application as MovieApplication).let {
-                    it.service.getMoviesByName(
+                    it.provider.getMoviesByName(
                             query,
+                            1,
                             application,
                             { movies ->
-                                startActivity(createIntent(Intent(this, MovieListActivity::class.java), movies, resources.getString(R.string.searchResults),"getMoviesByName",query))},
-                            { volleyError -> generateErrorWarning(volleyError) },
-                            1)
+                                startActivity(createIntent(
+                                        Intent(this, MovieListActivity::class.java),
+                                        movies,
+                                        resources.getString(R.string.searchResults),
+                                        "getMoviesByName",
+                                        query))
+                            }, { volleyError -> generateErrorWarning(volleyError) })
                 }
             }
 
         })
-
+        //TODO: meter a ir buscar a repositorio local
         nowPlayingButton.setOnClickListener({
             progressBar.visibility = View.VISIBLE
             (application as MovieApplication).let {
-                it.service.getNowPlayingMovies(
+                it.provider.getNowPlayingMovies(
+                        1,
                         application,
-                        { movies -> startActivity(createIntent(Intent(this, MovieListActivity::class.java), movies, resources.getString(R.string.moviesNowPlaying),"getNowPlayingMovies","")) },
-                        { volleyError -> generateErrorWarning(volleyError) },1)
+                        { movies ->
+                            startActivity(createIntent(
+                                    Intent(this, MovieListActivity::class.java),
+                                    movies, resources.getString(R.string.moviesNowPlaying),
+                                    "getNowPlayingMovies",
+                                    ""))
+                        }, { volleyError -> generateErrorWarning(volleyError) })
             }
         })
-
+        //TODO: meter a ir buscar a repositiorio local
         upcomingMoviesButton.setOnClickListener({
             progressBar.visibility = View.VISIBLE
             (application as MovieApplication).let {
-                it.service.getUpComingMovies(
+                it.provider.getUpComingMovies(
+                        1,
                         application,
-                        { movies -> startActivity(createIntent(Intent(this, MovieListActivity::class.java), movies, resources.getString(R.string.upcomingMoviesList),"getUpComingMovies","")) },
-                        { volleyError -> generateErrorWarning(volleyError) },1)
+                        { movies ->
+                            startActivity(createIntent(
+                                    Intent(this, MovieListActivity::class.java),
+                                    movies,
+                                    resources.getString(R.string.upcomingMoviesList),
+                                    "getUpComingMovies",
+                                    ""))
+                        }, { volleyError -> generateErrorWarning(volleyError) })
             }
         })
 
         mostPopularMoviesButton.setOnClickListener({
             progressBar.visibility = View.VISIBLE
             (application as MovieApplication).let {
-                it.service.getMostPopularMovies(
+                it.provider.getMostPopularMovies(
+                        1,
                         application,
-                        { movies -> startActivity(createIntent(Intent(this, MovieListActivity::class.java), movies, resources.getString(R.string.mostPopularMoviesList),"getMostPopularMovies","")) },
-                        { volleyError -> generateErrorWarning(volleyError) },1)
+                        { movies ->
+                            startActivity(createIntent(
+                                    Intent(this, MovieListActivity::class.java),
+                                    movies,
+                                    resources.getString(R.string.mostPopularMoviesList),
+                                    "getMostPopularMovies",
+                                    ""))
+                        }, { volleyError -> generateErrorWarning(volleyError) })
             }
         })
     }
 
-    private fun createIntent(intent: Intent, dto: MovieListDto, toolbarText: String, method : String, query : String): Intent? {
+    private fun createIntent(intent: Intent, dto: MovieListDto, toolbarText: String, method: String, query: String): Intent? {
         intent.putExtra("toolbarText", toolbarText)
         intent.putExtra("results", dto)
-        intent.putExtra("method",method)
-        intent.putExtra("query",query)
+        intent.putExtra("method", method)
+        intent.putExtra("query", query)
         progressBar.visibility = View.INVISIBLE
         return intent
     }
