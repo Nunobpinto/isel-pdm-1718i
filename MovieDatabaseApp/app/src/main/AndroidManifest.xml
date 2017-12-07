@@ -27,7 +27,12 @@
         <activity android:name="pdm.isel.moviedatabaseapp.ui.activity.ReferencesActivity" />
         <activity android:name="pdm.isel.moviedatabaseapp.ui.activity.HomeActivity" />
         <service
-            android:name=".services.MovieListsJobService"
+            android:name=".services.ExhibitionJobService"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service
+            android:name=".services.UpComingJobService"
             android:enabled="true"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE" />

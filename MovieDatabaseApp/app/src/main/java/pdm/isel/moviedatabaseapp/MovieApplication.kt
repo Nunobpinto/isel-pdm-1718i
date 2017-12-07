@@ -12,7 +12,8 @@ import pdm.isel.moviedatabaseapp.cache.DefaultCache
 import pdm.isel.moviedatabaseapp.domain.content.MovieContentProvider
 import pdm.isel.moviedatabaseapp.domain.providers.MovieProvider
 import pdm.isel.moviedatabaseapp.domain.providers.MovieTMDBProvider
-import pdm.isel.moviedatabaseapp.services.MovieListsJobService
+import pdm.isel.moviedatabaseapp.services.ExhibitionJobService
+import pdm.isel.moviedatabaseapp.services.UpComingJobService
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
@@ -32,12 +33,22 @@ class MovieApplication : Application() {
         movieContentProvider = MovieContentProvider()
         requestQueue = Volley.newRequestQueue(this)
         imageLoader = ImageLoader(requestQueue, DefaultCache())
-        val builder = JobInfo.Builder(
-                MovieListsJobService.JOB_ID,
-                ComponentName(this, MovieListsJobService::class.java)
+        val exhibitionBuilder = JobInfo.Builder(
+                ExhibitionJobService.JOB_ID,
+                ComponentName(this, ExhibitionJobService::class.java)
+        )
+
+        val upcomingBuilder = JobInfo.Builder(
+                UpComingJobService.JOB_ID,
+                ComponentName(this, UpComingJobService::class.java)
         )
         val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
-        jobScheduler.schedule(builder
+        jobScheduler.schedule(exhibitionBuilder
+                .setMinimumLatency(1000)
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
+                .build()
+        )
+        jobScheduler.schedule(upcomingBuilder
                 .setMinimumLatency(1000)
                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
                 .build()

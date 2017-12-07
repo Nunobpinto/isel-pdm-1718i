@@ -54,36 +54,6 @@ class MovieContentProvider : ContentProvider(){
      */
     @Volatile private lateinit var uriMatcher: UriMatcher
 
-    private inner class MovieDbHelper(
-            version: Int = 1, dbName: String = "MOVIE_DB"
-    ) : SQLiteOpenHelper(
-            this@MovieContentProvider.context,
-            dbName,
-            null,
-            version
-    ){
-        private fun createTable(db: SQLiteDatabase?, tableName: String) {
-            val createCmd = "create table $tableName ( " +
-                    "$ID integer primary key , " +
-                    "$TITLE boolean not null , " +
-                    "$RELEASEDATE real , " +
-                    "$POSTER TEXT , " +
-                    "$OVERVIEW TEXT NOT NULL)"
-            db?.execSQL(createCmd)
-        }
-
-        private fun dropTable(db:SQLiteDatabase?, tableName: String) =
-                db?.execSQL("drop table if exists $tableName")
-
-        override fun onCreate(db: SQLiteDatabase?) {
-            createTable(db, UPCOMING)
-            createTable(db, EXHIBITION)
-        }
-
-        override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) =
-           throw UnsupportedOperationException("Upgrade not implemented yet!!!!")
-    }
-
     override fun insert(uri: Uri, values: ContentValues?): Uri? {
         val tableInfo = getTable(uri)
         val db = dbHelper.writableDatabase
@@ -105,7 +75,7 @@ class MovieContentProvider : ContentProvider(){
     }
 
     override fun onCreate(): Boolean {
-        dbHelper = MovieDbHelper()
+        dbHelper = MovieDbHelper(this@MovieContentProvider.context)
         uriMatcher = UriMatcher(UriMatcher.NO_MATCH)
         with (uriMatcher) {
             addURI(AUTHORITY, UPCOMING_PATH, UPCOMING_LIST_CODE)
@@ -147,8 +117,7 @@ class MovieContentProvider : ContentProvider(){
             else -> getTable(uri).let { Triple(it.first, selection, selectionArgs) }
         }
     }
-
-
+    
     override fun update(uri: Uri?, p1: ContentValues?, p2: String?, p3: Array<out String>?): Int =
         throw UnsupportedOperationException("Upgrade not implemented yet!!!!")
 
