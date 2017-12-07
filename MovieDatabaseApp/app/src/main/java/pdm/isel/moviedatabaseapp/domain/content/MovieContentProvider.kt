@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.net.Uri
 
-class MovieProvider : ContentProvider(){
+class MovieContentProvider : ContentProvider(){
 
     companion object {
         //DB table names
@@ -24,7 +24,7 @@ class MovieProvider : ContentProvider(){
         const val VOTEAVERAGE = "vote_average"
         const val OVERVIEW = "overview"
 
-        //configure movie provider
+        //configure movie movieProvider
         const val AUTHORITY = "pdm.isel.moviedatabaseapp"
 
         //paths for each table
@@ -57,7 +57,7 @@ class MovieProvider : ContentProvider(){
     private inner class MovieDbHelper(
             version: Int = 1, dbName: String = "MOVIE_DB"
     ) : SQLiteOpenHelper(
-            this@MovieProvider.context,
+            this@MovieContentProvider.context,
             dbName,
             null,
             version

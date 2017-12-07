@@ -9,6 +9,7 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.ImageLoader
 import com.android.volley.toolbox.Volley
 import pdm.isel.moviedatabaseapp.cache.DefaultCache
+import pdm.isel.moviedatabaseapp.domain.content.MovieContentProvider
 import pdm.isel.moviedatabaseapp.domain.providers.MovieProvider
 import pdm.isel.moviedatabaseapp.domain.providers.MovieTMDBProvider
 import pdm.isel.moviedatabaseapp.services.MovieListsJobService
@@ -17,7 +18,8 @@ import java.io.InputStreamReader
 
 class MovieApplication : Application() {
     @Volatile lateinit var requestQueue: RequestQueue
-    @Volatile lateinit var provider: MovieProvider
+    @Volatile lateinit var movieProvider: MovieProvider
+    @Volatile lateinit var movieContentProvider: MovieContentProvider
     @Volatile lateinit var imageLoader: ImageLoader
     lateinit var lang: String
     lateinit var apiKey: String
@@ -26,7 +28,8 @@ class MovieApplication : Application() {
         super.onCreate()
         apiKey = readAPIKEY()
         lang = getLanguage()
-        provider = MovieTMDBProvider(apiKey, lang)
+        movieProvider = MovieTMDBProvider(apiKey, lang)
+        movieContentProvider = MovieContentProvider()
         requestQueue = Volley.newRequestQueue(this)
         imageLoader = ImageLoader(requestQueue, DefaultCache())
         val builder = JobInfo.Builder(

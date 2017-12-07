@@ -29,7 +29,7 @@ class HomeActivity : BaseLayoutActivity() {
                 Toast.makeText(this, R.string.non_query, Toast.LENGTH_LONG).show()
             } else {
                 (application as MovieApplication).let {
-                    it.provider.getMoviesByName(
+                    it.movieProvider.getMoviesByName(
                             query,
                             1,
                             application,
@@ -49,7 +49,7 @@ class HomeActivity : BaseLayoutActivity() {
         nowPlayingButton.setOnClickListener({
             progressBar.visibility = View.VISIBLE
             (application as MovieApplication).let {
-                it.provider.getNowPlayingMovies(
+                it.movieProvider.getNowPlayingMovies(
                         1,
                         application,
                         { movies ->
@@ -65,7 +65,7 @@ class HomeActivity : BaseLayoutActivity() {
         upcomingMoviesButton.setOnClickListener({
             progressBar.visibility = View.VISIBLE
             (application as MovieApplication).let {
-                it.provider.getUpComingMovies(
+                it.movieProvider.getUpComingMovies(
                         1,
                         application,
                         { movies ->
@@ -82,7 +82,7 @@ class HomeActivity : BaseLayoutActivity() {
         mostPopularMoviesButton.setOnClickListener({
             progressBar.visibility = View.VISIBLE
             (application as MovieApplication).let {
-                it.provider.getMostPopularMovies(
+                it.movieProvider.getMostPopularMovies(
                         1,
                         application,
                         { movies ->
