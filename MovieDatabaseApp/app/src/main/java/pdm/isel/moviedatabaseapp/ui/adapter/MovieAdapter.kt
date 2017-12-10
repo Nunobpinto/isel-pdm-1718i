@@ -11,8 +11,12 @@ import com.android.volley.toolbox.NetworkImageView
 import pdm.isel.moviedatabaseapp.R
 import pdm.isel.moviedatabaseapp.domain.model.MovieDto
 
-class MovieAdapter(private val ctx: Context, private val resource: Int, private val items: MutableList<MovieDto>, private val imageLoader: ImageLoader)
-    : ArrayAdapter<MovieDto>(ctx, resource, items) {
+class MovieAdapter(
+        private val ctx: Context,
+        private val resource: Int,
+        private val items: MutableList<MovieDto>,
+        private val imageLoader: ImageLoader
+) : ArrayAdapter<MovieDto>(ctx, resource, items) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val holder: ViewHolder
@@ -38,7 +42,6 @@ class MovieAdapter(private val ctx: Context, private val resource: Int, private 
          items.add(item)
          notifyDataSetChanged()
      }
-
 
     private fun fillHolder(convertView: View): ViewHolder {
         val holder = ViewHolder(

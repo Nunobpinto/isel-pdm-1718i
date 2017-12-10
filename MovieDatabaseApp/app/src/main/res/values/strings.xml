@@ -5,7 +5,7 @@
     <string name="searchButton">Search</string>
     <string name="upcomingMoviesButton">Upcoming</string>
     <string name="mostPopularMoviesButton">Most Popular</string>
-    <string name="inputEditText">Search Movie By Name</string>
+    <string name="inputEditText">Search movies</string>
     <string name="home">Home</string>
     <string name="references">References</string>
     <string name="ref">TMDB -> The Movie Database (TMDb) is a popular, user editable database for movies and TV shows.</string>
