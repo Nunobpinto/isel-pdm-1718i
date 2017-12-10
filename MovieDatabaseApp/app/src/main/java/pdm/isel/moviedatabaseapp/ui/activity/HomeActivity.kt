@@ -1,15 +1,14 @@
 package pdm.isel.moviedatabaseapp.ui.activity
 
+import android.app.SearchManager
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
-import com.android.volley.VolleyError
 import kotlinx.android.synthetic.main.activity_home.*
-import pdm.isel.moviedatabaseapp.MovieApplication
 import pdm.isel.moviedatabaseapp.R
-import pdm.isel.moviedatabaseapp.domain.model.MovieListDto
 
 class HomeActivity : BaseLayoutActivity() {
     override val toolbar: Int? = R.id.my_toolbar
@@ -18,92 +17,25 @@ class HomeActivity : BaseLayoutActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         progressBar.visibility = View.INVISIBLE
-
         my_toolbar.title = resources.getString(R.string.home)
-        searchButton.setOnClickListener({
-            progressBar.visibility = View.VISIBLE
-            val query: String = inputEditText.text.toString().replace(" ", "+")
-            if (query == "") {
-                progressBar.visibility = View.INVISIBLE
-                Toast.makeText(this, R.string.non_query, Toast.LENGTH_LONG).show()
-            } else {
-                (application as MovieApplication).let {
-                    it.remoteRepository.getMoviesByName(
-                            query,
-                            1,
-                            application,
-                            { movies ->
-                                startActivity(createIntent(
-                                        Intent(this, MovieListActivity::class.java),
-                                        movies,
-                                        resources.getString(R.string.searchResults),
-                                        "getMoviesByName",
-                                        query))
-                            }, { volleyError -> generateErrorWarning(volleyError) })
-                }
-            }
 
-        })
-        //TODO: meter a ir buscar a repositorio local
+        val searchManager: SearchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(ComponentName(this, SearchableActivity::class.java)))
+        searchView.setIconifiedByDefault(false)
+
         nowPlayingButton.setOnClickListener({
-            progressBar.visibility = View.VISIBLE
-            (application as MovieApplication).let {
-                it.remoteRepository.getNowPlayingMovies(
-                        1,
-                        application,
-                        { movies ->
-                            startActivity(createIntent(
-                                    Intent(this, MovieListActivity::class.java),
-                                    movies, resources.getString(R.string.moviesNowPlaying),
-                                    "getNowPlayingMovies",
-                                    ""))
-                        }, { volleyError -> generateErrorWarning(volleyError) })
-            }
+            sendIntent("nowPlaying", resources.getString(R.string.moviesNowPlaying))
         })
-        //TODO: meter a ir buscar a repositiorio local
+
         upcomingMoviesButton.setOnClickListener({
-            progressBar.visibility = View.VISIBLE
-            (application as MovieApplication).let {
-                it.remoteRepository.getUpComingMovies(
-                        1,
-                        application,
-                        { movies ->
-                            startActivity(createIntent(
-                                    Intent(this, MovieListActivity::class.java),
-                                    movies,
-                                    resources.getString(R.string.upcomingMoviesList),
-                                    "getUpComingMovies",
-                                    ""))
-                        }, { volleyError -> generateErrorWarning(volleyError) })
-            }
+            sendIntent("upcomingMovies", resources.getString(R.string.upcomingMoviesList))
         })
 
         mostPopularMoviesButton.setOnClickListener({
-            progressBar.visibility = View.VISIBLE
-            (application as MovieApplication).let {
-                it.remoteRepository.getMostPopularMovies(
-                        1,
-                        application,
-                        { movies ->
-                            startActivity(createIntent(
-                                    Intent(this, MovieListActivity::class.java),
-                                    movies,
-                                    resources.getString(R.string.mostPopularMoviesList),
-                                    "getMostPopularMovies",
-                                    ""))
-                        }, { volleyError -> generateErrorWarning(volleyError) })
-            }
+            sendIntent("mostPopularMovies", resources.getString(R.string.mostPopularMoviesList))
         })
-    }
-
-    private fun createIntent(intent: Intent, dto: MovieListDto, toolbarText: String, method: String, query: String): Intent? {
-        intent.putExtra("toolbarText", toolbarText)
-        intent.putExtra("results", dto)
-        intent.putExtra("method", method)
-        intent.putExtra("query", query)
-        progressBar.visibility = View.INVISIBLE
-        return intent
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -118,9 +50,12 @@ class HomeActivity : BaseLayoutActivity() {
         startActivity(intent!!)
         return true
     }
-    //TODO: melhorar
-    private fun generateErrorWarning(volleyError: VolleyError) {
-        progressBar.visibility = View.INVISIBLE
-        Toast.makeText(this, R.string.errorInfo, Toast.LENGTH_LONG).show()
+
+    private fun sendIntent(action: String, toolbarText: String) {
+        val intent = Intent(this, MovieListActivity::class.java)
+        intent.putExtra("toolbarText", toolbarText)
+        intent.putExtra("action", action)
+
+        startActivity(intent)
     }
 }

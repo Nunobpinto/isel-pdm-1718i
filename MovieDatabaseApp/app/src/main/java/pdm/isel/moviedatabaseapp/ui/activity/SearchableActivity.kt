@@ -27,7 +27,7 @@ class SearchableActivity : BaseLayoutActivity() {
         if (Intent.ACTION_SEARCH.equals(intent.action)) {
             //TODO: add progress bar
             query = intent.getStringExtra(SearchManager.QUERY)
-            (application as MovieApplication).movieProvider.getMoviesByName(
+            (application as MovieApplication).remoteRepository.getMoviesByName(
                     query,
                     1,
                     application,
@@ -53,7 +53,7 @@ class SearchableActivity : BaseLayoutActivity() {
 
         movieListView.setOnItemClickListener { parent, view, position, id ->
             //TODO: Get movie details through repo class, instead of hardcoded request here
-            (application as MovieApplication).movieProvider.getMovieDetails(
+            (application as MovieApplication).remoteRepository.getMovieDetails(
                     movieAdapter!!.getItem(position).id,
                     application,
                     { movie -> sendIntent(movie) },     //TODO: add similar movies, cast, etc eventually
@@ -65,7 +65,7 @@ class SearchableActivity : BaseLayoutActivity() {
             return
         movieListView.setOnScrollListener(object : EndlessScrollListener(20, movies.page) {
             override fun onLoadMore(page: Int, totalItemsCount: Int): Boolean {
-                (application as MovieApplication).movieProvider.getMoviesByName(
+                (application as MovieApplication).remoteRepository.getMoviesByName(
                         query,
                         page,
                         application,

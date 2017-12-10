@@ -22,7 +22,7 @@ class AppController {
 
         fun mostPopularMovies(params: ParametersContainer) {
             //TODO: get data from remote repo!!
-            params.app.movieProvider.getMostPopularMovies(
+            params.app.remoteRepository.getMostPopularMovies(
                     params.page,
                     params.app,
                     params.successCb,
@@ -32,7 +32,7 @@ class AppController {
 
         fun upcomingMovies(params: ParametersContainer) {
             //TODO: get data from local repo!!
-            params.app.movieProvider.getUpComingMovies(
+            params.app.remoteRepository.getUpComingMovies(
                     params.page,
                     params.app,
                     params.successCb,
@@ -42,7 +42,7 @@ class AppController {
 
         fun nowPlaying(params: ParametersContainer) {
             //TODO: get data from local repo!!
-            params.app.movieProvider.getNowPlayingMovies(
+            params.app.remoteRepository.getNowPlayingMovies(
                     params.page,
                     params.app,
                     params.successCb,
