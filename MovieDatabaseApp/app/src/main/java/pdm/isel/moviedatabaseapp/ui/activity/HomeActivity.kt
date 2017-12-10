@@ -29,7 +29,7 @@ class HomeActivity : BaseLayoutActivity() {
                 Toast.makeText(this, R.string.non_query, Toast.LENGTH_LONG).show()
             } else {
                 (application as MovieApplication).let {
-                    it.movieProvider.getMoviesByName(
+                    it.remoteRepository.getMoviesByName(
                             query,
                             1,
                             application,
@@ -49,7 +49,7 @@ class HomeActivity : BaseLayoutActivity() {
         nowPlayingButton.setOnClickListener({
             progressBar.visibility = View.VISIBLE
             (application as MovieApplication).let {
-                it.movieProvider.getNowPlayingMovies(
+                it.remoteRepository.getNowPlayingMovies(
                         1,
                         application,
                         { movies ->
@@ -65,7 +65,7 @@ class HomeActivity : BaseLayoutActivity() {
         upcomingMoviesButton.setOnClickListener({
             progressBar.visibility = View.VISIBLE
             (application as MovieApplication).let {
-                it.movieProvider.getUpComingMovies(
+                it.remoteRepository.getUpComingMovies(
                         1,
                         application,
                         { movies ->
@@ -82,7 +82,7 @@ class HomeActivity : BaseLayoutActivity() {
         mostPopularMoviesButton.setOnClickListener({
             progressBar.visibility = View.VISIBLE
             (application as MovieApplication).let {
-                it.movieProvider.getMostPopularMovies(
+                it.remoteRepository.getMostPopularMovies(
                         1,
                         application,
                         { movies ->
@@ -118,7 +118,7 @@ class HomeActivity : BaseLayoutActivity() {
         startActivity(intent!!)
         return true
     }
-
+    //TODO: melhorar
     private fun generateErrorWarning(volleyError: VolleyError) {
         progressBar.visibility = View.INVISIBLE
         Toast.makeText(this, R.string.errorInfo, Toast.LENGTH_LONG).show()

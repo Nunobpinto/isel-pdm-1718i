@@ -11,8 +11,7 @@ import pdm.isel.moviedatabaseapp.MovieApplication
 import pdm.isel.moviedatabaseapp.R
 import pdm.isel.moviedatabaseapp.domain.model.MovieDto
 import pdm.isel.moviedatabaseapp.domain.model.MovieListDto
-import pdm.isel.moviedatabaseapp.domain.providers.MovieTMDBProvider
-import kotlin.reflect.declaredFunctions
+import pdm.isel.moviedatabaseapp.domain.repos.TMDBMovieRepository
 
 class MovieListActivity : BaseLayoutActivity() {
     override val toolbar: Int? = R.id.my_toolbar
@@ -46,7 +45,7 @@ class MovieListActivity : BaseLayoutActivity() {
             run {
                 var movie: MovieDto = movieAdapter!!.getItem(position)
                 (application as MovieApplication).let {
-                    it.movieProvider.getMovieDetails(
+                    it.remoteRepository.getMovieDetails(
                             movie.id,
                             application,
                             { movie -> requestSimilarMovies(movie) },
@@ -66,7 +65,7 @@ class MovieListActivity : BaseLayoutActivity() {
     }
 
     private fun loadNextDataFromApi(page: Int) {
-        val service : MovieTMDBProvider = ((application as MovieApplication).movieProvider as MovieTMDBProvider)
+        val service : TMDBMovieRepository = ((application as MovieApplication).remoteRepository as TMDBMovieRepository)
         var arguments:Array<Any>? = null
         if(function=="getMoviesByName"){
             arguments = arrayOf(
@@ -88,7 +87,7 @@ class MovieListActivity : BaseLayoutActivity() {
             )
         }
 
-        val fn = (application as MovieApplication).movieProvider.javaClass.kotlin.declaredFunctions.find { it.name == function }
+        val fn = (application as MovieApplication).remoteRepository.javaClass.kotlin.declaredFunctions.find { it.name == function }
         fn!!.call(*arguments)
     }
 
@@ -100,7 +99,7 @@ class MovieListActivity : BaseLayoutActivity() {
 
     private fun requestSimilarMovies(movie: MovieDto) {
         (application as MovieApplication).let {
-            it.movieProvider.getSimilarMovies(
+            it.remoteRepository.getSimilarMovies(
                     movie.id,
                     application,
                     { movies ->

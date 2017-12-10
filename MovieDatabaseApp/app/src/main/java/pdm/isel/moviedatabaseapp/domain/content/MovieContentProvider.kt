@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.net.Uri
 
-class MovieContentProvider : ContentProvider(){
+class MovieContentProvider : ContentProvider() {
 
     companion object {
         //DB table names
@@ -24,7 +24,7 @@ class MovieContentProvider : ContentProvider(){
         const val VOTEAVERAGE = "vote_average"
         const val OVERVIEW = "overview"
 
-        //configure movie movieProvider
+        //configure movie remoteRepository
         const val AUTHORITY = "pdm.isel.moviedatabaseapp"
 
         //paths for each table
@@ -77,7 +77,7 @@ class MovieContentProvider : ContentProvider(){
     override fun onCreate(): Boolean {
         dbHelper = MovieDbHelper(this@MovieContentProvider.context)
         uriMatcher = UriMatcher(UriMatcher.NO_MATCH)
-        with (uriMatcher) {
+        with(uriMatcher) {
             addURI(AUTHORITY, UPCOMING_PATH, UPCOMING_LIST_CODE)
             addURI(AUTHORITY, "$UPCOMING_PATH/#", UPCOMING_ITEM_CODE)
             addURI(AUTHORITY, EXHIBITION_PATH, EXHIBITION_LIST_CODE)
@@ -117,11 +117,11 @@ class MovieContentProvider : ContentProvider(){
             else -> getTable(uri).let { Triple(it.first, selection, selectionArgs) }
         }
     }
-    
-    override fun update(uri: Uri?, p1: ContentValues?, p2: String?, p3: Array<out String>?): Int =
-        throw UnsupportedOperationException("Upgrade not implemented yet!!!!")
 
-    override fun delete(uri: Uri, selection : String?, args: Array<String>?): Int {
+    override fun update(uri: Uri?, p1: ContentValues?, p2: String?, p3: Array<out String>?): Int =
+            throw UnsupportedOperationException("Upgrade not implemented yet!!!!")
+
+    override fun delete(uri: Uri, selection: String?, args: Array<String>?): Int {
         val params = getSpecificTablee(uri, selection, args)
         val db = dbHelper.writableDatabase
         db.use {
@@ -132,7 +132,7 @@ class MovieContentProvider : ContentProvider(){
         }
     }
 
-    override fun getType(uri: Uri?): String  = when (uriMatcher.match(uri)) {
+    override fun getType(uri: Uri?): String = when (uriMatcher.match(uri)) {
         UPCOMING_LIST_CODE, EXHIBITION_LIST_CODE -> MOVIE_LIST_CONTENT_TYPE
         UPCOMING_ITEM_CODE, EXHIBITION_ITEM_CODE -> MOVIE_ITEM_CONTENT_TYPE
         else -> throw IllegalArgumentException("Uri $uri not supported")

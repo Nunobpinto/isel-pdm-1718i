@@ -1,4 +1,4 @@
-package pdm.isel.moviedatabaseapp.domain.providers
+package pdm.isel.moviedatabaseapp.domain.repos
 
 import android.content.Context
 import com.android.volley.VolleyError
@@ -7,8 +7,9 @@ import pdm.isel.moviedatabaseapp.MovieApplication
 import pdm.isel.moviedatabaseapp.domain.model.MovieDto
 import pdm.isel.moviedatabaseapp.domain.model.MovieListDto
 import android.net.ConnectivityManager
+import pdm.isel.moviedatabaseapp.domain.repos.base.ITMDBMovieRepository
 
-class MovieTMDBProvider(apikey: String, lang: String) : MovieProvider {
+class TMDBMovieRepository(apikey: String, lang: String) : ITMDBMovieRepository {
     private var API_KEY: String = apikey
     private val MOVIES_BY_NAME_URL = "https://api.themoviedb.org/3/search/movie?api_key=$API_KEY&language=" + lang + "&query=%s&page="
     private val MOVIE_DETAILS_URL = "https://api.themoviedb.org/3/movie/%d?api_key=$API_KEY&language=" + lang
@@ -95,7 +96,6 @@ class MovieTMDBProvider(apikey: String, lang: String) : MovieProvider {
         )
         (ctx as MovieApplication).requestQueue.add(req)
     }
-
 
     private fun isConnected(context: Context): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

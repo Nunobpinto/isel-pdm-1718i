@@ -10,8 +10,10 @@ import com.android.volley.toolbox.ImageLoader
 import com.android.volley.toolbox.Volley
 import pdm.isel.moviedatabaseapp.cache.DefaultCache
 import pdm.isel.moviedatabaseapp.domain.content.MovieContentProvider
-import pdm.isel.moviedatabaseapp.domain.providers.MovieProvider
-import pdm.isel.moviedatabaseapp.domain.providers.MovieTMDBProvider
+import pdm.isel.moviedatabaseapp.domain.repos.LocalMovieRepository
+import pdm.isel.moviedatabaseapp.domain.repos.TMDBMovieRepository
+import pdm.isel.moviedatabaseapp.domain.repos.base.ILocalRepository
+import pdm.isel.moviedatabaseapp.domain.repos.base.ITMDBMovieRepository
 import pdm.isel.moviedatabaseapp.services.ExhibitionJobService
 import pdm.isel.moviedatabaseapp.services.UpComingJobService
 import java.io.BufferedReader
@@ -19,7 +21,8 @@ import java.io.InputStreamReader
 
 class MovieApplication : Application() {
     @Volatile lateinit var requestQueue: RequestQueue
-    @Volatile lateinit var movieProvider: MovieProvider
+    @Volatile lateinit var remoteRepository: ITMDBMovieRepository
+    @Volatile lateinit var localRepository: ILocalRepository
     @Volatile lateinit var movieContentProvider: MovieContentProvider
     @Volatile lateinit var imageLoader: ImageLoader
     lateinit var lang: String
@@ -29,7 +32,8 @@ class MovieApplication : Application() {
         super.onCreate()
         apiKey = readAPIKEY()
         lang = getLanguage()
-        movieProvider = MovieTMDBProvider(apiKey, lang)
+        remoteRepository = TMDBMovieRepository(apiKey, lang)
+        localRepository = LocalMovieRepository()
         movieContentProvider = MovieContentProvider()
         requestQueue = Volley.newRequestQueue(this)
         imageLoader = ImageLoader(requestQueue, DefaultCache())
