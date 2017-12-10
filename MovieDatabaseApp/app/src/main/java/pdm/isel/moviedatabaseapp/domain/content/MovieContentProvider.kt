@@ -5,24 +5,26 @@ import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.UriMatcher
 import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteOpenHelper
 import android.net.Uri
 
 class MovieContentProvider : ContentProvider() {
 
     companion object {
-        //DB table names
+
         const val UPCOMING = "Upcoming"
         const val EXHIBITION = "Exhibition"
 
-        //columns of both tables
+        //columns of table
         const val ID = "ID"
         const val TITLE = "title"
         const val RELEASEDATE = "release_date"
         const val POSTER = "poster"
         const val VOTEAVERAGE = "vote_average"
+        const val RUNTIME = "runtime"
+        const val SIMILAR = "similar"
+        const val POPULARITY = "popularity"
         const val OVERVIEW = "overview"
+        const val GENRES = "genres"
 
         //configure movie remoteRepository
         const val AUTHORITY = "pdm.isel.moviedatabaseapp"

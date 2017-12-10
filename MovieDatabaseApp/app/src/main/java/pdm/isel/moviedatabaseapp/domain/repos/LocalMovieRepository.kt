@@ -8,7 +8,6 @@ import pdm.isel.moviedatabaseapp.mapper.MovieMapper
 
 class LocalMovieRepository(ctx : Context, mapper : MovieMapper) : ILocalRepository {
 
-
     override fun getNowPlayingMovies(): MovieListDto {
         Cursor c = ctx.getContentResolver().query
     }
