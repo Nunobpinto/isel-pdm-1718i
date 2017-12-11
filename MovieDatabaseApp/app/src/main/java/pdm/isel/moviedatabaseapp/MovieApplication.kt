@@ -14,7 +14,6 @@ import pdm.isel.moviedatabaseapp.domain.repos.LocalMovieRepository
 import pdm.isel.moviedatabaseapp.domain.repos.TMDBMovieRepository
 import pdm.isel.moviedatabaseapp.domain.repos.base.ILocalRepository
 import pdm.isel.moviedatabaseapp.domain.repos.base.ITMDBMovieRepository
-import pdm.isel.moviedatabaseapp.mapper.MovieMapper
 import pdm.isel.moviedatabaseapp.services.ExhibitionJobService
 import pdm.isel.moviedatabaseapp.services.UpComingJobService
 import java.io.BufferedReader
@@ -34,7 +33,7 @@ class MovieApplication : Application() {
         apiKey = readAPIKEY()
         lang = getLanguage()
         remoteRepository = TMDBMovieRepository(apiKey, lang)
-        localRepository = LocalMovieRepository(this, MovieMapper())
+        localRepository = LocalMovieRepository(this)
         movieContentProvider = MovieContentProvider()
         requestQueue = Volley.newRequestQueue(this)
         imageLoader = ImageLoader(requestQueue, DefaultCache())
