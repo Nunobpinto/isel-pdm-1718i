@@ -25,7 +25,7 @@ import pdm.isel.moviedatabaseapp.domain.model.MovieListDto
     }
 
     fun MovieListDto.toContentValues() : Array<ContentValues> =
-            results.map { it.toContentValues() }.toTypedArray()
+            results.map(MovieDto::toContentValues).toTypedArray()
 
     private fun toMovieDto(cursor: Cursor): MovieDto {
         with (MovieContentProvider.Companion) {
