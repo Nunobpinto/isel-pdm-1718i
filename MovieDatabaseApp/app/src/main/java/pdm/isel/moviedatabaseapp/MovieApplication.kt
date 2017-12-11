@@ -9,7 +9,6 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.ImageLoader
 import com.android.volley.toolbox.Volley
 import pdm.isel.moviedatabaseapp.cache.DefaultCache
-import pdm.isel.moviedatabaseapp.domain.content.MovieContentProvider
 import pdm.isel.moviedatabaseapp.domain.repos.LocalMovieRepository
 import pdm.isel.moviedatabaseapp.domain.repos.TMDBMovieRepository
 import pdm.isel.moviedatabaseapp.domain.repos.base.ILocalRepository
@@ -23,20 +22,15 @@ class MovieApplication : Application() {
     @Volatile lateinit var requestQueue: RequestQueue
     @Volatile lateinit var remoteRepository: ITMDBMovieRepository
     @Volatile lateinit var localRepository: ILocalRepository
-    @Volatile lateinit var movieContentProvider: MovieContentProvider
     @Volatile lateinit var imageLoader: ImageLoader
-    lateinit var lang: String
-    lateinit var apiKey: String
 
     override fun onCreate() {
         super.onCreate()
-        apiKey = readAPIKEY()
-        lang = getLanguage()
-        remoteRepository = TMDBMovieRepository(apiKey, lang)
+        remoteRepository = TMDBMovieRepository(readAPIKEY(), getLanguage())
         localRepository = LocalMovieRepository(this)
-        movieContentProvider = MovieContentProvider()
         requestQueue = Volley.newRequestQueue(this)
         imageLoader = ImageLoader(requestQueue, DefaultCache())
+
         val exhibitionBuilder = JobInfo.Builder(
                 ExhibitionJobService.JOB_ID,
                 ComponentName(this, ExhibitionJobService::class.java)
@@ -46,7 +40,9 @@ class MovieApplication : Application() {
                 UpComingJobService.JOB_ID,
                 ComponentName(this, UpComingJobService::class.java)
         )
+
         val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+
         jobScheduler.schedule(exhibitionBuilder
                 .setMinimumLatency(1000)
                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)

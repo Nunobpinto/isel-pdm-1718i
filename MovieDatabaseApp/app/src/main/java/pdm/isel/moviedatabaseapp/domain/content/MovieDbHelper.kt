@@ -6,31 +6,49 @@ import android.database.sqlite.SQLiteOpenHelper
 
 class MovieDbHelper(
         context: Context?,
-        version: Int = 1, dbName: String = "MOVIE_DB"
+        version: Int = 1,
+        dbName: String = "MOVIE_DB"
 ) : SQLiteOpenHelper(
         context,
         dbName,
         null,
         version
-){
-    private fun createTable(db: SQLiteDatabase?, tableName: String) {
-        val createCmd = "create table $tableName ( " +
-                "${MovieContentProvider.ID} integer primary key , " +
-                "${MovieContentProvider.TITLE} boolean not null , " +
-                "${MovieContentProvider.RELEASEDATE} real , " +
-                "${MovieContentProvider.POSTER} TEXT , " +
-                "${MovieContentProvider.OVERVIEW} TEXT NOT NULL)"
-        db?.execSQL(createCmd)
-    }
+) {
 
-    private fun dropTable(db: SQLiteDatabase?, tableName: String) =
-            db?.execSQL("drop table if exists $tableName")
+    companion object {
+
+        const val CREATE_UPCOMING =
+                "create table ${MovieContentProvider.UPCOMING} ( " +
+                        "${MovieContentProvider.ID} integer primary key , " +
+                        "${MovieContentProvider.TITLE} boolean not null , " +
+                        "${MovieContentProvider.RELEASE_DATE} real , " +
+                        "${MovieContentProvider.POSTER} text , " +
+                        "${MovieContentProvider.VOTE_AVERAGE} real , " +
+                        "${MovieContentProvider.RUNTIME} integer , " +
+                        "${MovieContentProvider.POPULARITY} real , " +
+                        "${MovieContentProvider.OVERVIEW} text , " +
+                        "${MovieContentProvider.GENRES} text ," +
+                        "${MovieContentProvider.FOLLOWED} boolean not null)"
+        const val CREATE_EXHIBITION =
+                "create table ${MovieContentProvider.UPCOMING} ( " +
+                        "${MovieContentProvider.ID} integer primary key , " +
+                        "${MovieContentProvider.TITLE} boolean not null , " +
+                        "${MovieContentProvider.RELEASE_DATE} real , " +
+                        "${MovieContentProvider.POSTER} text , " +
+                        "${MovieContentProvider.VOTE_AVERAGE} real , " +
+                        "${MovieContentProvider.RUNTIME} integer , " +
+                        "${MovieContentProvider.POPULARITY} real , " +
+                        "${MovieContentProvider.OVERVIEW} text , " +
+                        "${MovieContentProvider.GENRES} text)"
+
+    }
 
     override fun onCreate(db: SQLiteDatabase?) {
-        createTable(db, MovieContentProvider.UPCOMING)
-        createTable(db, MovieContentProvider.EXHIBITION)
+        db?.execSQL(CREATE_EXHIBITION)
+        db?.execSQL(CREATE_UPCOMING)
     }
 
-    override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) =
-            throw UnsupportedOperationException("Upgrade not implemented yet!!!!")
+    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
+        //Alter tables if needed
+    }
 }

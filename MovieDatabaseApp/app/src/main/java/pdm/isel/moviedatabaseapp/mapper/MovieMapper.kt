@@ -12,9 +12,9 @@ import pdm.isel.moviedatabaseapp.domain.model.MovieListDto
         with (MovieContentProvider) {
             result.put(ID, id)
             result.put(TITLE, title)
-            result.put(RELEASEDATE, releaseDate)
+            result.put(RELEASE_DATE, releaseDate)
             result.put(POSTER, poster)
-            result.put(VOTEAVERAGE, voteAverage)
+            result.put(VOTE_AVERAGE, voteAverage)
             result.put(RUNTIME, runtime)
             result.put(OVERVIEW, overview)
             //result.put(SIMILAR, similar!!.map { it. })
