@@ -29,7 +29,7 @@ class TMDBMovieRepository(apikey: String, lang: String) : ITMDBMovieRepository {
                 successCb,
                 errorCb
         )
-        (ctx as MovieApplication).let { it.requestQueue.add(req) }
+        (ctx as MovieApplication).requestQueue.add(req)
     }
 
     override fun getMoviesByName(name: String, page: Int, ctx: Context, successCb: (MovieListDto) -> Unit, errorCb: (VolleyError) -> Unit) {
@@ -55,7 +55,7 @@ class TMDBMovieRepository(apikey: String, lang: String) : ITMDBMovieRepository {
                 successCb,
                 errorCb
         )
-        (ctx as MovieApplication).let { it.requestQueue.add(req) }
+        (ctx as MovieApplication).requestQueue.add(req)
     }
 
     override fun getMovieDetails(id: Int, ctx: Context, successCb: (MovieDto) -> Unit, errorCb: (VolleyError) -> Unit) {

@@ -21,7 +21,6 @@ class AppController {
         }
 
         fun mostPopularMovies(params: ParametersContainer) {
-            //TODO: get data from remote repo!!
             params.app.remoteRepository.getMostPopularMovies(
                     params.page,
                     params.app,
@@ -31,23 +30,21 @@ class AppController {
         }
 
         fun upcomingMovies(params: ParametersContainer) {
-            //TODO: get data from local repo!!
-            params.app.remoteRepository.getUpComingMovies(
-                    params.page,
-                    params.app,
-                    params.successCb,
-                    { error: VolleyError -> params.errorCb(ProviderException()) }
-            )
+            try {
+                val movieList = params.app.localRepository.getUpComingMovies(params.page)
+                params.successCb(movieList)
+            } catch (e: RepoException) {
+                params.errorCb(e)
+            }
         }
 
         fun nowPlaying(params: ParametersContainer) {
-            //TODO: get data from local repo!!
-            params.app.remoteRepository.getNowPlayingMovies(
-                    params.page,
-                    params.app,
-                    params.successCb,
-                    { error: VolleyError -> params.errorCb(ProviderException()) }
-            )
+            try {
+                val movieList = params.app.localRepository.getNowPlayingMovies(params.page)
+                params.successCb(movieList)
+            } catch (e: RepoException) {
+                params.errorCb(e)
+            }
         }
     }
 }

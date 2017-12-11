@@ -43,7 +43,7 @@ import pdm.isel.moviedatabaseapp.domain.model.MovieListDto
         }
     }
 
-    fun Cursor.toMovieListDto(): List<MovieDto> {
+    fun Cursor.toMovieListDto(page: Int): MovieListDto {
 
         val iter = object : AbstractIterator<MovieDto>() {
             override fun computeNext() {
@@ -53,7 +53,14 @@ import pdm.isel.moviedatabaseapp.domain.model.MovieListDto
                 }
             }
         }
-        return mutableListOf<MovieDto>().let {
+        val list = mutableListOf<MovieDto>().let {
             it.addAll(Iterable { iter }); it
-        }
+        }.toTypedArray()
+        return MovieListDto(
+                page,
+                list.size,
+                null,
+                list,
+                null
+        )
     }
