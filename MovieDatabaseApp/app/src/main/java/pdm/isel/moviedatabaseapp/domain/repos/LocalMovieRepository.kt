@@ -4,12 +4,16 @@ import android.content.Context
 import android.database.Cursor
 import pdm.isel.moviedatabaseapp.domain.model.MovieListDto
 import pdm.isel.moviedatabaseapp.domain.repos.base.ILocalRepository
-import pdm.isel.moviedatabaseapp.mapper.MovieMapper
+import pdm.isel.moviedatabaseapp.mapper.toMovieListDto
 
-class LocalMovieRepository(ctx : Context, mapper : MovieMapper) : ILocalRepository {
+class LocalMovieRepository(val ctx : Context) : ILocalRepository {
 
     override fun getNowPlayingMovies(): MovieListDto {
-        Cursor c = ctx.getContentResolver().query
+        val c = ctx.contentResolver.query(null,null,null,null,null)
+        if(c!== null){
+            c.toMovieListDto()
+        }
+        throw UnsupportedOperationException("")
     }
 
     override fun getUpComingMovies(): MovieListDto {

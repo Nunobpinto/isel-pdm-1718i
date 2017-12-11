@@ -54,8 +54,7 @@ data class MovieDto(
         val voteAverage: Float?,
         val overview: String?,
         val popularity: Float?,
-        val genres: Array<Genres>?,
-        var similar: Array<MovieDto>?
+        val genres: Array<Genres>?
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(
@@ -67,8 +66,7 @@ data class MovieDto(
             parcel.readValue(Float::class.java.classLoader) as? Float,
             parcel.readString(),
             parcel.readValue(Float::class.java.classLoader) as? Float,
-            parcel.createTypedArray(Genres),
-            parcel.createTypedArray(MovieDto))
+            parcel.createTypedArray(Genres))
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
@@ -80,7 +78,6 @@ data class MovieDto(
         parcel.writeString(overview)
         parcel.writeValue(popularity)
         parcel.writeTypedArray(genres, flags)
-        parcel.writeTypedArray(similar, flags)
     }
 
     override fun describeContents() = 0
@@ -130,10 +127,15 @@ data class Genres(val id: Int, val name: String) : Parcelable {
     override fun describeContents(): Int = 0
 
     companion object CREATOR : Parcelable.Creator<Genres> {
+
+        fun create(s:String) : Array<Genres>{
+            val strings = s.split(",").toTypedArray()
+            return strings.map { Genres(1,it) }.toTypedArray()
+        }
+
         override fun createFromParcel(parcel: Parcel): Genres = Genres(parcel)
 
         override fun newArray(size: Int): Array<Genres?> = arrayOfNulls(size)
     }
-
 }
 
