@@ -47,6 +47,19 @@
             android:layout_toRightOf="@+id/posterView"
             android:orientation="vertical">
 
+            <ToggleButton
+                android:id="@+id/toggleButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:checked="false"
+                android:text="ToggleButton"
+                android:textOff="FOLLOWING"
+                android:textOn="UNFOLLOWING"
+                app:layout_constraintStart_toEndOf="@+id/ratingView"
+                app:layout_constraintTop_toBottomOf="@+id/posterView" />
+
             <TextView
                 android:id="@+id/movieTitleView"
                 android:layout_width="0dp"
@@ -155,6 +168,7 @@
             </ScrollView>
 
             <HorizontalScrollView
+                android:id="@+id/horizontalScrollView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
