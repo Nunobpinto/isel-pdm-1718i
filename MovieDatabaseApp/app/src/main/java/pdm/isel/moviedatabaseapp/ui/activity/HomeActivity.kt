@@ -46,6 +46,7 @@ class HomeActivity : BaseLayoutActivity() {
                 intent = Intent(this, HomeActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
             }
+            R.id.action_preferences ->  intent = Intent(this, PreferencesActivity::class.java)
         }
         startActivity(intent!!)
         return true

@@ -40,6 +40,7 @@ class MovieDetailsActivity : BaseLayoutActivity() {
         when (item?.itemId) {
             R.id.action_about -> intent = Intent(this, ReferencesActivity::class.java)
             R.id.action_home -> intent = Intent(this, HomeActivity::class.java)
+            R.id.action_preferences ->  intent = Intent(this, PreferencesActivity::class.java)
         }
         startActivity(intent!!)
         return true

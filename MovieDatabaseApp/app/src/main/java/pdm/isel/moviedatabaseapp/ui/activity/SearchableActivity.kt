@@ -3,6 +3,7 @@ package pdm.isel.moviedatabaseapp.ui.activity
 import android.app.SearchManager
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Toast
 import com.android.volley.VolleyError
 import kotlinx.android.synthetic.main.activity_searchable.*
@@ -74,6 +75,17 @@ class SearchableActivity : BaseLayoutActivity() {
                 return true
             }
         })
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        var intent: Intent? = null
+        when (item?.itemId) {
+            R.id.action_about -> intent = Intent(this, ReferencesActivity::class.java)
+            R.id.action_home -> intent = Intent(this, HomeActivity::class.java)
+            R.id.action_preferences ->  intent = Intent(this, PreferencesActivity::class.java)
+        }
+        startActivity(intent!!)
+        return true
     }
 
     private fun sendIntent(movie: MovieDto) {

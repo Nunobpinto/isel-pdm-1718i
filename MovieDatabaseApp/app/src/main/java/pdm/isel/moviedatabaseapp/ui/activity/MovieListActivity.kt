@@ -35,16 +35,6 @@ class MovieListActivity : BaseLayoutActivity() {
         )
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        var intent: Intent? = null
-        when (item?.itemId) {
-            R.id.action_about -> intent = Intent(this, ReferencesActivity::class.java)
-            R.id.action_home -> intent = Intent(this, HomeActivity::class.java)
-        }
-        startActivity(intent!!)
-        return true
-    }
-
     private fun displayMovies(movies: MovieListDto, toolbarText: String) {
         if (movies.dates != null)
             this.my_toolbar.subtitle = resources.getString(R.string.from) + " " + movies.dates.minimum + " " + resources.getString(R.string.to) + " " + movies.dates.maximum
@@ -89,6 +79,17 @@ class MovieListActivity : BaseLayoutActivity() {
                 return true
             }
         })
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        var intent: Intent? = null
+        when (item?.itemId) {
+            R.id.action_about -> intent = Intent(this, ReferencesActivity::class.java)
+            R.id.action_home -> intent = Intent(this, HomeActivity::class.java)
+            R.id.action_preferences ->  intent = Intent(this, PreferencesActivity::class.java)
+        }
+        startActivity(intent!!)
+        return true
     }
 
     private fun sendIntent(movie: MovieDto) {
