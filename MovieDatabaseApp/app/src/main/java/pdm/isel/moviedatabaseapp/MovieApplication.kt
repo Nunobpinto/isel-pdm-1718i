@@ -13,7 +13,7 @@ import pdm.isel.moviedatabaseapp.domain.repos.LocalMovieRepository
 import pdm.isel.moviedatabaseapp.domain.repos.TMDBMovieRepository
 import pdm.isel.moviedatabaseapp.domain.repos.base.ILocalRepository
 import pdm.isel.moviedatabaseapp.domain.repos.base.ITMDBMovieRepository
-import pdm.isel.moviedatabaseapp.services.ExhibitionJobService
+import pdm.isel.moviedatabaseapp.services.NowPlayingJobService
 import pdm.isel.moviedatabaseapp.services.UpComingJobService
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -32,8 +32,8 @@ class MovieApplication : Application() {
         imageLoader = ImageLoader(requestQueue, DefaultCache())
 
         val exhibitionBuilder = JobInfo.Builder(
-                ExhibitionJobService.JOB_ID,
-                ComponentName(this, ExhibitionJobService::class.java)
+                NowPlayingJobService.JOB_ID,
+                ComponentName(this, NowPlayingJobService::class.java)
         )
 
         val upcomingBuilder = JobInfo.Builder(
@@ -42,14 +42,14 @@ class MovieApplication : Application() {
         )
 
         val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
-
+        //TODO: change latency
         jobScheduler.schedule(exhibitionBuilder
-                .setMinimumLatency(1000)
+                .setMinimumLatency(5000)
                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
                 .build()
         )
         jobScheduler.schedule(upcomingBuilder
-                .setMinimumLatency(1000)
+                .setMinimumLatency(5000)
                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
                 .build()
         )

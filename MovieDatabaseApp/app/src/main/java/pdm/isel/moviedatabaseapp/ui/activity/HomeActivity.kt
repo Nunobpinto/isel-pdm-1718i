@@ -26,15 +26,15 @@ class HomeActivity : BaseLayoutActivity() {
         searchView.setIconifiedByDefault(false)
 
         nowPlayingButton.setOnClickListener({
-            sendIntent("nowPlaying", resources.getString(R.string.moviesNowPlaying))
+            sendIntent("NOW_PLAYING", resources.getString(R.string.moviesNowPlaying))
         })
 
         upcomingMoviesButton.setOnClickListener({
-            sendIntent("upcomingMovies", resources.getString(R.string.upcomingMoviesList))
+            sendIntent("UPCOMING", resources.getString(R.string.upcomingMoviesList))
         })
 
         mostPopularMoviesButton.setOnClickListener({
-            sendIntent("mostPopularMovies", resources.getString(R.string.mostPopularMoviesList))
+            sendIntent("MOST_POPULAR", resources.getString(R.string.mostPopularMoviesList))
         })
     }
 

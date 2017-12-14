@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
-import com.android.volley.VolleyError
 import kotlinx.android.synthetic.main.activity_movie_list.*
 import pdm.isel.moviedatabaseapp.ui.adapter.MovieAdapter
 import pdm.isel.moviedatabaseapp.MovieApplication
@@ -14,14 +13,12 @@ import pdm.isel.moviedatabaseapp.domain.ParametersContainer
 import pdm.isel.moviedatabaseapp.domain.model.MovieDto
 import pdm.isel.moviedatabaseapp.domain.model.MovieListDto
 import pdm.isel.moviedatabaseapp.exceptions.AppException
-import pdm.isel.moviedatabaseapp.exceptions.ProviderException
 
 class MovieListActivity : BaseLayoutActivity() {
     override val toolbar: Int? = R.id.my_toolbar
     override val menu: Int? = R.menu.menu
     override val layout: Int = R.layout.activity_movie_list
     var action: String = ""
-    var movieAdapter: MovieAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +29,7 @@ class MovieListActivity : BaseLayoutActivity() {
                 action,
                 ParametersContainer(
                         app = (application as MovieApplication),
-                        successCb = { movies -> displayMovies(movies, intent.getStringExtra("toolbarText")) },
+                        successCb = { pair -> displayMovies(pair.first!!, intent.getStringExtra("toolbarText")) },
                         errorCb = { error -> displayError(error) }
                 )
         )
@@ -53,7 +50,7 @@ class MovieListActivity : BaseLayoutActivity() {
             this.my_toolbar.subtitle = resources.getString(R.string.from) + " " + movies.dates.minimum + " " + resources.getString(R.string.to) + " " + movies.dates.maximum
         this.my_toolbar.title = toolbarText
 
-        movieAdapter = MovieAdapter(
+        val movieAdapter = MovieAdapter(
                 this,
                 R.layout.movie_list_entry_layout,
                 movies.results.toMutableList(),
@@ -64,12 +61,16 @@ class MovieListActivity : BaseLayoutActivity() {
         movieListView.emptyView = empty
 
         movieListView.setOnItemClickListener { parent, view, position, id ->
-            //TODO: melhorar esta merda
-            (application as MovieApplication).remoteRepository.getMovieDetails(
-                    movieAdapter!!.getItem(position).id,
-                    application,
-                    { movie -> sendIntent(movie) },
-                    { displayError(ProviderException()) })
+            AppController.actionHandler(
+                    "MOVIE_DETAILS",
+                    ParametersContainer(
+                            app = (application as MovieApplication),
+                            id = movieAdapter.getItem(position).id,
+                            successCb = { pair -> sendIntent(pair.second!!) },
+                            errorCb = { error -> displayError(error) },
+                            source = action
+                    )
+            )
         }
 
         if (movies.page == null)
@@ -79,10 +80,10 @@ class MovieListActivity : BaseLayoutActivity() {
                 AppController.actionHandler(
                         action,
                         ParametersContainer(
-                                (application as MovieApplication),
-                                page,
-                                { movies: MovieListDto -> movies.results.forEach { movieDto -> movieAdapter!!.add(movieDto) } },
-                                { error -> displayError(error) }
+                                app = (application as MovieApplication),
+                                page = page,
+                                successCb = { pair -> pair.first!!.results.forEach { movieDto -> movieAdapter.add(movieDto) } },
+                                errorCb = { error -> displayError(error) }
                         )
                 )
                 return true
@@ -100,20 +101,4 @@ class MovieListActivity : BaseLayoutActivity() {
     private fun displayError(error: AppException) {
         Toast.makeText(this, R.string.errorInfo, Toast.LENGTH_LONG).show()
     }
-
-    /*
-private fun requestSimilarMovies(movie: MovieDto) {
-    (application as MovieApplication).let {
-        it.movieProvider.getSimilarMovies(
-                movie.id,
-                application,
-                { movies ->
-                    movie.similar = movies.results
-                    startActivity(createIntent(Intent(this, MovieDetailsActivity::class.java), movie, "Details of " + movie.title))
-                },
-                { generateErrorWarning(VolleyError()) }
-        )
-    }
-}
-*/
 }

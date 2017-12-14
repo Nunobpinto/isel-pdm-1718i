@@ -2,56 +2,78 @@ package pdm.isel.moviedatabaseapp.domain
 
 import com.android.volley.VolleyError
 import pdm.isel.moviedatabaseapp.MovieApplication
+import pdm.isel.moviedatabaseapp.domain.model.MovieDto
 import pdm.isel.moviedatabaseapp.domain.model.MovieListDto
 import pdm.isel.moviedatabaseapp.exceptions.*
 
 class AppController {
 
     companion object {
-        fun actionHandler(action: String, params: ParametersContainer) = when (action) {
-            "mostPopularMovies" -> mostPopularMovies(params)
-            "upcomingMovies" -> upcomingMovies(params)
-            "nowPlaying" -> nowPlaying(params)
-            "movieDetails" -> movieDetails(params)
-            else -> throw UnsupportedOperationException("Action not supported!")
+
+        const val MOST_POPULAR = "MOST_POPULAR"
+        const val UPCOMING = "UPCOMING"
+        const val NOW_PLAYING = "NOW_PLAYING"
+        const val MOVIE_DETAILS = "MOVIE_DETAILS"
+
+        fun actionHandler(action: String, params: ParametersContainer) {
+            return when (action) {
+                MOST_POPULAR -> mostPopularMovies(params)
+                UPCOMING -> upcomingMovies(params)
+                NOW_PLAYING -> nowPlaying(params)
+                MOVIE_DETAILS -> movieDetails(params)
+                else -> throw UnsupportedOperationException("Action not supported!")
+            }
         }
 
         private fun movieDetails(params: ParametersContainer) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            when (params.source) {
+                UPCOMING, NOW_PLAYING -> params.app.localRepository.getMovieDetails(
+                        params.id,
+                        params.source,
+                        { movie -> params.successCb(Pair(null, movie)) },
+                        { error -> params.errorCb(RepoException(error.message.toString())) }
+                )
+                MOST_POPULAR -> params.app.remoteRepository.getMovieDetails(
+                        params.id,
+                        params.app,
+                        { movie -> params.successCb(Pair(null, movie)) },
+                        { error: VolleyError -> params.errorCb(ProviderException()) }
+                )
+            }
         }
 
         fun mostPopularMovies(params: ParametersContainer) {
             params.app.remoteRepository.getMostPopularMovies(
                     params.page,
                     params.app,
-                    params.successCb,
+                    { movies -> params.successCb(Pair(movies, null)) },
                     { error: VolleyError -> params.errorCb(ProviderException()) }
             )
         }
 
         fun upcomingMovies(params: ParametersContainer) {
-            try {
-                val movieList = params.app.localRepository.getUpComingMovies(params.page)
-                params.successCb(movieList)
-            } catch (e: RepoException) {
-                params.errorCb(e)
-            }
+            params.app.localRepository.getUpComingMovies(
+                    params.page,
+                    { movies -> params.successCb(Pair(movies, null)) },
+                    { error -> params.errorCb(error) }
+            )
         }
 
         fun nowPlaying(params: ParametersContainer) {
-            try {
-                val movieList = params.app.localRepository.getNowPlayingMovies(params.page)
-                params.successCb(movieList)
-            } catch (e: RepoException) {
-                params.errorCb(e)
-            }
+            params.app.localRepository.getNowPlayingMovies(
+                    params.page,
+                    { movies -> params.successCb(Pair(movies, null)) },
+                    { error -> params.errorCb(error) }
+            )
         }
     }
 }
 
 data class ParametersContainer(
         val app: MovieApplication,
+        val id: Int = 0,
         val page: Int = 1,
-        val successCb: (MovieListDto) -> Unit,
-        val errorCb: (AppException) -> Unit
+        val successCb: (Pair<MovieListDto?, MovieDto?>) -> Unit,
+        val errorCb: (AppException) -> Unit,
+        var source: String = ""
 )

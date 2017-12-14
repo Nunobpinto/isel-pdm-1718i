@@ -48,7 +48,7 @@ class TMDBMovieRepository(apikey: String, lang: String) : ITMDBMovieRepository {
     override fun getNowPlayingMovies(page: Int, ctx: Context, successCb: (MovieListDto) -> Unit, errorCb: (VolleyError) -> Unit) {
         if (!isConnected(ctx))
             return errorCb(VolleyError())
-        val url = NOW_PLAYING_URL + page
+        val url = NOW_PLAYING_URL + page + "&region=US"
         val req = HttpRequest(
                 url,
                 MovieListDto::class.java,

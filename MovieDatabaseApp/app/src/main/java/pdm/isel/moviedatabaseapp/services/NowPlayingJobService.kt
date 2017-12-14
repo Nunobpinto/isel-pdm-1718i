@@ -7,10 +7,10 @@ import pdm.isel.moviedatabaseapp.exceptions.AppException
 import pdm.isel.moviedatabaseapp.exceptions.ProviderException
 import pdm.isel.moviedatabaseapp.exceptions.RepoException
 
-class UpComingJobService : JobService() {
+class NowPlayingJobService : JobService() {
 
     companion object {
-        val JOB_ID = 1234
+        val JOB_ID = 2000
     }
 
     override fun onStopJob(p0: JobParameters?): Boolean {
@@ -19,16 +19,16 @@ class UpComingJobService : JobService() {
 
     override fun onStartJob(p0: JobParameters?): Boolean {
         (application as MovieApplication).localRepository.deleteTable(
-                "UPCOMING",
+                "NOW_PLAYING",
                 { error -> handleError(RepoException(error.message.toString())) }
         )
-        fillUpcomingTable(1)
+        fillNowPlayingTable(1)
         return true
     }
 
-    private fun fillUpcomingTable(startPage: Int) {
+    private fun fillNowPlayingTable(startPage: Int) {
         //        var page = startPage
-        (application as MovieApplication).remoteRepository.getUpComingMovies(
+        (application as MovieApplication).remoteRepository.getNowPlayingMovies(
                 startPage,
                 (application as MovieApplication),
                 { movies ->
@@ -39,7 +39,7 @@ class UpComingJobService : JobService() {
                                 { movie ->
                                     (application as MovieApplication).localRepository.insertMovie(
                                             movie,
-                                            "UPCOMING",
+                                            "NOW_PLAYING",
                                             { error -> handleError(error) }
                                     )
                                 },
@@ -49,7 +49,7 @@ class UpComingJobService : JobService() {
                         )
                     }
                     //                    if(movies.totalPages != null && ++page <= movies.totalPages)
-                    //                        return@getNowPlayingMovies fillUpcomingTable(page)
+                    //                        return@getNowPlayingMovies fillNowPlayingTable(page)
                 },
                 { error ->
                     handleError(ProviderException(error.message.toString()))
@@ -60,5 +60,4 @@ class UpComingJobService : JobService() {
     private fun handleError(error: AppException) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
 }

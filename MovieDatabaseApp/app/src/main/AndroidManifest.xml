@@ -49,7 +49,7 @@
         </activity>
 
         <service
-            android:name=".services.ExhibitionJobService"
+            android:name=".services.NowPlayingJobService"
             android:enabled="true"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE" />

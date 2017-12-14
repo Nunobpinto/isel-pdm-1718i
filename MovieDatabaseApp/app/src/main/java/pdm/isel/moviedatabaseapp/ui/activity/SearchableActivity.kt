@@ -16,7 +16,6 @@ class SearchableActivity : BaseLayoutActivity() {
     override val toolbar: Int? = R.id.my_toolbar
     override val menu: Int? = R.menu.menu
     override val layout: Int = R.layout.activity_movie_list
-    var movieAdapter: MovieAdapter? = null
     var query: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +41,7 @@ class SearchableActivity : BaseLayoutActivity() {
     }
 
     private fun displayMovies(movies: MovieListDto) {
-        movieAdapter = MovieAdapter(
+        val movieAdapter = MovieAdapter(
                 this,
                 R.layout.movie_list_entry_layout,
                 movies.results.toMutableList(),
@@ -54,7 +53,7 @@ class SearchableActivity : BaseLayoutActivity() {
         movieListView.setOnItemClickListener { parent, view, position, id ->
             //TODO: Get movie details through repo class, instead of hardcoded request here
             (application as MovieApplication).remoteRepository.getMovieDetails(
-                    movieAdapter!!.getItem(position).id,
+                    movieAdapter.getItem(position).id,
                     application,
                     { movie -> sendIntent(movie) },     //TODO: add similar movies, cast, etc eventually
                     { error -> displayError(error) }
@@ -69,7 +68,7 @@ class SearchableActivity : BaseLayoutActivity() {
                         query,
                         page,
                         application,
-                        { movies: MovieListDto -> movies.results.forEach { movieDto -> movieAdapter!!.add(movieDto) } },
+                        { movies: MovieListDto -> movies.results.forEach { movieDto -> movieAdapter.add(movieDto) } },
                         { error -> displayError(error) }
                 )
                 return true

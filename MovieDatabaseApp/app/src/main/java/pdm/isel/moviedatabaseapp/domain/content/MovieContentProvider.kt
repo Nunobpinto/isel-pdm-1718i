@@ -13,7 +13,7 @@ class MovieContentProvider : ContentProvider() {
 
         //Tables
         const val UPCOMING = "Upcoming"
-        const val EXHIBITION = "Exhibition"
+        const val NOW_PLAYING = "NowPlaying"
 
         //columns of table
         const val ID = "ID"
@@ -31,18 +31,18 @@ class MovieContentProvider : ContentProvider() {
         const val AUTHORITY = "pdm.isel.moviedatabaseapp"
 
         //paths for each table
-        const val EXHIBITION_PATH = "exhibition"
+        const val NOW_PLAYING_PATH = "now_playing"
         const val UPCOMING_PATH = "upcoming"
 
         //URIs to access db tables
-        val EXHIBITION_URI = Uri.parse("content://$AUTHORITY/$EXHIBITION_PATH")
+        val NOW_PLAYING_URI = Uri.parse("content://$AUTHORITY/$NOW_PLAYING_PATH")
         val UPCOMING_URI = Uri.parse("content://$AUTHORITY/$UPCOMING_PATH")
 
         //auxiliary code to return when each uri is matched
         const val UPCOMING_LIST_CODE = 100
         const val UPCOMING_ITEM_CODE = 200
-        const val EXHIBITION_LIST_CODE = 300
-        const val EXHIBITION_ITEM_CODE = 400
+        const val NOW_PLAYING_LIST_CODE = 300
+        const val NOW_PLAYING_ITEM_CODE = 400
 
         //auxiliary types for getType method
         val MOVIE_LIST_CONTENT_TYPE = "${ContentResolver.CURSOR_DIR_BASE_TYPE}/movies"
@@ -59,8 +59,8 @@ class MovieContentProvider : ContentProvider() {
         with(uriMatcher) {
             addURI(AUTHORITY, UPCOMING_PATH, UPCOMING_LIST_CODE)
             addURI(AUTHORITY, "$UPCOMING_PATH/#", UPCOMING_ITEM_CODE)
-            addURI(AUTHORITY, EXHIBITION_PATH, EXHIBITION_LIST_CODE)
-            addURI(AUTHORITY, "$EXHIBITION_PATH/#", EXHIBITION_ITEM_CODE)
+            addURI(AUTHORITY, NOW_PLAYING_PATH, NOW_PLAYING_LIST_CODE)
+            addURI(AUTHORITY, "$NOW_PLAYING_PATH/#", NOW_PLAYING_ITEM_CODE)
         }
         return true
     }
@@ -82,9 +82,7 @@ class MovieContentProvider : ContentProvider() {
     override fun query(uri: Uri, projection: Array<String>?, selection: String?, selectionArgs: Array<String>?, sort: String?): Cursor {
         val params = getTableEntry(uri, selection, selectionArgs)
         val db = dbHelper.readableDatabase
-        return db.use {
-            db.query(params.first, projection, params.second, params.third, null, null, sort)
-        }
+        return db.query(params.first, projection, params.second, params.third, null, null, sort)
     }
 
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int {
@@ -110,8 +108,8 @@ class MovieContentProvider : ContentProvider() {
     }
 
     override fun getType(uri: Uri?): String = when (uriMatcher.match(uri)) {
-        UPCOMING_LIST_CODE, EXHIBITION_LIST_CODE -> MOVIE_LIST_CONTENT_TYPE
-        UPCOMING_ITEM_CODE, EXHIBITION_ITEM_CODE -> MOVIE_ITEM_CONTENT_TYPE
+        UPCOMING_LIST_CODE, NOW_PLAYING_LIST_CODE -> MOVIE_LIST_CONTENT_TYPE
+        UPCOMING_ITEM_CODE, NOW_PLAYING_ITEM_CODE -> MOVIE_ITEM_CONTENT_TYPE
         else -> throw IllegalArgumentException("Uri $uri not supported")
     }
 
@@ -119,14 +117,14 @@ class MovieContentProvider : ContentProvider() {
         val itemSelection = "$ID = ${uri.pathSegments.last()}"
         return when (uriMatcher.match(uri)) {
             UPCOMING_ITEM_CODE -> Triple(UPCOMING, itemSelection, null)
-            EXHIBITION_ITEM_CODE -> Triple(EXHIBITION, itemSelection, null)
+            NOW_PLAYING_ITEM_CODE -> Triple(NOW_PLAYING, itemSelection, null)
             else -> getTable(uri).let { Triple(it.first, selection, selectionArgs) }
         }
     }
 
     private fun getTable(uri: Uri): Pair<String, String> = when (uriMatcher.match(uri)) {
         UPCOMING_LIST_CODE -> Pair(UPCOMING, UPCOMING_PATH)
-        EXHIBITION_LIST_CODE -> Pair(EXHIBITION, EXHIBITION_PATH)
+        NOW_PLAYING_LIST_CODE -> Pair(NOW_PLAYING, NOW_PLAYING_PATH)
         else -> null
     } ?: throw IllegalArgumentException("Uri $uri not supported")
 }

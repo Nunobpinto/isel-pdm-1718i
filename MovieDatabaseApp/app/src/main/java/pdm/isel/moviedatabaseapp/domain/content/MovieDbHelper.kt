@@ -17,10 +17,15 @@ class MovieDbHelper(
 
     companion object {
 
+        const val DROP_UPCOMING =
+                "drop table if exists ${MovieContentProvider.UPCOMING}"
+        const val DROP_NOW_PLAYING =
+                "drop table if exists ${MovieContentProvider.NOW_PLAYING}"
+
         const val CREATE_UPCOMING =
                 "create table ${MovieContentProvider.UPCOMING} ( " +
                         "${MovieContentProvider.ID} integer primary key , " +
-                        "${MovieContentProvider.TITLE} boolean not null , " +
+                        "${MovieContentProvider.TITLE} text not null , " +
                         "${MovieContentProvider.RELEASE_DATE} real , " +
                         "${MovieContentProvider.POSTER} text , " +
                         "${MovieContentProvider.VOTE_AVERAGE} real , " +
@@ -28,11 +33,11 @@ class MovieDbHelper(
                         "${MovieContentProvider.POPULARITY} real , " +
                         "${MovieContentProvider.OVERVIEW} text , " +
                         "${MovieContentProvider.GENRES} text ," +
-                        "${MovieContentProvider.FOLLOWED} boolean not null)"
-        const val CREATE_EXHIBITION =
-                "create table ${MovieContentProvider.UPCOMING} ( " +
+                        "${MovieContentProvider.FOLLOWED} integer default 0)"
+        const val CREATE_NOW_PLAYING =
+                "create table ${MovieContentProvider.NOW_PLAYING} ( " +
                         "${MovieContentProvider.ID} integer primary key , " +
-                        "${MovieContentProvider.TITLE} boolean not null , " +
+                        "${MovieContentProvider.TITLE} text not null , " +
                         "${MovieContentProvider.RELEASE_DATE} real , " +
                         "${MovieContentProvider.POSTER} text , " +
                         "${MovieContentProvider.VOTE_AVERAGE} real , " +
@@ -44,11 +49,14 @@ class MovieDbHelper(
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
-        db?.execSQL(CREATE_EXHIBITION)
+        db?.execSQL(CREATE_NOW_PLAYING)
         db?.execSQL(CREATE_UPCOMING)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        //Alter tables if needed
+        db?.execSQL(DROP_NOW_PLAYING)
+        db?.execSQL(DROP_UPCOMING)
+        db?.execSQL(CREATE_NOW_PLAYING)
+        db?.execSQL(CREATE_UPCOMING)
     }
 }
