@@ -19,7 +19,7 @@ class LocalMovieRepository(private val ctx: Context) : ILocalRepository {
 
     override fun getMovieDetails(id: Int, table: String, successCb: (MovieDto) -> Unit, errorCb: (RepoException) -> Unit) {
         val selectionArgs = arrayOf(id.toString())
-        val selection = "ID=?"
+        val selection = "${MovieContentProvider.MOVIE_ID}=?"
         val tableUri = when(table) {
             "NOW_PLAYING" -> MovieContentProvider.NOW_PLAYING_URI
             "UPCOMING" -> MovieContentProvider.UPCOMING_URI
@@ -73,7 +73,7 @@ class LocalMovieRepository(private val ctx: Context) : ILocalRepository {
                 null,
                 null,
                 null,
-                " ID limit $limit offset $offset"
+                " ${MovieContentProvider.ID} limit $limit offset $offset"
         )
         if( cursor === null )
             return errorCb(RepoException())
@@ -103,7 +103,7 @@ class LocalMovieRepository(private val ctx: Context) : ILocalRepository {
                 null,
                 null,
                 null,
-                " ID limit $limit offset $offset"
+                " ${MovieContentProvider.ID} limit $limit offset $offset"
         )
         if( cursor === null )
             return errorCb(RepoException())
@@ -112,7 +112,7 @@ class LocalMovieRepository(private val ctx: Context) : ILocalRepository {
         successCb(res)
     }
 
-    override fun insertMovie(movie: MovieDto, table: String, errorCb: (RepoException) -> Unit) {
+    override fun insertMovie(uniqueId: Int, movie: MovieDto, table: String, errorCb: (RepoException) -> Unit) {
         val tableUri: Uri = when(table) {
             "NOW_PLAYING" -> MovieContentProvider.NOW_PLAYING_URI
             "UPCOMING" -> MovieContentProvider.UPCOMING_URI
@@ -121,7 +121,7 @@ class LocalMovieRepository(private val ctx: Context) : ILocalRepository {
         MyAsyncQueryHandler(
                 ctx.contentResolver,
                 errorCb
-        ).startInsert(1, null, tableUri, movie.toContentValues())
+        ).startInsert(1, null, tableUri, movie.toContentValues(uniqueId))
     }
 
     override fun deleteTable(table: String, errorCb: (RepoException) -> Unit) {
@@ -161,7 +161,7 @@ class LocalMovieRepository(private val ctx: Context) : ILocalRepository {
                 null,
                 MovieContentProvider.NOW_PLAYING_URI,
                 contentValue,
-                "ID=?",
+                "${MovieContentProvider.MOVIE_ID}=?",
                 arrayOf(movieId.toString())
         )
     }

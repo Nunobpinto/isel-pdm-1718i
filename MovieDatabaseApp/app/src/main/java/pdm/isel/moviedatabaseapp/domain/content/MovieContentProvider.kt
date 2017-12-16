@@ -16,7 +16,8 @@ class MovieContentProvider : ContentProvider() {
         const val NOW_PLAYING = "NowPlaying"
 
         //columns of table
-        const val ID = "ID"
+        const val ID = "id"
+        const val MOVIE_ID = "_id"
         const val TITLE = "title"
         const val RELEASE_DATE = "release_date"
         const val POSTER = "poster"

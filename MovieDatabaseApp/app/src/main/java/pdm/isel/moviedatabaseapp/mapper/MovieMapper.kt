@@ -7,10 +7,11 @@ import pdm.isel.moviedatabaseapp.domain.model.Genres
 import pdm.isel.moviedatabaseapp.domain.model.MovieDto
 import pdm.isel.moviedatabaseapp.domain.model.MovieListDto
 
-fun MovieDto.toContentValues(): ContentValues {
+fun MovieDto.toContentValues(uniqueId: Int): ContentValues {
     val result = ContentValues()
     with(MovieContentProvider) {
-        result.put(ID, id)
+        result.put(ID, uniqueId)
+        result.put(MOVIE_ID, id)
         result.put(TITLE, title)
         result.put(RELEASE_DATE, releaseDate)
         result.put(POSTER, poster)
@@ -23,8 +24,7 @@ fun MovieDto.toContentValues(): ContentValues {
     return result
 }
 
-fun MovieListDto.toContentValues(): Array<ContentValues> =
-        results.map(MovieDto::toContentValues).toTypedArray()
+//fun MovieListDto.toContentValues(): Array<ContentValues> = results.map(MovieDto::toContentValues()).toTypedArray()
 
 fun Cursor.toMovieListDto(page: Int): MovieListDto {
     val iter = object : AbstractIterator<MovieDto>() {
@@ -62,7 +62,7 @@ fun Cursor.toMovieDto(): MovieDto {
 
 fun mapToMovieDto(cursor: Cursor): MovieDto {
     return MovieDto(
-            id = cursor.getInt(cursor.getColumnIndex(MovieContentProvider.ID)),
+            id = cursor.getInt(cursor.getColumnIndex(MovieContentProvider.MOVIE_ID)),
             title = cursor.getString(cursor.getColumnIndex(MovieContentProvider.TITLE)),
             runtime = cursor.getInt(cursor.getColumnIndex(MovieContentProvider.RUNTIME)),
             releaseDate = cursor.getString(cursor.getColumnIndex(MovieContentProvider.RELEASE_DATE)),

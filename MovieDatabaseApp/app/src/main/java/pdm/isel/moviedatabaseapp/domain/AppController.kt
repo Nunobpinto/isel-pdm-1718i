@@ -47,7 +47,7 @@ class AppController {
                     params.page,
                     params.app,
                     { movies -> params.successCb(Pair(movies, null)) },
-                    { error: VolleyError -> params.errorCb(ProviderException()) }
+                    { error: VolleyError -> params.errorCb(ProviderException("An internet connection is required to access this functionality")) }//TODO: add string to strings.xml
             )
         }
 

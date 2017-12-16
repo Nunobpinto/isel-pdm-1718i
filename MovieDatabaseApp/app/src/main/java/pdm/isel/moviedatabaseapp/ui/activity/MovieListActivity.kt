@@ -40,6 +40,10 @@ class MovieListActivity : BaseLayoutActivity() {
             this.my_toolbar.subtitle = resources.getString(R.string.from) + " " + movies.dates.minimum + " " + resources.getString(R.string.to) + " " + movies.dates.maximum
         this.my_toolbar.title = toolbarText
 
+        configureAdapter(movies)
+    }
+
+    private fun configureAdapter(movies: MovieListDto) {
         val movieAdapter = MovieAdapter(
                 this,
                 R.layout.movie_list_entry_layout,
@@ -100,6 +104,6 @@ class MovieListActivity : BaseLayoutActivity() {
     }
 
     private fun displayError(error: AppException) {
-        Toast.makeText(this, R.string.errorInfo, Toast.LENGTH_LONG).show()
+        Toast.makeText(this, error.message, Toast.LENGTH_LONG).show()
     }
 }

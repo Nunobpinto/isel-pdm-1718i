@@ -24,7 +24,8 @@ class MovieDbHelper(
 
         const val CREATE_UPCOMING =
                 "create table ${MovieContentProvider.UPCOMING} ( " +
-                        "${MovieContentProvider.ID} integer primary key , " +
+                        "${MovieContentProvider.ID} integer primary key, " +
+                        "${MovieContentProvider.MOVIE_ID} integer unique, " +
                         "${MovieContentProvider.TITLE} text not null , " +
                         "${MovieContentProvider.RELEASE_DATE} real , " +
                         "${MovieContentProvider.POSTER} text , " +
@@ -36,7 +37,8 @@ class MovieDbHelper(
                         "${MovieContentProvider.FOLLOWED} integer default 0)"
         const val CREATE_NOW_PLAYING =
                 "create table ${MovieContentProvider.NOW_PLAYING} ( " +
-                        "${MovieContentProvider.ID} integer primary key , " +
+                        "${MovieContentProvider.ID} integer primary key, " +
+                        "${MovieContentProvider.MOVIE_ID} integer unique, " +
                         "${MovieContentProvider.TITLE} text not null , " +
                         "${MovieContentProvider.RELEASE_DATE} real , " +
                         "${MovieContentProvider.POSTER} text , " +

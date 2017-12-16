@@ -8,9 +8,11 @@ import pdm.isel.moviedatabaseapp.exceptions.ProviderException
 import pdm.isel.moviedatabaseapp.exceptions.RepoException
 
 class UpComingJobService : JobService() {
+    @Volatile private var uniqueId = 0
 
     companion object {
-        val JOB_ID = 1234
+        const val MAX_PAGES_ALLOWED = 1
+        const val JOB_ID = 1234
     }
 
     override fun onStopJob(p0: JobParameters?): Boolean {
@@ -18,6 +20,7 @@ class UpComingJobService : JobService() {
     }
 
     override fun onStartJob(p0: JobParameters?): Boolean {
+        uniqueId = 0
         (application as MovieApplication).localRepository.deleteTable(
                 "UPCOMING",
                 { error -> handleError(RepoException(error.message.toString())) }
@@ -27,7 +30,7 @@ class UpComingJobService : JobService() {
     }
 
     private fun fillUpcomingTable(startPage: Int) {
-        //        var page = startPage
+        var page = startPage
         (application as MovieApplication).remoteRepository.getUpComingMovies(
                 startPage,
                 (application as MovieApplication),
@@ -38,6 +41,7 @@ class UpComingJobService : JobService() {
                                 (application as MovieApplication),
                                 { movie ->
                                     (application as MovieApplication).localRepository.insertMovie(
+                                            uniqueId++,
                                             movie,
                                             "UPCOMING",
                                             { error -> handleError(error) }
@@ -48,8 +52,8 @@ class UpComingJobService : JobService() {
                                 }
                         )
                     }
-                    //                    if(movies.totalPages != null && ++page <= movies.totalPages)
-                    //                        return@getNowPlayingMovies fillUpcomingTable(page)
+                    if(++page <= MAX_PAGES_ALLOWED/*movies.totalPages != null && ++page <= movies.totalPages*/)
+                        return@getUpComingMovies fillUpcomingTable(page)
                 },
                 { error ->
                     handleError(ProviderException(error.message.toString()))
