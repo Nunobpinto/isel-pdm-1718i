@@ -17,6 +17,7 @@ import pdm.isel.moviedatabaseapp.services.NowPlayingJobService
 import pdm.isel.moviedatabaseapp.services.UpComingJobService
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.util.concurrent.TimeUnit
 
 class MovieApplication : Application() {
     @Volatile lateinit var requestQueue: RequestQueue
@@ -44,12 +45,12 @@ class MovieApplication : Application() {
         val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
         //TODO: change latency
         jobScheduler.schedule(exhibitionBuilder
-                .setMinimumLatency(5000)
+                .setPeriodic(TimeUnit.MINUTES.toMillis(15))
                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
                 .build()
         )
         jobScheduler.schedule(upcomingBuilder
-                .setMinimumLatency(5000)
+                .setPeriodic(TimeUnit.MINUTES.toMillis(15))
                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
                 .build()
         )

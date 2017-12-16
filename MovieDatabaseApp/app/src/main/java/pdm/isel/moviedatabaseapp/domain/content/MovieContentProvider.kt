@@ -14,6 +14,7 @@ class MovieContentProvider : ContentProvider() {
         //Tables
         const val UPCOMING = "Upcoming"
         const val NOW_PLAYING = "NowPlaying"
+        const val FOLLOWING = "Following"
 
         //columns of table
         const val ID = "id"
@@ -26,7 +27,6 @@ class MovieContentProvider : ContentProvider() {
         const val POPULARITY = "popularity"
         const val OVERVIEW = "overview"
         const val GENRES = "genres"
-        const val FOLLOWED = "followed"        //Column specific to Upcoming table
 
         //configure movie remoteRepository
         const val AUTHORITY = "pdm.isel.moviedatabaseapp"
@@ -34,16 +34,20 @@ class MovieContentProvider : ContentProvider() {
         //paths for each table
         const val NOW_PLAYING_PATH = "now_playing"
         const val UPCOMING_PATH = "upcoming"
+        const val FOLLOWING_PATH = "following"
 
         //URIs to access db tables
         val NOW_PLAYING_URI = Uri.parse("content://$AUTHORITY/$NOW_PLAYING_PATH")
         val UPCOMING_URI = Uri.parse("content://$AUTHORITY/$UPCOMING_PATH")
+        val FOLLOWING_URI = Uri.parse("content://$AUTHORITY/$FOLLOWING_PATH")
 
         //auxiliary code to return when each uri is matched
         const val UPCOMING_LIST_CODE = 100
         const val UPCOMING_ITEM_CODE = 200
         const val NOW_PLAYING_LIST_CODE = 300
         const val NOW_PLAYING_ITEM_CODE = 400
+        const val FOLLOWING_LIST_CODE = 500
+        const val FOLLOWING_ITEM_CODE = 600
 
         //auxiliary types for getType method
         val MOVIE_LIST_CONTENT_TYPE = "${ContentResolver.CURSOR_DIR_BASE_TYPE}/movies"
@@ -62,6 +66,8 @@ class MovieContentProvider : ContentProvider() {
             addURI(AUTHORITY, "$UPCOMING_PATH/#", UPCOMING_ITEM_CODE)
             addURI(AUTHORITY, NOW_PLAYING_PATH, NOW_PLAYING_LIST_CODE)
             addURI(AUTHORITY, "$NOW_PLAYING_PATH/#", NOW_PLAYING_ITEM_CODE)
+            addURI(AUTHORITY, FOLLOWING_PATH, FOLLOWING_LIST_CODE)
+            addURI(AUTHORITY, "$FOLLOWING_PATH/#", FOLLOWING_ITEM_CODE)
         }
         return true
     }
@@ -109,8 +115,8 @@ class MovieContentProvider : ContentProvider() {
     }
 
     override fun getType(uri: Uri?): String = when (uriMatcher.match(uri)) {
-        UPCOMING_LIST_CODE, NOW_PLAYING_LIST_CODE -> MOVIE_LIST_CONTENT_TYPE
-        UPCOMING_ITEM_CODE, NOW_PLAYING_ITEM_CODE -> MOVIE_ITEM_CONTENT_TYPE
+        UPCOMING_LIST_CODE, NOW_PLAYING_LIST_CODE, FOLLOWING_LIST_CODE -> MOVIE_LIST_CONTENT_TYPE
+        UPCOMING_ITEM_CODE, NOW_PLAYING_ITEM_CODE, FOLLOWING_ITEM_CODE -> MOVIE_ITEM_CONTENT_TYPE
         else -> throw IllegalArgumentException("Uri $uri not supported")
     }
 
@@ -119,6 +125,7 @@ class MovieContentProvider : ContentProvider() {
         return when (uriMatcher.match(uri)) {
             UPCOMING_ITEM_CODE -> Triple(UPCOMING, itemSelection, null)
             NOW_PLAYING_ITEM_CODE -> Triple(NOW_PLAYING, itemSelection, null)
+            FOLLOWING_ITEM_CODE -> Triple(FOLLOWING, itemSelection, null)
             else -> getTable(uri).let { Triple(it.first, selection, selectionArgs) }
         }
     }
@@ -126,6 +133,7 @@ class MovieContentProvider : ContentProvider() {
     private fun getTable(uri: Uri): Pair<String, String> = when (uriMatcher.match(uri)) {
         UPCOMING_LIST_CODE -> Pair(UPCOMING, UPCOMING_PATH)
         NOW_PLAYING_LIST_CODE -> Pair(NOW_PLAYING, NOW_PLAYING_PATH)
+        FOLLOWING_LIST_CODE -> Pair(FOLLOWING, FOLLOWING_PATH)
         else -> null
     } ?: throw IllegalArgumentException("Uri $uri not supported")
 }

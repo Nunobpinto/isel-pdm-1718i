@@ -22,6 +22,9 @@ class MovieDbHelper(
         const val DROP_NOW_PLAYING =
                 "drop table if exists ${MovieContentProvider.NOW_PLAYING}"
 
+        const val DROP_FOLLOWING =
+                "drop table if exists ${MovieContentProvider.FOLLOWING}"
+
         const val CREATE_UPCOMING =
                 "create table ${MovieContentProvider.UPCOMING} ( " +
                         "${MovieContentProvider.ID} integer primary key, " +
@@ -33,8 +36,7 @@ class MovieDbHelper(
                         "${MovieContentProvider.RUNTIME} integer , " +
                         "${MovieContentProvider.POPULARITY} real , " +
                         "${MovieContentProvider.OVERVIEW} text , " +
-                        "${MovieContentProvider.GENRES} text ," +
-                        "${MovieContentProvider.FOLLOWED} integer default 0)"
+                        "${MovieContentProvider.GENRES} text )"
         const val CREATE_NOW_PLAYING =
                 "create table ${MovieContentProvider.NOW_PLAYING} ( " +
                         "${MovieContentProvider.ID} integer primary key, " +
@@ -47,18 +49,24 @@ class MovieDbHelper(
                         "${MovieContentProvider.POPULARITY} real , " +
                         "${MovieContentProvider.OVERVIEW} text , " +
                         "${MovieContentProvider.GENRES} text)"
+        const val CREATE_FOLLOWING =
+                "create table ${MovieContentProvider.FOLLOWING} ( " +
+                        "${MovieContentProvider.MOVIE_ID} integer primary key )"
 
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL(CREATE_NOW_PLAYING)
         db?.execSQL(CREATE_UPCOMING)
+        db?.execSQL(CREATE_FOLLOWING)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         db?.execSQL(DROP_NOW_PLAYING)
         db?.execSQL(DROP_UPCOMING)
+        db?.execSQL(DROP_FOLLOWING)
         db?.execSQL(CREATE_NOW_PLAYING)
         db?.execSQL(CREATE_UPCOMING)
+        db?.execSQL(CREATE_FOLLOWING)
     }
 }
