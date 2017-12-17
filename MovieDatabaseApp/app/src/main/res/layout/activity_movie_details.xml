@@ -55,8 +55,8 @@
                 android:layout_marginTop="8dp"
                 android:checked="false"
                 android:text="ToggleButton"
-                android:textOff="FOLLOWING"
-                android:textOn="UNFOLLOWING"
+                android:textOff="FOLLOW"
+                android:textOn="UNFOLLOW"
                 app:layout_constraintStart_toEndOf="@+id/ratingView"
                 app:layout_constraintTop_toBottomOf="@+id/posterView" />
 

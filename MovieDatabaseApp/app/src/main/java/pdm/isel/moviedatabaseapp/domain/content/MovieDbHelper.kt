@@ -51,8 +51,9 @@ class MovieDbHelper(
         const val CREATE_FOLLOWING =
                 "create table ${MovieContentProvider.FOLLOWING} ( " +
                         "${MovieContentProvider.MOVIE_ID} integer primary key, " +
+                        "${MovieContentProvider.POSTER} text ," +
                         "${MovieContentProvider.TITLE} text not null, " +
-                        "${MovieContentProvider.POSTER} text)"
+                        "${MovieContentProvider.RELEASE_DATE} text)"
 
     }
 

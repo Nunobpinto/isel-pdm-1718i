@@ -110,7 +110,6 @@ class LocalMovieRepository(private val ctx: Context) : ILocalRepository {
             contentValue.put(TITLE, title)
             contentValue.put(RELEASE_DATE, releaseDate)
         }
-        contentValue.put("followed", true)
         MyAsyncQueryHandler(
                 ctx.contentResolver,
                 errorCb,
@@ -118,7 +117,7 @@ class LocalMovieRepository(private val ctx: Context) : ILocalRepository {
         ).startInsert(
                 1,
                 null,
-                MovieContentProvider.NOW_PLAYING_URI,
+                MovieContentProvider.FOLLOWING_URI,
                 contentValue
         )
     }
