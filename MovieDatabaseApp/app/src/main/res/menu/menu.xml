@@ -17,7 +17,7 @@
             android:id="@+id/action_preferences"
             android:icon="@drawable/ic_settings_black_24dp"
             app:showAsAction="ifRoom"
-            android:title="home"
+            android:title="preferences"
             />
 
 </menu>

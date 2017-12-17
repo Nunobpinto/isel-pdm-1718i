@@ -1,7 +1,10 @@
 package pdm.isel.moviedatabaseapp.ui.activity
 
+import android.app.Fragment
+import android.app.FragmentTransaction
 import android.content.Intent
 import android.os.Bundle
+import android.preference.PreferenceFragment
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_references.*
 import pdm.isel.moviedatabaseapp.R
@@ -13,7 +16,16 @@ class PreferencesActivity : BaseLayoutActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        my_toolbar.title = "Preferences"
+        my_toolbar.title = resources.getString(R.string.preferences)
+
+        var fragment : Fragment = PreferencesScreen()
+        var fragmentTransaction : FragmentTransaction = fragmentManager.beginTransaction()
+        if(savedInstanceState == null) {
+            fragmentTransaction.add(R.id.preferences, fragment, "shared_preferences")
+            fragmentTransaction.commit()
+        }
+        else
+            fragment = fragmentManager.findFragmentByTag("shared_preferences")
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -30,4 +42,10 @@ class PreferencesActivity : BaseLayoutActivity() {
         return true
     }
 
+    class PreferencesScreen : PreferenceFragment() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            addPreferencesFromResource(R.xml.shared_preferences)
+        }
+    }
 }

@@ -22,4 +22,28 @@
     <string name="from">From</string>
     <string name="to">To</string>
     <string name="errorInfo">Error Getting Information</string>
+    <string name="battery">Don´t Update with Battery lower than:</string>
+    <string name="update">Update Frequency</string>
+    <string name="notifications">Notifications</string>
+    <string name="preferences">Preferences</string>
+    <string name="network">Choose Network Type</string>
+
+    <string-array name="battery_list">
+        <item>15%</item>
+        <item>25%</item>
+        <item>35%</item>
+    </string-array>
+
+    <string-array name="update_list">
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+    </string-array>
+
+    <string-array name="network_list">
+        <item>Only Wi-fi</item>
+        <item>Only Mobile Network</item>
+        <item>Both</item>
+    </string-array>
+
 </resources>
