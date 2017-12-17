@@ -7,11 +7,13 @@ import android.content.Context
 import android.database.Cursor
 import android.net.Uri
 import pdm.isel.moviedatabaseapp.domain.content.MovieContentProvider
+import pdm.isel.moviedatabaseapp.domain.model.FollowedMovies
 import pdm.isel.moviedatabaseapp.domain.model.MovieDto
 import pdm.isel.moviedatabaseapp.domain.model.MovieListDto
 import pdm.isel.moviedatabaseapp.domain.repos.base.ILocalRepository
 import pdm.isel.moviedatabaseapp.exceptions.RepoException
 import pdm.isel.moviedatabaseapp.mapper.toContentValues
+import pdm.isel.moviedatabaseapp.mapper.toFollowedMovies
 import pdm.isel.moviedatabaseapp.mapper.toMovieDto
 import pdm.isel.moviedatabaseapp.mapper.toMovieListDto
 
@@ -25,19 +27,6 @@ class LocalMovieRepository(private val ctx: Context) : ILocalRepository {
             "UPCOMING" -> MovieContentProvider.UPCOMING_URI
             else -> return errorCb(RepoException("Table not found"))
         }
-//        MyAsyncQueryHandler(
-//                ctx.contentResolver,
-//                errorCb,
-//                asyncQueryListener = { pair -> successCb(pair.first!!) }
-//        ).startQuery(
-//                1,
-//                "GET_MOVIE",
-//                tableUri,
-//                null,
-//                selection,
-//                selectionArgs,
-//                null
-//        )
         val cursor: Cursor? = ctx.contentResolver.query(
                 tableUri,
                 null,
@@ -55,19 +44,6 @@ class LocalMovieRepository(private val ctx: Context) : ILocalRepository {
     override fun getNowPlayingMovies(page: Int, successCb: (MovieListDto) -> Unit, errorCb: (RepoException) -> Unit) {
         val offset = (page-1) * 20
         val limit = offset + 20
-//        MyAsyncQueryHandler(
-//                ctx.contentResolver,
-//                errorCb,
-//                asyncQueryListener = { pair -> successCb(pair.second!!) }
-//        ).startQuery(
-//                1,
-//                "GET_MOVIES",
-//                MovieContentProvider.NOW_PLAYING_URI,
-//                null,
-//                null,
-//                null,
-//                " limit $limit offset $offset"
-//        )
         val cursor: Cursor? = ctx.contentResolver.query(
                 MovieContentProvider.NOW_PLAYING_URI,
                 null,
@@ -85,19 +61,6 @@ class LocalMovieRepository(private val ctx: Context) : ILocalRepository {
     override fun getUpComingMovies(page: Int, successCb: (MovieListDto) -> Unit, errorCb: (RepoException) -> Unit) {
         val offset = (page-1) * 20
         val limit = offset + 20
-//        MyAsyncQueryHandler(
-//                ctx.contentResolver,
-//                errorCb,
-//                asyncQueryListener = { pair -> successCb(pair.second!!) }
-//        ).startQuery(
-//                1,
-//                "GET_MOVIES",
-//                MovieContentProvider.UPCOMING_URI,
-//                null,
-//                null,
-//                null,
-//                " limit $limit offset $offset"
-//        )
         val cursor: Cursor? = ctx.contentResolver.query(
                 MovieContentProvider.UPCOMING_URI,
                 null,
@@ -112,6 +75,21 @@ class LocalMovieRepository(private val ctx: Context) : ILocalRepository {
         successCb(res)
     }
 
+    override fun getFollowedMovies(successCb: (Array<FollowedMovies>) -> Unit, errorCb: (RepoException) -> Unit) {
+        val cursor: Cursor? = ctx.contentResolver.query(
+                MovieContentProvider.FOLLOWING_URI,
+                null,
+                null,
+                null,
+                null
+        )
+        if( cursor === null )
+            return errorCb(RepoException())
+        val res = cursor.toFollowedMovies()
+        cursor.close()
+        successCb(res)
+    }
+
     override fun insertMovie(uniqueId: Int, movie: MovieDto, table: String, errorCb: (RepoException) -> Unit) {
         val tableUri: Uri = when(table) {
             "NOW_PLAYING" -> MovieContentProvider.NOW_PLAYING_URI
@@ -122,6 +100,26 @@ class LocalMovieRepository(private val ctx: Context) : ILocalRepository {
                 ctx.contentResolver,
                 errorCb
         ).startInsert(1, null, tableUri, movie.toContentValues(uniqueId))
+    }
+
+    override fun followMovie(movieId: Int, title: String, poster: String, releaseDate: String, successCb: (Uri?) -> Unit, errorCb: (RepoException) -> Unit) {
+        val contentValue = ContentValues()
+        with(MovieContentProvider) {
+            contentValue.put(MOVIE_ID, movieId)
+            contentValue.put(POSTER, poster)
+            contentValue.put(TITLE, title)
+            contentValue.put(RELEASE_DATE, releaseDate)
+        }
+        MyAsyncQueryHandler(
+                ctx.contentResolver,
+                errorCb,
+                asyncInsertListener = successCb
+        ).startInsert(
+                1,
+                null,
+                MovieContentProvider.FOLLOWING_URI,
+                contentValue
+        )
     }
 
     override fun deleteTable(table: String, errorCb: (RepoException) -> Unit) {
@@ -142,27 +140,19 @@ class LocalMovieRepository(private val ctx: Context) : ILocalRepository {
         )
     }
 
-    override fun followMovie(movieId: Int) {
-        updateFollow(movieId, true)
-    }
-
-    override fun unfollowMovie(movieId: Int) {
-        updateFollow(movieId, false)
-    }
-
-    private fun updateFollow(movieId: Int, following: Boolean) {
-        val contentValue = ContentValues()
-        contentValue.put("followed", following)
+    override fun unfollowMovie(movieId: Int, successCb: (Int) -> Unit, errorCb: (RepoException) -> Unit) {
+        val selectionArgs = arrayOf(movieId.toString())
+        val selection = "${MovieContentProvider.MOVIE_ID}=?"
         MyAsyncQueryHandler(
                 ctx.contentResolver,
-                { error -> Unit } //TODO: handle error
-        ).startUpdate(
+                errorCb,
+                asyncDeleteListener = successCb
+        ).startDelete(
                 1,
                 null,
-                MovieContentProvider.NOW_PLAYING_URI,
-                contentValue,
-                "${MovieContentProvider.MOVIE_ID}=?",
-                arrayOf(movieId.toString())
+                MovieContentProvider.FOLLOWING_URI,
+                selection,
+                selectionArgs
         )
     }
 }
@@ -170,7 +160,7 @@ class LocalMovieRepository(private val ctx: Context) : ILocalRepository {
 class MyAsyncQueryHandler(
         contentResolver: ContentResolver,
         private val errorCb: (RepoException) -> Unit,
-        private val asyncQueryListener: ((Pair<MovieDto?, MovieListDto?>) -> Unit)? = null,
+//        private val asyncQueryListener: ((Pair<MovieDto?, MovieListDto?>) -> Unit)? = null,
         private val asyncInsertListener: ((Uri?) -> Unit)? = null,
         private val asyncUpdateListener: ((Int) -> Unit)? = null,
         private val asyncDeleteListener: ((Int) -> Unit)? = null
@@ -178,16 +168,16 @@ class MyAsyncQueryHandler(
 
     override fun onQueryComplete(token: Int, cookie: Any?, cursor: Cursor?) {
         if(cursor === null) return errorCb(RepoException("Exception querying database"))
-        if(asyncQueryListener === null) return
-
-        val action = cookie as? String
-        val res = when(action) {
-            "GET_MOVIE" -> cursor.toMovieDto()
-            "GET_MOVIES" -> cursor.toMovieListDto(1)
-            else -> return errorCb(RepoException("Action not inserted"))
-        }
-        cursor.close()
-        asyncQueryListener.invoke(Pair(res as MovieDto?, null))
+//        if(asyncQueryListener === null) return
+//
+//        val action = cookie as? String
+//        val res = when(action) {
+//            "GET_MOVIE" -> cursor.toMovieDto()
+//            "GET_MOVIES" -> cursor.toMovieListDto(1)
+//            else -> return errorCb(RepoException("Action not inserted"))
+//        }
+//        cursor.close()
+//        asyncQueryListener.invoke(Pair(res as MovieDto?, null))
     }
 
     override fun onInsertComplete(token: Int, cookie: Any?, uri: Uri?) {

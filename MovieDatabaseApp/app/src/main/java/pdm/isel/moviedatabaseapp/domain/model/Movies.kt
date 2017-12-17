@@ -139,3 +139,37 @@ data class Genres(val id: Int, val name: String) : Parcelable {
     }
 }
 
+data class FollowedMovies(
+        val id: Int,
+        val title: String,
+        val releaseDate: String,
+        val poster: String?
+): Parcelable {
+    constructor(parcel: Parcel) : this(
+            parcel.readInt(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString()) {
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(id)
+        parcel.writeString(title)
+        parcel.writeString(releaseDate)
+        parcel.writeString(poster)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<FollowedMovies> {
+        override fun createFromParcel(parcel: Parcel): FollowedMovies {
+            return FollowedMovies(parcel)
+        }
+
+        override fun newArray(size: Int): Array<FollowedMovies?> {
+            return arrayOfNulls(size)
+        }
+    }
+}

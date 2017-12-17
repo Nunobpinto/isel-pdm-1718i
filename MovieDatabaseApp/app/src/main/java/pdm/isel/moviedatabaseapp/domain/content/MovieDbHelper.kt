@@ -21,7 +21,6 @@ class MovieDbHelper(
                 "drop table if exists ${MovieContentProvider.UPCOMING}"
         const val DROP_NOW_PLAYING =
                 "drop table if exists ${MovieContentProvider.NOW_PLAYING}"
-
         const val DROP_FOLLOWING =
                 "drop table if exists ${MovieContentProvider.FOLLOWING}"
 
@@ -51,7 +50,10 @@ class MovieDbHelper(
                         "${MovieContentProvider.GENRES} text)"
         const val CREATE_FOLLOWING =
                 "create table ${MovieContentProvider.FOLLOWING} ( " +
-                        "${MovieContentProvider.MOVIE_ID} integer primary key )"
+                        "${MovieContentProvider.MOVIE_ID} integer primary key, " +
+                        "${MovieContentProvider.POSTER} text ," +
+                        "${MovieContentProvider.TITLE} text not null, " +
+                        "${MovieContentProvider.RELEASE_DATE} text)"
 
     }
 
