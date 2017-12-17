@@ -27,7 +27,6 @@
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintTop_creator="1"></android.support.v7.widget.Toolbar>
 
-
     <TextView
         android:id="@+id/runtimeView"
         android:layout_width="0dp"
@@ -40,6 +39,18 @@
         android:text="Runtime"
         app:layout_constraintStart_toEndOf="@+id/releaseDateView"
         app:layout_constraintTop_toBottomOf="@+id/movieTitleView" />
+
+    <ToggleButton
+        android:id="@+id/toggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:checked="false"
+        android:text="ToggleButton"
+        android:textOff="FOLLOWING"
+        android:textOn="UNFOLLOWING"
+        app:layout_constraintStart_toEndOf="@+id/ratingView"
+        app:layout_constraintTop_toBottomOf="@+id/posterView" />
 
     <TextView
         android:id="@+id/releaseDateView"
@@ -112,6 +123,7 @@
         app:srcCompat="@drawable/rating_star" />
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="0dp"
         android:layout_height="244dp"
         android:layout_alignParentEnd="true"
