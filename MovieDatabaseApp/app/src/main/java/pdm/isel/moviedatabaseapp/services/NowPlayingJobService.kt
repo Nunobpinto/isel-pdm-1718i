@@ -11,7 +11,7 @@ class NowPlayingJobService : JobService() {
     @Volatile private var uniqueId = 0
 
     companion object {
-        const val MAX_PAGES_ALLOWED = 2
+        const val MAX_PAGES_ALLOWED = 1
         const val JOB_ID = 2000
     }
 
