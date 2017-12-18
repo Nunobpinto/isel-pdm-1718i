@@ -3,11 +3,9 @@ package pdm.isel.moviedatabaseapp.services
 import android.app.job.JobParameters
 import android.app.job.JobService
 import pdm.isel.moviedatabaseapp.MovieApplication
-import pdm.isel.moviedatabaseapp.exceptions.AppException
-import pdm.isel.moviedatabaseapp.exceptions.ProviderException
-import pdm.isel.moviedatabaseapp.exceptions.RepoException
 
 class NowPlayingJobService : JobService() {
+    @Volatile private var onGoingRequests: MutableList<String> = mutableListOf()
     @Volatile private var uniqueId = 0
 
     companion object {
@@ -16,20 +14,23 @@ class NowPlayingJobService : JobService() {
     }
 
     override fun onStopJob(p0: JobParameters?): Boolean {
-        return false
-    }
-
-    override fun onStartJob(p0: JobParameters?): Boolean {
-        uniqueId = 0
-        (application as MovieApplication).localRepository.deleteTable(
-                "NOW_PLAYING",
-                { error -> handleError(RepoException(error.message.toString())) }
-        )
-        fillNowPlayingTable(1)
+        onGoingRequests.forEach {
+            (application as MovieApplication).requestQueue.cancelAll(it)
+        }
         return true
     }
 
-    private fun fillNowPlayingTable(startPage: Int) {
+    override fun onStartJob(params: JobParameters?): Boolean {
+        uniqueId = 0
+        (application as MovieApplication).localRepository.deleteTable(
+                "NOW_PLAYING",
+                { jobFinished(params, true) }
+        )
+        fillNowPlayingTable(1, params)
+        return true
+    }
+
+    private fun fillNowPlayingTable(startPage: Int, params: JobParameters?) {
         var page = startPage
         (application as MovieApplication).remoteRepository.getNowPlayingMovies(
                 startPage,
@@ -44,24 +45,16 @@ class NowPlayingJobService : JobService() {
                                             uniqueId++,
                                             movie,
                                             "NOW_PLAYING",
-                                            { error -> handleError(error) }
+                                            { jobFinished(params, true) }
                                     )
                                 },
-                                { error ->
-                                    handleError(ProviderException(error.message.toString()))
-                                }
+                                { jobFinished(params, true)}
                         )
                     }
                     if(++page <= MAX_PAGES_ALLOWED/*movies.totalPages != null && ++page <= movies.totalPages*/)
-                        return@getNowPlayingMovies fillNowPlayingTable(page)
+                        return@getNowPlayingMovies fillNowPlayingTable(page, params)
                 },
-                { error ->
-                    handleError(ProviderException(error.message.toString()))
-                }
+                { jobFinished(params, true) }
         )
-    }
-
-    private fun handleError(error: AppException) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

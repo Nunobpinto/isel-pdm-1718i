@@ -19,6 +19,7 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.concurrent.TimeUnit
 
+
 class MovieApplication : Application() {
     @Volatile lateinit var requestQueue: RequestQueue
     @Volatile lateinit var remoteRepository: ITMDBMovieRepository
@@ -32,6 +33,29 @@ class MovieApplication : Application() {
         requestQueue = Volley.newRequestQueue(this)
         imageLoader = ImageLoader(requestQueue, DefaultCache())
 
+        configureServices()
+        //configureNotifications()
+    }
+/*
+    private fun configureNotifications() {
+        val mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val id = "followed_movies_channel"
+
+//        val name = getString(R.string.channel_name)
+//        val description = getString(R.string.channel_description)
+        val importance = NotificationManager.IMPORTANCE_HIGH
+        val mChannel = NotificationChannel(id, "Followed Movies", importance)
+
+        mChannel.setDescription("Receive notifications reminding you when a movie is released")
+        mChannel.enableLights(true)
+
+        mChannel.setLightColor(Color.WHITE)
+        mChannel.enableVibration(true)
+        mNotificationManager.createNotificationChannel(mChannel)
+
+    }
+*/
+    private fun configureServices() {
         val exhibitionBuilder = JobInfo.Builder(
                 NowPlayingJobService.JOB_ID,
                 ComponentName(this, NowPlayingJobService::class.java)
@@ -43,7 +67,6 @@ class MovieApplication : Application() {
         )
 
         val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
-        //TODO: change latency
         jobScheduler.schedule(exhibitionBuilder
                 .setPeriodic(TimeUnit.MINUTES.toMillis(15))
                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)

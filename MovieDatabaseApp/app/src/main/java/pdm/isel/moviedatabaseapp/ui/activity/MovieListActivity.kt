@@ -37,7 +37,7 @@ class MovieListActivity : BaseLayoutActivity() {
 
     private fun displayMovies(movies: MovieListDto, toolbarText: String) {
         if (movies.dates != null)
-            this.my_toolbar.subtitle = resources.getString(R.string.from) + " " + movies.dates.minimum + " " + resources.getString(R.string.to) + " " + movies.dates.maximum
+            this.my_toolbar.subtitle = resources.getString(R.string.DateRange, movies.dates.minimum, movies.dates.maximum)
         this.my_toolbar.title = toolbarText
 
         configureAdapter(movies)
