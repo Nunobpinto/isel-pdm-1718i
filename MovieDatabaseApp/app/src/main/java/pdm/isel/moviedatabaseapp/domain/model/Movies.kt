@@ -139,7 +139,7 @@ data class Genres(val id: Int, val name: String) : Parcelable {
     }
 }
 
-data class FollowedMovies(
+data class FollowedMovie(
         val id: Int,
         val title: String,
         val releaseDate: String,
@@ -163,12 +163,12 @@ data class FollowedMovies(
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<FollowedMovies> {
-        override fun createFromParcel(parcel: Parcel): FollowedMovies {
-            return FollowedMovies(parcel)
+    companion object CREATOR : Parcelable.Creator<FollowedMovie> {
+        override fun createFromParcel(parcel: Parcel): FollowedMovie {
+            return FollowedMovie(parcel)
         }
 
-        override fun newArray(size: Int): Array<FollowedMovies?> {
+        override fun newArray(size: Int): Array<FollowedMovie?> {
             return arrayOfNulls(size)
         }
     }

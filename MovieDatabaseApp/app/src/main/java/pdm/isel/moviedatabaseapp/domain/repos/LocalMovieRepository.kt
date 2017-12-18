@@ -7,7 +7,7 @@ import android.content.Context
 import android.database.Cursor
 import android.net.Uri
 import pdm.isel.moviedatabaseapp.domain.content.MovieContentProvider
-import pdm.isel.moviedatabaseapp.domain.model.FollowedMovies
+import pdm.isel.moviedatabaseapp.domain.model.FollowedMovie
 import pdm.isel.moviedatabaseapp.domain.model.MovieDto
 import pdm.isel.moviedatabaseapp.domain.model.MovieListDto
 import pdm.isel.moviedatabaseapp.domain.repos.base.ILocalRepository
@@ -75,7 +75,7 @@ class LocalMovieRepository(private val ctx: Context) : ILocalRepository {
         successCb(res)
     }
 
-    override fun getFollowedMovies(successCb: (Array<FollowedMovies>) -> Unit, errorCb: (RepoException) -> Unit) {
+    override fun getFollowedMovies(successCb: (Array<FollowedMovie>) -> Unit, errorCb: (RepoException) -> Unit) {
         val cursor: Cursor? = ctx.contentResolver.query(
                 MovieContentProvider.FOLLOWING_URI,
                 null,

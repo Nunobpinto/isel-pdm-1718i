@@ -8,15 +8,17 @@ import pdm.isel.moviedatabaseapp.domain.model.MovieDto
 import pdm.isel.moviedatabaseapp.domain.model.MovieListDto
 import android.net.ConnectivityManager
 import pdm.isel.moviedatabaseapp.domain.repos.base.ITMDBMovieRepository
+import java.util.UUID;
 
+//TODO: add tags to requests and communicate them
 class TMDBMovieRepository(apikey: String, lang: String) : ITMDBMovieRepository {
-    private var API_KEY: String = apikey
-    private val MOVIES_BY_NAME_URL = "https://api.themoviedb.org/3/search/movie?api_key=$API_KEY&language=" + lang + "&query=%s&page="
-    private val MOVIE_DETAILS_URL = "https://api.themoviedb.org/3/movie/%d?api_key=$API_KEY&language=" + lang
-    private val NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=$API_KEY&language=" + lang + "&page="
-    private val UPCOMING_URL = "https://api.themoviedb.org/3/movie/upcoming?api_key=$API_KEY&language=" + lang + "&page="
-    private val MOST_POPULAR_URL = "https://api.themoviedb.org/3/movie/popular?api_key=$API_KEY&language=" + lang + "&page="
-    private val SIMILAR_MOVIES_URL = "https://api.themoviedb.org/3/movie/%d/similar?api_key=$API_KEY&language=" + lang
+    private val API_KEY: String = apikey
+    private val MOVIES_BY_NAME_URL = "https://api.themoviedb.org/3/search/movie?api_key=$API_KEY&language=$lang&query=%s&page="
+    private val MOVIE_DETAILS_URL = "https://api.themoviedb.org/3/movie/%d?api_key=$API_KEY&language=$lang"
+    private val NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=$API_KEY&language=$lang&page="
+    private val UPCOMING_URL = "https://api.themoviedb.org/3/movie/upcoming?api_key=$API_KEY&language=$lang&page="
+    private val MOST_POPULAR_URL = "https://api.themoviedb.org/3/movie/popular?api_key=$API_KEY&language=$lang&page="
+    private val SIMILAR_MOVIES_URL = "https://api.themoviedb.org/3/movie/%d/similar?api_key=$API_KEY&language=$lang"
 
 
     override fun getUpComingMovies(page: Int, ctx: Context, successCb: (MovieListDto) -> Unit, errorCb: (VolleyError) -> Unit) {
@@ -29,6 +31,8 @@ class TMDBMovieRepository(apikey: String, lang: String) : ITMDBMovieRepository {
                 successCb,
                 errorCb
         )
+//        val tag = UUID.randomUUID().toString()
+//        req.setTag(tag)
         (ctx as MovieApplication).requestQueue.add(req)
     }
 
@@ -48,7 +52,7 @@ class TMDBMovieRepository(apikey: String, lang: String) : ITMDBMovieRepository {
     override fun getNowPlayingMovies(page: Int, ctx: Context, successCb: (MovieListDto) -> Unit, errorCb: (VolleyError) -> Unit) {
         if (!isConnected(ctx))
             return errorCb(VolleyError())
-        val url = NOW_PLAYING_URL + page + "&region=US"
+        val url = NOW_PLAYING_URL + page
         val req = HttpRequest(
                 url,
                 MovieListDto::class.java,

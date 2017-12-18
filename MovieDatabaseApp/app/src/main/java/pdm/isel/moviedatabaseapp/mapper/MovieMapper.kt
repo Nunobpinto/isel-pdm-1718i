@@ -3,7 +3,7 @@ package pdm.isel.moviedatabaseapp.mapper
 import android.content.ContentValues
 import android.database.Cursor
 import pdm.isel.moviedatabaseapp.domain.content.MovieContentProvider
-import pdm.isel.moviedatabaseapp.domain.model.FollowedMovies
+import pdm.isel.moviedatabaseapp.domain.model.FollowedMovie
 import pdm.isel.moviedatabaseapp.domain.model.Genres
 import pdm.isel.moviedatabaseapp.domain.model.MovieDto
 import pdm.isel.moviedatabaseapp.domain.model.MovieListDto
@@ -61,8 +61,8 @@ fun Cursor.toMovieDto(): MovieDto {
     return list.first()
 }
 
-fun Cursor.toFollowedMovies(): Array<FollowedMovies> {
-    val iter = object : AbstractIterator<FollowedMovies>() {
+fun Cursor.toFollowedMovies(): Array<FollowedMovie> {
+    val iter = object : AbstractIterator<FollowedMovie>() {
         override fun computeNext() {
             moveToNext()
             when(isAfterLast) {
@@ -71,12 +71,12 @@ fun Cursor.toFollowedMovies(): Array<FollowedMovies> {
             }
         }
     }
-    return mutableListOf<FollowedMovies>().let { it.addAll(Iterable { iter }); it }.toTypedArray()
+    return mutableListOf<FollowedMovie>().let { it.addAll(Iterable { iter }); it }.toTypedArray()
 }
 
-fun mapToFollowedMovie(cursor: Cursor): FollowedMovies {
+fun mapToFollowedMovie(cursor: Cursor): FollowedMovie {
     return with(MovieContentProvider) {
-        FollowedMovies(
+        FollowedMovie(
                 id = cursor.getInt(cursor.getColumnIndex(MOVIE_ID)),
                 title = cursor.getString(cursor.getColumnIndex(TITLE)),
                 poster = cursor.getString(cursor.getColumnIndex(POSTER)),
