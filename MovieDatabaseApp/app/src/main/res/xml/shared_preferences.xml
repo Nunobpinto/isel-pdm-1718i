@@ -18,13 +18,13 @@
     <ListPreference
         android:entries="@array/update_list"
         android:entryValues="@array/update_list"
-        android:key="update"
+        android:key="updateFrequency"
         android:title="@string/update" />
 
     <ListPreference
         android:entries = "@array/network_list"
         android:entryValues="@array/network_list"
-        android:key="network"
+        android:key="networkType"
         android:title="@string/network"
         />
 

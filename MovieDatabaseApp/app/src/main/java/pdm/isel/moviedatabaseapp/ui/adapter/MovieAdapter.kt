@@ -45,9 +45,9 @@ class MovieAdapter(
 
     private fun fillHolder(convertView: View): ViewHolder {
         val holder = ViewHolder(
-                convertView.findViewById(R.id.posterImageView) as NetworkImageView,
-                convertView.findViewById(R.id.movieTitle) as TextView,
-                convertView.findViewById(R.id.extraInfo) as TextView
+                convertView.findViewById<NetworkImageView>(R.id.posterImageView) as NetworkImageView,
+                convertView.findViewById<TextView>(R.id.movieTitle) as TextView,
+                convertView.findViewById<TextView>(R.id.extraInfo) as TextView
         )
         holder.imgView.setDefaultImageResId(R.drawable.default_poster)
         convertView.tag = holder

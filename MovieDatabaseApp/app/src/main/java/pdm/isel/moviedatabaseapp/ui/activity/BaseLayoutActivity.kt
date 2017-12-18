@@ -14,7 +14,7 @@ abstract class BaseLayoutActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(layout)
         toolbar?.let {
-            setSupportActionBar(findViewById(it) as Toolbar)
+            setSupportActionBar(findViewById<Toolbar>(it) as Toolbar)
             supportActionBar?.title = null
         }
     }
