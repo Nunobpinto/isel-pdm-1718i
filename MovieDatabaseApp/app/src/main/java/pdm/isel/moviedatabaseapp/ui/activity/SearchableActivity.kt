@@ -18,23 +18,31 @@ class SearchableActivity : BaseLayoutActivity() {
     override val menu: Int? = R.menu.menu
     override val layout: Int = R.layout.activity_movie_list
     var query: String = ""
+    private var movieList : MovieListDto? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         this.my_toolbar.title = resources.getString(R.string.searchResults)
         val intent = intent
-        if (Intent.ACTION_SEARCH.equals(intent.action)) {
-            //TODO: add progress bar
-            query = intent.getStringExtra(SearchManager.QUERY)
-            (application as MovieApplication).remoteRepository.getMoviesByName(
-                    query,
-                    1,
-                    application,
-                    { movies, _ -> displayMovies(movies) },
-                    { error -> displayError(error) }
-            )
+            if (Intent.ACTION_SEARCH == intent.action) {
+                //TODO: add progress bar
+                query = intent.getStringExtra(SearchManager.QUERY)
+                if(savedInstanceState != null){
+                    movieList = savedInstanceState.getParcelable("list")
+                    displayMovies(movieList!!)
+                }
+                else{
+                (application as MovieApplication).remoteRepository.getMoviesByName(
+                        query,
+                        1,
+                        application,
+                        { movies, _ -> displayMovies(movies) },
+                        { error -> displayError(error) }
+                )
+            }
         }
+
     }
 
     private fun displayError(error: VolleyError) {
@@ -42,6 +50,7 @@ class SearchableActivity : BaseLayoutActivity() {
     }
 
     private fun displayMovies(movies: MovieListDto) {
+        this.movieList = movies
         val movieAdapter = MovieAdapter(
                 this,
                 R.layout.movie_list_entry_layout,
@@ -94,4 +103,13 @@ class SearchableActivity : BaseLayoutActivity() {
         intent.putExtra("movie", movie)
         startActivity(intent)
     }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        outState!!.putParcelable("list",movieList)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        this.movieList = savedInstanceState!!.getParcelable("list")
+    }
+
 }

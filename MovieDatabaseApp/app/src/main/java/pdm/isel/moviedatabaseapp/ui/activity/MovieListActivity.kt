@@ -2,6 +2,7 @@ package pdm.isel.moviedatabaseapp.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.MenuItem
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_movie_list.*
@@ -19,23 +20,31 @@ class MovieListActivity : BaseLayoutActivity() {
     override val menu: Int? = R.menu.menu
     override val layout: Int = R.layout.activity_movie_list
     var action: String = ""
+    private var movieList : MovieListDto? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         val intent = intent
         action = intent.getStringExtra("action")
-        AppController.actionHandler(
-                action,
-                ParametersContainer(
-                        app = (application as MovieApplication),
-                        successCb = { pair -> displayMovies(pair.first!!, intent.getStringExtra("toolbarText")) },
-                        errorCb = { error -> displayError(error) }
-                )
-        )
+        if(savedInstanceState!=null){
+            movieList = savedInstanceState.getParcelable("list")
+            displayMovies(movieList!!,intent.getStringExtra("toolbarText"))
+        }
+        else{
+            AppController.actionHandler(
+                    action,
+                    ParametersContainer(
+                            app = (application as MovieApplication),
+                            successCb = { pair -> displayMovies(pair.first!!, intent.getStringExtra("toolbarText")) },
+                            errorCb = { error -> displayError(error) }
+                    )
+            )
+        }
+
     }
 
     private fun displayMovies(movies: MovieListDto, toolbarText: String) {
+        this.movieList = movies
         if (movies.dates != null)
             this.my_toolbar.subtitle = resources.getString(R.string.DateRange, movies.dates.minimum, movies.dates.maximum)
         this.my_toolbar.title = toolbarText
@@ -105,5 +114,13 @@ class MovieListActivity : BaseLayoutActivity() {
 
     private fun displayError(error: AppException) {
         Toast.makeText(this, error.message, Toast.LENGTH_LONG).show()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        outState!!.putParcelable("list",movieList)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+       this.movieList = savedInstanceState!!.getParcelable("list")
     }
 }

@@ -8,7 +8,7 @@ import android.content.Context
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.ImageLoader
 import com.android.volley.toolbox.Volley
-import pdm.isel.moviedatabaseapp.cache.DefaultCache
+import pdm.isel.moviedatabaseapp.cache.ImageCache
 import pdm.isel.moviedatabaseapp.domain.repos.LocalMovieRepository
 import pdm.isel.moviedatabaseapp.domain.repos.TMDBMovieRepository
 import pdm.isel.moviedatabaseapp.domain.repos.base.ILocalRepository
@@ -31,7 +31,7 @@ class MovieApplication : Application() {
         remoteRepository = TMDBMovieRepository(readAPIKEY(), getLanguage())
         localRepository = LocalMovieRepository(this)
         requestQueue = Volley.newRequestQueue(this)
-        imageLoader = ImageLoader(requestQueue, DefaultCache())
+        imageLoader = ImageLoader(requestQueue, ImageCache())
 
         configureServices()
         //configureNotifications()
