@@ -7,6 +7,7 @@ import pdm.isel.moviedatabaseapp.MovieApplication
 
 class NowPlayingJobService : JobService() {
     @Volatile private var onGoingRequests: MutableList<String> = mutableListOf()
+    private val handler = Handler()
 
     companion object {
         const val MAX_PAGES_ALLOWED = 5
@@ -49,10 +50,9 @@ class NowPlayingJobService : JobService() {
                                             { jobFinished(params, true) }
                                     )
                                 },
-                                { jobFinished(params, true)}
+                                { jobFinished(params, true) }
                         )
                     }
-                    val handler = Handler()
                     handler.postDelayed({
                         if(++page <= MAX_PAGES_ALLOWED)
                             return@postDelayed fillNowPlayingTable(page, params)

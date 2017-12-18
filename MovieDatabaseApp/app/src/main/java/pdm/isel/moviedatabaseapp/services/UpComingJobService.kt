@@ -13,6 +13,7 @@ import java.util.*
 
 class UpComingJobService : JobService() {
     @Volatile private var onGoingRequests: MutableList<String> = mutableListOf()
+    private val handler = Handler()
 
     companion object {
         const val MAX_PAGES_ALLOWED = 5
@@ -70,13 +71,12 @@ class UpComingJobService : JobService() {
                                     (application as MovieApplication).localRepository.insertMovie(
                                             movie,
                                             "UPCOMING",
-                                            {  }
+                                            { }
                                     )
                                 },
                                 { jobFinished(params, true) }
                         )
                     }
-                    val handler = Handler()
                     handler.postDelayed({
                         if(++page <= MAX_PAGES_ALLOWED)
                             return@postDelayed fillUpcomingTable(page, params)
