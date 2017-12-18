@@ -49,7 +49,7 @@ class LocalMovieRepository(private val ctx: Context) : ILocalRepository {
                 null,
                 null,
                 null,
-                " ${MovieContentProvider.ID} limit $limit offset $offset"
+                " ${MovieContentProvider.MOVIE_ID} limit $limit offset $offset"
         )
         if( cursor === null )
             return errorCb(RepoException())
@@ -66,7 +66,7 @@ class LocalMovieRepository(private val ctx: Context) : ILocalRepository {
                 null,
                 null,
                 null,
-                " ${MovieContentProvider.ID} limit $limit offset $offset"
+                " ${MovieContentProvider.MOVIE_ID} limit $limit offset $offset"
         )
         if( cursor === null )
             return errorCb(RepoException())
@@ -90,7 +90,7 @@ class LocalMovieRepository(private val ctx: Context) : ILocalRepository {
         successCb(res)
     }
 
-    override fun insertMovie(uniqueId: Int, movie: MovieDto, table: String, errorCb: (RepoException) -> Unit) {
+    override fun insertMovie(movie: MovieDto, table: String, errorCb: (RepoException) -> Unit) {
         val tableUri: Uri = when(table) {
             "NOW_PLAYING" -> MovieContentProvider.NOW_PLAYING_URI
             "UPCOMING" -> MovieContentProvider.UPCOMING_URI
@@ -99,7 +99,7 @@ class LocalMovieRepository(private val ctx: Context) : ILocalRepository {
         MyAsyncQueryHandler(
                 ctx.contentResolver,
                 errorCb
-        ).startInsert(1, null, tableUri, movie.toContentValues(uniqueId))
+        ).startInsert(1, null, tableUri, movie.toContentValues())
     }
 
     override fun followMovie(movieId: Int, title: String, poster: String, releaseDate: String, successCb: (Uri?) -> Unit, errorCb: (RepoException) -> Unit) {
@@ -181,8 +181,8 @@ class MyAsyncQueryHandler(
     }
 
     override fun onInsertComplete(token: Int, cookie: Any?, uri: Uri?) {
-        if(uri === null) return errorCb(RepoException("Exception inserting in database"))
-        if(asyncInsertListener === null) return
+//        if(uri === null) return errorCb(RepoException("Exception inserting in database"))
+        if(asyncInsertListener === null || uri === null) return
 
         asyncInsertListener.invoke(uri)
     }

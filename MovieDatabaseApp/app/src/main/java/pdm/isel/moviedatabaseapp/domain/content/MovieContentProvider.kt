@@ -17,7 +17,6 @@ class MovieContentProvider : ContentProvider() {
         const val FOLLOWING = "Following"
 
         //columns of table
-        const val ID = "id"
         const val MOVIE_ID = "_id"
         const val TITLE = "title"
         const val RELEASE_DATE = "release_date"
@@ -121,7 +120,7 @@ class MovieContentProvider : ContentProvider() {
     }
 
     private fun getTableEntry(uri: Uri, selection: String?, selectionArgs: Array<String>?): Triple<String, String?, Array<String>?> {
-        val itemSelection = "$ID = ${uri.pathSegments.last()}"
+        val itemSelection = "$MOVIE_ID = ${uri.pathSegments.last()}"
         return when (uriMatcher.match(uri)) {
             UPCOMING_ITEM_CODE -> Triple(UPCOMING, itemSelection, null)
             NOW_PLAYING_ITEM_CODE -> Triple(NOW_PLAYING, itemSelection, null)

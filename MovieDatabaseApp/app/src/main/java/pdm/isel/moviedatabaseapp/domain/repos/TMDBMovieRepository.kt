@@ -10,7 +10,6 @@ import android.net.ConnectivityManager
 import pdm.isel.moviedatabaseapp.domain.repos.base.ITMDBMovieRepository
 import java.util.UUID;
 
-//TODO: add tags to requests and communicate them
 class TMDBMovieRepository(apikey: String, lang: String) : ITMDBMovieRepository {
     private val API_KEY: String = apikey
     private val MOVIES_BY_NAME_URL = "https://api.themoviedb.org/3/search/movie?api_key=$API_KEY&language=$lang&query=%s&page="
@@ -21,83 +20,94 @@ class TMDBMovieRepository(apikey: String, lang: String) : ITMDBMovieRepository {
     private val SIMILAR_MOVIES_URL = "https://api.themoviedb.org/3/movie/%d/similar?api_key=$API_KEY&language=$lang"
 
 
-    override fun getUpComingMovies(page: Int, ctx: Context, successCb: (MovieListDto) -> Unit, errorCb: (VolleyError) -> Unit) {
+    override fun getUpComingMovies(page: Int, ctx: Context, successCb: (MovieListDto, String) -> Unit, errorCb: (VolleyError) -> Unit) {
         if (!isConnected(ctx))
             return errorCb(VolleyError())
         val url = UPCOMING_URL + page
+        val tag = UUID.randomUUID().toString()
         val req = HttpRequest(
                 url,
                 MovieListDto::class.java,
-                successCb,
+                { movies -> successCb(movies, tag)},
                 errorCb
         )
-//        val tag = UUID.randomUUID().toString()
-//        req.setTag(tag)
+        req.tag = tag
         (ctx as MovieApplication).requestQueue.add(req)
     }
 
-    override fun getMoviesByName(name: String, page: Int, ctx: Context, successCb: (MovieListDto) -> Unit, errorCb: (VolleyError) -> Unit) {
+    override fun getMoviesByName(name: String, page: Int, ctx: Context, successCb: (MovieListDto, String) -> Unit, errorCb: (VolleyError) -> Unit) {
         if (!isConnected(ctx))
             return errorCb(VolleyError())
         val url = java.lang.String.format(MOVIES_BY_NAME_URL, name) + page
+        val tag = UUID.randomUUID().toString()
         val req = HttpRequest(
                 url,
                 MovieListDto::class.java,
-                successCb,
+                { movies -> successCb(movies, tag)},
                 errorCb
         )
+        req.tag = tag
         (ctx as MovieApplication).requestQueue.add(req)
     }
 
-    override fun getNowPlayingMovies(page: Int, ctx: Context, successCb: (MovieListDto) -> Unit, errorCb: (VolleyError) -> Unit) {
+    override fun getNowPlayingMovies(page: Int, ctx: Context, successCb: (MovieListDto, String) -> Unit, errorCb: (VolleyError) -> Unit) {
         if (!isConnected(ctx))
             return errorCb(VolleyError())
         val url = NOW_PLAYING_URL + page
+        val tag = UUID.randomUUID().toString()
         val req = HttpRequest(
                 url,
                 MovieListDto::class.java,
-                successCb,
+                { movies -> successCb(movies, tag)},
                 errorCb
         )
+        req.tag = tag
         (ctx as MovieApplication).requestQueue.add(req)
     }
 
-    override fun getMovieDetails(id: Int, ctx: Context, successCb: (MovieDto) -> Unit, errorCb: (VolleyError) -> Unit) {
+    override fun getMovieDetails(id: Int, ctx: Context, successCb: (MovieDto, String) -> Unit, errorCb: (VolleyError) -> Unit) {
         if (!isConnected(ctx))
             return errorCb(VolleyError())
         val uri = java.lang.String.format(MOVIE_DETAILS_URL, id)
+        val tag = UUID.randomUUID().toString()
         val req = HttpRequest(
                 uri,
                 MovieDto::class.java,
-                successCb,
+                { movie -> successCb(movie, tag)},
                 errorCb
         )
+        req.tag = tag
         (ctx as MovieApplication).requestQueue.add(req)
     }
 
-    override fun getMostPopularMovies(page: Int, ctx: Context, successCb: (MovieListDto) -> Unit, errorCb: (VolleyError) -> Unit) {
+    override fun getMostPopularMovies(page: Int, ctx: Context, successCb: (MovieListDto, String) -> Unit, errorCb: (VolleyError) -> Unit) {
         if (!isConnected(ctx))
             return errorCb(VolleyError())
         val url =  MOST_POPULAR_URL + page
+        val tag = UUID.randomUUID().toString()
         val req = HttpRequest(
                 url,
                 MovieListDto::class.java,
-                successCb,
+                { movies -> successCb(movies, tag)},
                 errorCb
         )
+        req.tag = tag
+
         (ctx as MovieApplication).requestQueue.add(req)
     }
 
-    override fun getSimilarMovies(id: Int, ctx: Context, successCb: (MovieListDto) -> Unit, errorCb: (VolleyError) -> Unit) {
+    override fun getSimilarMovies(id: Int, ctx: Context, successCb: (MovieListDto, String) -> Unit, errorCb: (VolleyError) -> Unit) {
         if (!isConnected(ctx))
             return errorCb(VolleyError())
         val uri = java.lang.String.format(SIMILAR_MOVIES_URL, id)
+        val tag = UUID.randomUUID().toString()
         val req = HttpRequest(
                 uri,
                 MovieListDto::class.java,
-                successCb,
+                { movies -> successCb(movies, tag)},
                 errorCb
         )
+        req.tag = tag
         (ctx as MovieApplication).requestQueue.add(req)
     }
 

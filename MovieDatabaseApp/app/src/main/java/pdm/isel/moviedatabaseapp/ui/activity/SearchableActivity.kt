@@ -31,7 +31,7 @@ class SearchableActivity : BaseLayoutActivity() {
                     query,
                     1,
                     application,
-                    { movies -> displayMovies(movies) },
+                    { movies, _ -> displayMovies(movies) },
                     { error -> displayError(error) }
             )
         }
@@ -56,7 +56,7 @@ class SearchableActivity : BaseLayoutActivity() {
             (application as MovieApplication).remoteRepository.getMovieDetails(
                     movieAdapter.getItem(position).id,
                     application,
-                    { movie -> sendIntent(movie) },     //TODO: add similar movies, cast, etc eventually
+                    { movie, _ -> sendIntent(movie) },     //TODO: add similar movies, cast, etc eventually
                     { error -> displayError(error) }
             )
         }
@@ -69,7 +69,7 @@ class SearchableActivity : BaseLayoutActivity() {
                         query,
                         page,
                         application,
-                        { movies: MovieListDto -> movies.results.forEach { movieDto -> movieAdapter.add(movieDto) } },
+                        { movies, _ -> movies.results.forEach { movieDto -> movieAdapter.add(movieDto) } },
                         { error -> displayError(error) }
                 )
                 return true

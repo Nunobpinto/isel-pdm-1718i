@@ -5,19 +5,18 @@ import android.app.NotificationManager
 import android.app.job.JobParameters
 import android.app.job.JobService
 import android.content.Context
+import android.os.Handler
 import pdm.isel.moviedatabaseapp.MovieApplication
 import pdm.isel.moviedatabaseapp.R
 import pdm.isel.moviedatabaseapp.domain.model.FollowedMovie
-import pdm.isel.moviedatabaseapp.exceptions.AppException
-import pdm.isel.moviedatabaseapp.exceptions.RepoException
 import java.util.*
 
 class UpComingJobService : JobService() {
     @Volatile private var onGoingRequests: MutableList<String> = mutableListOf()
-    @Volatile private var uniqueId = 0
 
     companion object {
-        const val MAX_PAGES_ALLOWED = 1
+        const val MAX_PAGES_ALLOWED = 5
+        const val MAX_DELAY_MILIS: Long = 8000
         const val JOB_ID = 1234
     }
 
@@ -39,7 +38,7 @@ class UpComingJobService : JobService() {
         (application as MovieApplication).localRepository.getFollowedMovies(
                 { movies ->
                     movies.forEach {
-                        if(it.releaseDate.equals(currDate))
+                        if(it.releaseDate >= currDate)
                             sendNotification(it)
                     }
                 },
@@ -48,7 +47,6 @@ class UpComingJobService : JobService() {
     }
 
     private fun updateUpcomingTable(params: JobParameters?) {
-        uniqueId = 0
         (application as MovieApplication).localRepository.deleteTable(
                 "UPCOMING",
                 { jobFinished(params, true) }
@@ -61,26 +59,30 @@ class UpComingJobService : JobService() {
         (application as MovieApplication).remoteRepository.getUpComingMovies(
                 startPage,
                 (application as MovieApplication),
-                { movies ->
+                { movies, tag ->
+                    onGoingRequests.add(tag)
                     movies.results.forEach {
                         (application as MovieApplication).remoteRepository.getMovieDetails(
                                 it.id,
                                 (application as MovieApplication),
-                                { movie ->
+                                { movie, tag ->
+                                    onGoingRequests.add(tag)
                                     (application as MovieApplication).localRepository.insertMovie(
-                                            uniqueId++,
                                             movie,
                                             "UPCOMING",
-                                            { jobFinished(params, true) }
+                                            {  }
                                     )
                                 },
                                 { jobFinished(params, true) }
                         )
                     }
-                    if(++page <= MAX_PAGES_ALLOWED/*movies.totalPages != null && ++page <= movies.totalPages*/)
-                        return@getUpComingMovies fillUpcomingTable(page, params)
-                    else
-                        jobFinished(params, false)
+                    val handler = Handler()
+                    handler.postDelayed({
+                        if(++page <= MAX_PAGES_ALLOWED)
+                            return@postDelayed fillUpcomingTable(page, params)
+                        else
+                            jobFinished(params, false)
+                    }, MAX_DELAY_MILIS)
                 },
                 { jobFinished(params, true) }
         )
@@ -89,7 +91,7 @@ class UpComingJobService : JobService() {
     private fun sendNotification(movie: FollowedMovie) {
         val mBuilder = Notification.Builder(this)
                 .setSmallIcon(R.drawable.ic_icon)
-                .setContentTitle(movie.title + " is opening today!")
+                .setContentTitle(movie.title + " is opening this week!")
                 .setContentText("Hurray!")
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(11, mBuilder.build())

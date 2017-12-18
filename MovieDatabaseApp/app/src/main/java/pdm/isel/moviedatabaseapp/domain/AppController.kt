@@ -36,7 +36,7 @@ class AppController {
                 MOST_POPULAR -> params.app.remoteRepository.getMovieDetails(
                         params.id,
                         params.app,
-                        { movie -> params.successCb(Pair(null, movie)) },
+                        { movie, _ -> params.successCb(Pair(null, movie)) },
                         { error: VolleyError -> params.errorCb(ProviderException()) }
                 )
             }
@@ -46,7 +46,7 @@ class AppController {
             params.app.remoteRepository.getMostPopularMovies(
                     params.page,
                     params.app,
-                    { movies -> params.successCb(Pair(movies, null)) },
+                    { movies, _ -> params.successCb(Pair(movies, null)) },
                     { error: VolleyError -> params.errorCb(ProviderException("An internet connection is required to access this functionality")) }//TODO: add string to strings.xml
             )
         }

@@ -8,10 +8,9 @@ import pdm.isel.moviedatabaseapp.domain.model.Genres
 import pdm.isel.moviedatabaseapp.domain.model.MovieDto
 import pdm.isel.moviedatabaseapp.domain.model.MovieListDto
 
-fun MovieDto.toContentValues(uniqueId: Int): ContentValues {
+fun MovieDto.toContentValues(): ContentValues {
     val result = ContentValues()
     with(MovieContentProvider) {
-        result.put(ID, uniqueId)
         result.put(MOVIE_ID, id)
         result.put(TITLE, title)
         result.put(RELEASE_DATE, releaseDate)
