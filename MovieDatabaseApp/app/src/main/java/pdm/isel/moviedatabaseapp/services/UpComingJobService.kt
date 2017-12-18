@@ -38,7 +38,7 @@ class UpComingJobService : JobService() {
         (application as MovieApplication).localRepository.getFollowedMovies(
                 { movies ->
                     movies.forEach {
-                        if(it.releaseDate >= currDate)
+                        if(it.releaseDate >= currDate && (application as MovieApplication).preferences.getBoolean("notifications", false))
                             sendNotification(it)
                     }
                 },

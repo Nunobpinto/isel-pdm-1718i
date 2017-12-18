@@ -5,6 +5,8 @@ import android.app.job.JobInfo
 import android.app.job.JobScheduler
 import android.content.ComponentName
 import android.content.Context
+import android.content.SharedPreferences
+import android.preference.PreferenceManager
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.ImageLoader
 import com.android.volley.toolbox.Volley
@@ -25,6 +27,7 @@ class MovieApplication : Application() {
     @Volatile lateinit var remoteRepository: ITMDBMovieRepository
     @Volatile lateinit var localRepository: ILocalRepository
     @Volatile lateinit var imageLoader: ImageLoader
+    @Volatile lateinit var preferences : SharedPreferences
 
     override fun onCreate() {
         super.onCreate()
@@ -32,6 +35,10 @@ class MovieApplication : Application() {
         localRepository = LocalMovieRepository(this)
         requestQueue = Volley.newRequestQueue(this)
         imageLoader = ImageLoader(requestQueue, ImageCache())
+        preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        preferences.registerOnSharedPreferenceChangeListener{sharedPreferences, key ->
+
+        }
 
         configureServices()
         //configureNotifications()

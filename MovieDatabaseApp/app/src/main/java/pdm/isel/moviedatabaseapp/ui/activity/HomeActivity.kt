@@ -17,7 +17,6 @@ class HomeActivity : BaseLayoutActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         progressBar.visibility = View.INVISIBLE
         my_toolbar.title = resources.getString(R.string.home)
 
