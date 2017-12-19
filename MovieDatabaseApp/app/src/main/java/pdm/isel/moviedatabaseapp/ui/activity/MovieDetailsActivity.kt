@@ -18,29 +18,38 @@ class MovieDetailsActivity : BaseLayoutActivity() {
     override val toolbar: Int? = R.id.my_toolbar
     override val menu: Int? = R.menu.menu
     override val layout: Int = R.layout.activity_movie_details
+    private var movie : MovieDto? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         my_toolbar.setNavigationIcon(R.drawable.ic_keyboard_backspace_black_24dp)
         my_toolbar.setNavigationOnClickListener({ onBackPressed() })
 
-        val intent = intent
-        val id: Int = intent.getIntExtra("id", 0)
-        val source: String = intent.getStringExtra("source")
+        if(savedInstanceState != null){
+            this.movie = savedInstanceState.getParcelable("movie")
+            displayMovie(movie!!)
+        }
+        else{
+            val intent = intent
+            val id: Int = intent.getIntExtra("id", 0)
+            val source: String = intent.getStringExtra("source")
 
-        AppController.actionHandler(
-                AppController.MOVIE_DETAILS,
-                ParametersContainer(
-                        app = (application as MovieApplication),
-                        id = id,
-                        successCb = { pair -> displayMovie(pair.second!!) },
-                        errorCb = { error -> displayError(error) },
-                        source = source
-                )
-        )
+            AppController.actionHandler(
+                    AppController.MOVIE_DETAILS,
+                    ParametersContainer(
+                            app = (application as MovieApplication),
+                            id = id,
+                            successCb = { pair -> displayMovie(pair.second!!) },
+                            errorCb = { error -> displayError(error) },
+                            source = source
+                    )
+            )
+        }
+
     }
 
     private fun displayMovie(movie: MovieDto) {
+        this.movie = movie
         posterView.setDefaultImageResId(R.drawable.default_poster)
         movieTitleView.text = movie.title
         overviewView.text = movie.overview
@@ -98,6 +107,15 @@ class MovieDetailsActivity : BaseLayoutActivity() {
 
     private fun makeToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState!!.putParcelable("movie",movie)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        this.movie = savedInstanceState!!.getParcelable("movie")
     }
 
     private fun urlBuilder(path: String) = "http://image.tmdb.org/t/p/w185/$path?$"

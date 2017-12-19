@@ -37,5 +37,7 @@
         <item>Ambos</item>
     </string-array>
     <string name="network_list_default">Apenas com Wi-fi</string>
+    <string name="follow">SEGUIR</string>
+    <string name="unfollow">DEIXAR DE SEGUIR</string>
 
 </resources>

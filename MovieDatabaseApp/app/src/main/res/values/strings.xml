@@ -43,4 +43,6 @@
         <item>Both</item>
     </string-array>
     <string name="network_list_default">Only Wi-fi</string>
+    <string name="follow">FOLLOW</string>
+    <string name="unfollow">UNFOLLOW</string>
 </resources>
