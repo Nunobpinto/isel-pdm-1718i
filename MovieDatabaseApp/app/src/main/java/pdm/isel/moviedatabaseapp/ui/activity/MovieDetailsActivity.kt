@@ -10,6 +10,9 @@ import pdm.isel.moviedatabaseapp.R
 import pdm.isel.moviedatabaseapp.domain.model.MovieDto
 import java.util.*
 import android.widget.Toast
+import pdm.isel.moviedatabaseapp.domain.AppController
+import pdm.isel.moviedatabaseapp.domain.ParametersContainer
+import pdm.isel.moviedatabaseapp.exceptions.AppException
 
 class MovieDetailsActivity : BaseLayoutActivity() {
     override val toolbar: Int? = R.id.my_toolbar
@@ -22,8 +25,22 @@ class MovieDetailsActivity : BaseLayoutActivity() {
         my_toolbar.setNavigationOnClickListener({ onBackPressed() })
 
         val intent = intent
-        val movie: MovieDto = intent.getParcelableExtra("movie")
+        val id: Int = intent.getIntExtra("id", 0)
+        val source: String = intent.getStringExtra("source")
 
+        AppController.actionHandler(
+                AppController.MOVIE_DETAILS,
+                ParametersContainer(
+                        app = (application as MovieApplication),
+                        id = id,
+                        successCb = { pair -> displayMovie(pair.second!!) },
+                        errorCb = { error -> displayError(error) },
+                        source = source
+                )
+        )
+    }
+
+    private fun displayMovie(movie: MovieDto) {
         posterView.setDefaultImageResId(R.drawable.default_poster)
         movieTitleView.text = movie.title
         overviewView.text = movie.overview
@@ -67,18 +84,8 @@ class MovieDetailsActivity : BaseLayoutActivity() {
             toggleButton.visibility = View.INVISIBLE
     }
 
-
-    private fun urlBuilder(path: String) = "http://image.tmdb.org/t/p/w185/$path?$"
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        var intent: Intent? = null
-        when(item?.itemId) {
-            R.id.action_about -> intent = Intent(this, ReferencesActivity::class.java)
-            R.id.action_home -> intent = Intent(this, HomeActivity::class.java)
-            R.id.action_preferences -> intent = Intent(this, PreferencesActivity::class.java)
-        }
-        startActivity(intent!!)
-        return true
+    private fun displayError(error: AppException) {
+        makeToast(error.message.toString())
     }
 
     private fun parseCurrentDate(): String {
@@ -91,5 +98,18 @@ class MovieDetailsActivity : BaseLayoutActivity() {
 
     private fun makeToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    }
+
+    private fun urlBuilder(path: String) = "http://image.tmdb.org/t/p/w185/$path?$"
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        var intent: Intent? = null
+        when(item?.itemId) {
+            R.id.action_about -> intent = Intent(this, ReferencesActivity::class.java)
+            R.id.action_home -> intent = Intent(this, HomeActivity::class.java)
+            R.id.action_preferences -> intent = Intent(this, PreferencesActivity::class.java)
+        }
+        startActivity(intent!!)
+        return true
     }
 }

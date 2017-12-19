@@ -9,6 +9,7 @@ import com.android.volley.VolleyError
 import kotlinx.android.synthetic.main.activity_searchable.*
 import pdm.isel.moviedatabaseapp.MovieApplication
 import pdm.isel.moviedatabaseapp.R
+import pdm.isel.moviedatabaseapp.domain.AppController
 import pdm.isel.moviedatabaseapp.domain.model.MovieDto
 import pdm.isel.moviedatabaseapp.domain.model.MovieListDto
 import pdm.isel.moviedatabaseapp.ui.adapter.MovieAdapter
@@ -62,12 +63,13 @@ class SearchableActivity : BaseLayoutActivity() {
 
         movieListView.setOnItemClickListener { parent, view, position, id ->
             //TODO: Get movie details through repo class, instead of hardcoded request here
-            (application as MovieApplication).remoteRepository.getMovieDetails(
-                    movieAdapter.getItem(position).id,
-                    application,
-                    { movie, _ -> sendIntent(movie) },     //TODO: add similar movies, cast, etc eventually
-                    { error -> displayError(error) }
-            )
+//            (application as MovieApplication).remoteRepository.getMovieDetails(
+//                    movieAdapter.getItem(position).id,
+//                    application,
+//                    { movie, _ -> sendIntent(movie) },     //TODO: add similar movies, cast, etc eventually
+//                    { error -> displayError(error) }
+//            )
+            sendIntent(movieAdapter.getItem(position).id)
         }
 
         if (movies.page == null)
@@ -97,14 +99,15 @@ class SearchableActivity : BaseLayoutActivity() {
         return true
     }
 
-    private fun sendIntent(movie: MovieDto) {
+    private fun sendIntent(id: Int) {
         val intent = Intent(this, MovieDetailsActivity::class.java)
-        intent.putExtra("toolbarText", "Details of " + movie.title)
-        intent.putExtra("movie", movie)
+        intent.putExtra("id", id)
+        intent.putExtra("source", AppController.MOVIE_DETAILS)
         startActivity(intent)
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
         outState!!.putParcelable("list",movieList)
     }
 

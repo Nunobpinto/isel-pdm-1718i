@@ -1,10 +1,12 @@
 package pdm.isel.moviedatabaseapp
 
 import android.app.Application
-import android.app.ApplicationErrorReport
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.job.JobInfo
 import android.app.job.JobScheduler
 import android.content.*
+import android.graphics.Color
 import android.os.BatteryManager
 import android.preference.PreferenceManager
 import com.android.volley.RequestQueue
@@ -27,7 +29,13 @@ class MovieApplication : Application() {
     @Volatile lateinit var remoteRepository: ITMDBMovieRepository
     @Volatile lateinit var localRepository: ILocalRepository
     @Volatile lateinit var imageLoader: ImageLoader
-    @Volatile lateinit var preferences: SharedPreferences
+
+    private lateinit var nowPlayingBuilder: JobInfo.Builder
+    private lateinit var upcomingBuilder: JobInfo.Builder
+
+    private val listener = SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
+        scheduleServices(sharedPreferences)
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -35,95 +43,70 @@ class MovieApplication : Application() {
         localRepository = LocalMovieRepository(this)
         requestQueue = Volley.newRequestQueue(this)
         imageLoader = ImageLoader(requestQueue, ImageCache())
-        preferences = PreferenceManager.getDefaultSharedPreferences(this)
-
-        val exhibitionBuilder = JobInfo.Builder(
+        PreferenceManager.setDefaultValues(this, R.xml.shared_preferences, false);
+        nowPlayingBuilder = JobInfo.Builder(
                 NowPlayingJobService.JOB_ID,
                 ComponentName(this, NowPlayingJobService::class.java)
         )
-        val upcomingBuilder = JobInfo.Builder(
+        upcomingBuilder = JobInfo.Builder(
                 UpComingJobService.JOB_ID,
                 ComponentName(this, UpComingJobService::class.java)
         )
 
-        configureServices(exhibitionBuilder, upcomingBuilder)
-
-        preferences.registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
-            configureServices(sharedPreferences, exhibitionBuilder, upcomingBuilder)
-        }
-
-
-        //configureNotifications()
+        configureNotifications()
+        configureJobServices()
     }
 
-    /*
-        private fun configureNotifications() {
-            val mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            val id = "followed_movies_channel"
+    private fun configureNotifications() {
+        val mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val id = "followed_movies_channel"
 
-    //        val name = getString(R.string.channel_name)
-    //        val description = getString(R.string.channel_description)
-            val importance = NotificationManager.IMPORTANCE_HIGH
-            val mChannel = NotificationChannel(id, "Followed Movies", importance)
+        val importance = NotificationManager.IMPORTANCE_HIGH
+        val mChannel = NotificationChannel(id, getString(R.string.notification_channel_name), importance)
 
-            mChannel.setDescription("Receive notifications reminding you when a movie is released")
-            mChannel.enableLights(true)
+        mChannel.description = getString(R.string.notification_channel_description)
+        mChannel.enableLights(true)
 
-            mChannel.setLightColor(Color.WHITE)
-            mChannel.enableVibration(true)
-            mNotificationManager.createNotificationChannel(mChannel)
+        mChannel.lightColor = Color.YELLOW
+        mChannel.enableVibration(true)
+        mNotificationManager.createNotificationChannel(mChannel)
 
-        }
-    */
-    private fun batteryLevel(): Int {
-        var bm : BatteryManager = getSystemService(Context.BATTERY_SERVICE) as BatteryManager
-        return bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
     }
 
-    private fun configureServices(exhibitionBuilder: JobInfo.Builder, upcomingBuilder: JobInfo.Builder) {
-        val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
-        jobScheduler.schedule(exhibitionBuilder
-                .setPeriodic(TimeUnit.DAYS.toMillis(7))
-                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
-                .setRequiresBatteryNotLow(true)
-                .build()
-        )
-        jobScheduler.schedule(upcomingBuilder
-                .setPeriodic(TimeUnit.DAYS.toMillis(7))
-                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
-                .build()
-        )
+
+    private fun configureJobServices() {
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .registerOnSharedPreferenceChangeListener(listener)
+        scheduleServices()
     }
 
-    private fun configureServices(sharedPreferences: SharedPreferences, exhibitionBuilder: JobInfo.Builder, upcomingBuilder: JobInfo.Builder) {
+    private fun scheduleServices(
+            sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+    ) {
         val network =
-                when (sharedPreferences.getString("networkType", null)) {
+                when(sharedPreferences.getString("networkType", null)) {
                     "Only Wi-fi" -> JobInfo.NETWORK_TYPE_UNMETERED
                     "Only Mobile Network" -> JobInfo.NETWORK_TYPE_METERED
                     else -> JobInfo.NETWORK_TYPE_ANY
                 }
-
         val periodic =
-                when (sharedPreferences.getString("updateFrequency", null)) {
+                when(sharedPreferences.getString("updateFrequency", null)) {
                     "Daily" -> TimeUnit.DAYS.toMillis(1)
                     "Weekly" -> TimeUnit.DAYS.toMillis(7)
                     else -> TimeUnit.DAYS.toMillis(30)
                 }
 
         val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
-
-        if (batteryLevel() >= sharedPreferences.getString("battery", null).toInt()){
-            jobScheduler.schedule(exhibitionBuilder
-                    .setPeriodic(periodic)
-                    .setRequiredNetworkType(network)
-                    .build()
-            )
-            jobScheduler.schedule(upcomingBuilder
-                    .setPeriodic(periodic)
-                    .setRequiredNetworkType(network)
-                    .build()
-            )
-        }
+        jobScheduler.schedule(nowPlayingBuilder
+                .setPeriodic(periodic)
+                .setRequiredNetworkType(network)
+                .build()
+        )
+        jobScheduler.schedule(upcomingBuilder
+                .setPeriodic(periodic)
+                .setRequiredNetworkType(network)
+                .build()
+        )
     }
 
     private fun readAPIKEY(): String {

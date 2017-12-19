@@ -6,26 +6,22 @@
         android:title="dummy" />
 
     <SwitchPreference
+        android:defaultValue="true"
         android:key="notifications"
-        android:title="@string/notifications"/>
+        android:title="@string/notifications" />
 
     <ListPreference
-        android:entries="@array/battery_list"
-        android:entryValues="@array/battery_list"
-        android:key="battery"
-        android:title="@string/battery"/>
-
-    <ListPreference
+        android:defaultValue="@string/update_list_default"
         android:entries="@array/update_list"
         android:entryValues="@array/update_list"
         android:key="updateFrequency"
         android:title="@string/update" />
 
     <ListPreference
-        android:entries = "@array/network_list"
+        android:entries="@array/network_list"
+        android:defaultValue="@string/network_list_default"
         android:entryValues="@array/network_list"
         android:key="networkType"
-        android:title="@string/network"
-        />
+        android:title="@string/network" />
 
 </PreferenceScreen>

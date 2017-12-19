@@ -64,16 +64,17 @@ class MovieListActivity : BaseLayoutActivity() {
         movieListView.emptyView = empty
 
         movieListView.setOnItemClickListener { parent, view, position, id ->
-            AppController.actionHandler(
-                    "MOVIE_DETAILS",
-                    ParametersContainer(
-                            app = (application as MovieApplication),
-                            id = movieAdapter.getItem(position).id,
-                            successCb = { pair -> sendIntent(pair.second!!) },
-                            errorCb = { error -> displayError(error) },
-                            source = action
-                    )
-            )
+//            AppController.actionHandler(
+//                    "MOVIE_DETAILS",
+//                    ParametersContainer(
+//                            app = (application as MovieApplication),
+//                            id = movieAdapter.getItem(position).id,
+//                            successCb = { pair -> sendIntent(pair.second!!) },
+//                            errorCb = { error -> displayError(error) },
+//                            source = action
+//                    )
+//            )
+            sendIntent(movieAdapter.getItem(position).id)
         }
 
         if (movies.page == null)
@@ -105,22 +106,23 @@ class MovieListActivity : BaseLayoutActivity() {
         return true
     }
 
-    private fun sendIntent(movie: MovieDto) {
-        val intent = Intent(this, MovieDetailsActivity::class.java)
-        intent.putExtra("toolbarText", "Details of " + movie.title)
-        intent.putExtra("movie", movie)
-        startActivity(intent)
-    }
-
-    private fun displayError(error: AppException) {
-        Toast.makeText(this, error.message, Toast.LENGTH_LONG).show()
-    }
-
     override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
         outState!!.putParcelable("list",movieList)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
        this.movieList = savedInstanceState!!.getParcelable("list")
+    }
+
+    private fun sendIntent(id: Int) {
+        val intent = Intent(this, MovieDetailsActivity::class.java)
+        intent.putExtra("id", id)
+        intent.putExtra("source", action)
+        startActivity(intent)
+    }
+
+    private fun displayError(error: AppException) {
+        Toast.makeText(this, error.message, Toast.LENGTH_LONG).show()
     }
 }

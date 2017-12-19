@@ -20,31 +20,27 @@
     <string name="noResultsFound">No Results Found</string>
     <string name="non_query">You did not enter a name for a movie</string>
     <string name="errorInfo">Error Getting Information</string>
-    <string name="battery">Don´t Update with Battery lower than:</string>
     <string name="update">Update Frequency</string>
     <string name="notifications">Notifications</string>
     <string name="preferences">Preferences</string>
     <string name="network">Choose Network Type</string>
     <string name="rating" translatable="false">%.1f/10</string>
     <string name="runtime" translatable="false">%dmin</string>
-
-    <string-array name="battery_list">
-        <item>15%</item>
-        <item>25%</item>
-        <item>35%</item>
-    </string-array>
+    <string name="DateRange">From %s to %s</string>
+    <string name="notification_channel_name">Followed Movies</string>
+    <string name="notification_channel_description">Receive notifications reminding you when a movie is released</string>
 
     <string-array name="update_list">
         <item>Daily</item>
         <item>Weekly</item>
         <item>Monthly</item>
     </string-array>
+    <string name="update_list_default">Daily</string>
 
     <string-array name="network_list">
         <item>Only Wi-fi</item>
         <item>Only Mobile Network</item>
         <item>Both</item>
     </string-array>
-    <string name="DateRange">From %s to %s</string>
-
+    <string name="network_list_default">Only Wi-fi</string>
 </resources>

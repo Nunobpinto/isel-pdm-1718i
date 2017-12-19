@@ -2,13 +2,18 @@ package pdm.isel.moviedatabaseapp.services
 
 import android.app.Notification
 import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.TaskStackBuilder
 import android.app.job.JobParameters
 import android.app.job.JobService
 import android.content.Context
+import android.content.Intent
 import android.os.Handler
+import android.preference.PreferenceManager
 import pdm.isel.moviedatabaseapp.MovieApplication
 import pdm.isel.moviedatabaseapp.R
 import pdm.isel.moviedatabaseapp.domain.model.FollowedMovie
+import pdm.isel.moviedatabaseapp.ui.activity.MovieDetailsActivity
 import java.util.*
 
 class UpComingJobService : JobService() {
@@ -39,7 +44,7 @@ class UpComingJobService : JobService() {
         (application as MovieApplication).localRepository.getFollowedMovies(
                 { movies ->
                     movies.forEach {
-                        if(it.releaseDate >= currDate && (application as MovieApplication).preferences.getBoolean("notifications", false))
+                        if(it.releaseDate >= currDate && PreferenceManager.getDefaultSharedPreferences(this).getBoolean("notifications", false))
                             sendNotification(it)
                     }
                 },
@@ -89,10 +94,20 @@ class UpComingJobService : JobService() {
     }
 
     private fun sendNotification(movie: FollowedMovie) {
+        val intent = Intent(applicationContext, MovieDetailsActivity::class.java)
+        intent.putExtra("id", movie.id)
+        val pendingIntent = TaskStackBuilder.create(applicationContext)
+                .addParentStack(MovieDetailsActivity::class.java)
+                .addNextIntent(intent)
+                .getPendingIntent(0, PendingIntent.FLAG_ONE_SHOT)
+
+
         val mBuilder = Notification.Builder(this)
                 .setSmallIcon(R.drawable.ic_icon)
                 .setContentTitle(movie.title + " is opening this week!")
                 .setContentText("Hurray!")
+                .setContentIntent(pendingIntent)
+                .setChannelId("followed_movies_channel")
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(11, mBuilder.build())
     }

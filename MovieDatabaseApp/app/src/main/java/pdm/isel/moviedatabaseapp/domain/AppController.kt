@@ -27,13 +27,13 @@ class AppController {
 
         private fun movieDetails(params: ParametersContainer) {
             when (params.source) {
-                UPCOMING, NOW_PLAYING -> params.app.localRepository.getMovieDetails(
+                UPCOMING, NOW_PLAYING  -> params.app.localRepository.getMovieDetails(
                         params.id,
                         params.source,
                         { movie -> params.successCb(Pair(null, movie)) },
                         { error -> params.errorCb(RepoException(error.message.toString())) }
                 )
-                MOST_POPULAR -> params.app.remoteRepository.getMovieDetails(
+                MOST_POPULAR, MOVIE_DETAILS -> params.app.remoteRepository.getMovieDetails(
                         params.id,
                         params.app,
                         { movie, _ -> params.successCb(Pair(null, movie)) },
