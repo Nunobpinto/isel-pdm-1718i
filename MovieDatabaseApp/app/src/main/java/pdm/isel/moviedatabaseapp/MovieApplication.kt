@@ -85,14 +85,14 @@ class MovieApplication : Application() {
     ) {
         val network =
                 when(sharedPreferences.getString("networkType", null)) {
-                    "Only Wi-fi" -> JobInfo.NETWORK_TYPE_UNMETERED
-                    "Only Mobile Network" -> JobInfo.NETWORK_TYPE_METERED
+                    resources.getStringArray(R.array.network_list).get(0) -> JobInfo.NETWORK_TYPE_UNMETERED
+                    resources.getStringArray(R.array.network_list).get(1) -> JobInfo.NETWORK_TYPE_METERED
                     else -> JobInfo.NETWORK_TYPE_ANY
                 }
         val periodic =
                 when(sharedPreferences.getString("updateFrequency", null)) {
-                    "Daily" -> TimeUnit.DAYS.toMillis(1)
-                    "Weekly" -> TimeUnit.DAYS.toMillis(7)
+                    resources.getStringArray(R.array.update_list).get(0) -> TimeUnit.DAYS.toMillis(1)
+                    resources.getStringArray(R.array.update_list).get(1) -> TimeUnit.DAYS.toMillis(7)
                     else -> TimeUnit.DAYS.toMillis(30)
                 }
 

@@ -11,7 +11,7 @@ class NowPlayingJobService : JobService() {
 
     companion object {
         const val MAX_PAGES_ALLOWED = 5
-        const val MAX_DELAY_MILIS: Long = 6000
+        const val MAX_DELAY_MILIS: Long = 6500
         const val JOB_ID = 2000
     }
 

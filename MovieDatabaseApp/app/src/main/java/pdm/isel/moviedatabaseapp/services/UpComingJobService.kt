@@ -12,6 +12,7 @@ import android.os.Handler
 import android.preference.PreferenceManager
 import pdm.isel.moviedatabaseapp.MovieApplication
 import pdm.isel.moviedatabaseapp.R
+import pdm.isel.moviedatabaseapp.domain.AppController
 import pdm.isel.moviedatabaseapp.domain.model.FollowedMovie
 import pdm.isel.moviedatabaseapp.ui.activity.MovieDetailsActivity
 import java.util.*
@@ -22,7 +23,7 @@ class UpComingJobService : JobService() {
 
     companion object {
         const val MAX_PAGES_ALLOWED = 5
-        const val MAX_DELAY_MILIS: Long = 8000
+        const val MAX_DELAY_MILIS: Long = 4000
         const val JOB_ID = 1234
     }
 
@@ -96,6 +97,7 @@ class UpComingJobService : JobService() {
     private fun sendNotification(movie: FollowedMovie) {
         val intent = Intent(applicationContext, MovieDetailsActivity::class.java)
         intent.putExtra("id", movie.id)
+        intent.putExtra("source", AppController.UPCOMING)
         val pendingIntent = TaskStackBuilder.create(applicationContext)
                 .addParentStack(MovieDetailsActivity::class.java)
                 .addNextIntent(intent)
