@@ -23,6 +23,11 @@
     <string name="DateRange">De %s até %s</string>
     <string name="notification_channel_name">Filmes Seguidos</string>
     <string name="notification_channel_description">Recebe notificações quando um filme estreia nos cinemas</string>
+    <string name="errorLoadingFollowedMovie">Erro ao carregar os filmes que estou a seguir</string>
+    <string name="movieFollowed">Filme Seguido!</string>
+    <string name="couldntfollowMovie">Não é possível seguir o Filme!</string>
+    <string name="movieUnfollowed">Filme deixado de seguir!</string>
+    <string name="couldntUnfollowMovie">Não foi possível deixar de seguir o Filme!</string>
 
     <string-array name="update_list">
         <item>Diariamente</item>

@@ -2,35 +2,37 @@ package pdm.isel.moviedatabaseapp.ui.activity
 
 import android.app.SearchManager
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import com.android.volley.VolleyError
 import kotlinx.android.synthetic.main.activity_searchable.*
 import pdm.isel.moviedatabaseapp.MovieApplication
 import pdm.isel.moviedatabaseapp.R
 import pdm.isel.moviedatabaseapp.domain.AppController
-import pdm.isel.moviedatabaseapp.domain.model.MovieDto
 import pdm.isel.moviedatabaseapp.domain.model.MovieListDto
 import pdm.isel.moviedatabaseapp.ui.adapter.MovieAdapter
 
 class SearchableActivity : BaseLayoutActivity() {
     override val toolbar: Int? = R.id.my_toolbar
     override val menu: Int? = R.menu.menu
-    override val layout: Int = R.layout.activity_movie_list
+    override val layout: Int = R.layout.activity_searchable
     var query: String = ""
     private var movieList : MovieListDto? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        progressBarList.indeterminateDrawable.setColorFilter(
+                Color.BLACK, android.graphics.PorterDuff.Mode.SRC_IN)
         this.my_toolbar.title = resources.getString(R.string.searchResults)
         val intent = intent
             if (Intent.ACTION_SEARCH == intent.action) {
-                //TODO: add progress bar
                 query = intent.getStringExtra(SearchManager.QUERY)
                 if(savedInstanceState != null){
                     movieList = savedInstanceState.getParcelable("list")
+                    progressBarList.visibility = View.INVISIBLE
                     displayMovies(movieList!!)
                 }
                 else{
@@ -38,12 +40,16 @@ class SearchableActivity : BaseLayoutActivity() {
                         query,
                         1,
                         application,
-                        { movies, _ -> displayMovies(movies) },
+                        { movies, _ ->
+                            run {
+                                progressBarList.visibility = View.INVISIBLE
+                                displayMovies(movies)
+                            }
+                        },
                         { error -> displayError(error) }
                 )
             }
         }
-
     }
 
     private fun displayError(error: VolleyError) {
@@ -62,13 +68,6 @@ class SearchableActivity : BaseLayoutActivity() {
         movieListView.emptyView = empty
 
         movieListView.setOnItemClickListener { parent, view, position, id ->
-            //TODO: Get movie details through repo class, instead of hardcoded request here
-//            (application as MovieApplication).remoteRepository.getMovieDetails(
-//                    movieAdapter.getItem(position).id,
-//                    application,
-//                    { movie, _ -> sendIntent(movie) },     //TODO: add similar movies, cast, etc eventually
-//                    { error -> displayError(error) }
-//            )
             sendIntent(movieAdapter.getItem(position).id)
         }
 

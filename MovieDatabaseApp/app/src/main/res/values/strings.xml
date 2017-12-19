@@ -29,6 +29,11 @@
     <string name="DateRange">From %s to %s</string>
     <string name="notification_channel_name">Followed Movies</string>
     <string name="notification_channel_description">Receive notifications reminding you when a movie is released</string>
+    <string name="errorLoadingFollowedMovie">Error loading followed movies</string>
+    <string name="movieFollowed">Movie followed!</string>
+    <string name="couldntfollowMovie">Couldn\'t follow the movie!</string>
+    <string name="movieUnfollowed">Movie Unfollowed!</string>
+    <string name="couldntUnfollowMovie">Couldn\'t unfollow movie!</string>
 
     <string-array name="update_list">
         <item>Daily</item>
@@ -45,4 +50,5 @@
     <string name="network_list_default">Only Wi-fi</string>
     <string name="follow">FOLLOW</string>
     <string name="unfollow">UNFOLLOW</string>
+
 </resources>

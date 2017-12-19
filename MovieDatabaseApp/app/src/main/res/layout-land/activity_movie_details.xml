@@ -8,6 +8,17 @@
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="81dp">
 
+    <ProgressBar
+        android:id="@+id/progressBarMovie"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
@@ -44,13 +55,17 @@
         android:id="@+id/toggleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:checked="false"
         android:text="ToggleButton"
         android:textOff="@string/follow"
         android:textOn="@string/unfollow"
-        app:layout_constraintStart_toEndOf="@+id/ratingView"
-        app:layout_constraintTop_toBottomOf="@+id/posterView" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/posterView"
+        app:layout_constraintTop_toBottomOf="@+id/my_toolbar"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/releaseDateView"
@@ -178,5 +193,6 @@
         app:layout_constraintBottom_toTopOf="@+id/ratingView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/my_toolbar"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/default_poster" />
 </android.support.constraint.ConstraintLayout>

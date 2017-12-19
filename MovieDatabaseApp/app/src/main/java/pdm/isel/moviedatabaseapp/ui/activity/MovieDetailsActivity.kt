@@ -1,6 +1,7 @@
 package pdm.isel.moviedatabaseapp.ui.activity
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -18,18 +19,20 @@ class MovieDetailsActivity : BaseLayoutActivity() {
     override val toolbar: Int? = R.id.my_toolbar
     override val menu: Int? = R.menu.menu
     override val layout: Int = R.layout.activity_movie_details
-    private var movie : MovieDto? = null
+    private var movie: MovieDto? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        progressBarMovie.indeterminateDrawable.setColorFilter(
+                Color.BLACK, android.graphics.PorterDuff.Mode.SRC_IN)
         my_toolbar.setNavigationIcon(R.drawable.ic_keyboard_backspace_black_24dp)
         my_toolbar.setNavigationOnClickListener({ onBackPressed() })
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             this.movie = savedInstanceState.getParcelable("movie")
+            progressBarMovie.visibility = View.INVISIBLE
             displayMovie(movie!!)
-        }
-        else{
+        } else {
             val intent = intent
             val id: Int = intent.getIntExtra("id", 0)
             val source: String = intent.getStringExtra("source")
@@ -39,13 +42,17 @@ class MovieDetailsActivity : BaseLayoutActivity() {
                     ParametersContainer(
                             app = (application as MovieApplication),
                             id = id,
-                            successCb = { pair -> displayMovie(pair.second!!) },
+                            successCb = { pair ->
+                                run {
+                                    progressBarMovie.visibility = View.INVISIBLE
+                                    displayMovie(pair.second!!)
+                                }
+                            },
                             errorCb = { error -> displayError(error) },
                             source = source
                     )
             )
         }
-
     }
 
     private fun displayMovie(movie: MovieDto) {
@@ -56,9 +63,9 @@ class MovieDetailsActivity : BaseLayoutActivity() {
         ratingView.text = resources.getString(R.string.rating, movie.voteAverage)
         runtimeView.text = resources.getString(R.string.runtime, movie.runtime)
         releaseDateView.text = movie.releaseDate
-        if(movie.poster != null)
+        if (movie.poster != null)
             posterView.setImageUrl(urlBuilder(movie.poster), (application as MovieApplication).imageLoader)
-        if(movie.genres != null)
+        if (movie.genres != null)
             genresView.text = movie.genres.joinToString(", ") { it.name }
 
         configureToggleButton(movie)
@@ -66,17 +73,17 @@ class MovieDetailsActivity : BaseLayoutActivity() {
 
     private fun configureToggleButton(movie: MovieDto) {
         val date = parseCurrentDate()
-        if(movie.releaseDate != null && movie.releaseDate > date) {
+        if (movie.releaseDate != null && movie.releaseDate > date) {
             (application as MovieApplication).localRepository.getFollowedMovies(
                     { movies -> toggleButton.isChecked = movies.any { it.id == movie.id } },
-                    { makeToast("Error loading followed movies") }
+                    { Toast.makeText(this, R.string.errorLoadingFollowedMovie, Toast.LENGTH_LONG).show() }
             )
             toggleButton.setOnCheckedChangeListener({ _, isChecked ->
-                if(!isChecked) {
+                if (!isChecked) {
                     (application as MovieApplication).localRepository.unfollowMovie(
                             movie.id,
-                            { makeToast("Movie unfollowed!") },
-                            { makeToast("Couldn't unfollow movie!") }
+                            { Toast.makeText(this, R.string.movieUnfollowed, Toast.LENGTH_LONG).show() },
+                            { Toast.makeText(this, R.string.couldntUnfollowMovie, Toast.LENGTH_LONG).show() }
                     )
                 } else {
                     (application as MovieApplication).localRepository.followMovie(
@@ -84,8 +91,8 @@ class MovieDetailsActivity : BaseLayoutActivity() {
                             movie.title!!,
                             movie.poster!!,
                             movie.releaseDate,
-                            { makeToast("Movie followed!") },
-                            { makeToast("Couldn't follow the movie!") }
+                            { Toast.makeText(this, R.string.movieFollowed, Toast.LENGTH_LONG).show() },
+                            { Toast.makeText(this, R.string.couldntfollowMovie, Toast.LENGTH_LONG).show() }
                     )
                 }
             })
@@ -111,7 +118,7 @@ class MovieDetailsActivity : BaseLayoutActivity() {
 
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
-        outState!!.putParcelable("movie",movie)
+        outState!!.putParcelable("movie", movie)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
@@ -122,7 +129,7 @@ class MovieDetailsActivity : BaseLayoutActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         var intent: Intent? = null
-        when(item?.itemId) {
+        when (item?.itemId) {
             R.id.action_about -> intent = Intent(this, ReferencesActivity::class.java)
             R.id.action_home -> intent = Intent(this, HomeActivity::class.java)
             R.id.action_preferences -> intent = Intent(this, PreferencesActivity::class.java)

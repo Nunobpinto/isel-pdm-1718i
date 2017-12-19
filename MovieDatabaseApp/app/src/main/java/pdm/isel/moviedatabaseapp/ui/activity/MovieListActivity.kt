@@ -1,9 +1,10 @@
 package pdm.isel.moviedatabaseapp.ui.activity
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_movie_list.*
 import pdm.isel.moviedatabaseapp.ui.adapter.MovieAdapter
@@ -11,7 +12,6 @@ import pdm.isel.moviedatabaseapp.MovieApplication
 import pdm.isel.moviedatabaseapp.R
 import pdm.isel.moviedatabaseapp.domain.AppController
 import pdm.isel.moviedatabaseapp.domain.ParametersContainer
-import pdm.isel.moviedatabaseapp.domain.model.MovieDto
 import pdm.isel.moviedatabaseapp.domain.model.MovieListDto
 import pdm.isel.moviedatabaseapp.exceptions.AppException
 
@@ -24,10 +24,13 @@ class MovieListActivity : BaseLayoutActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        progressBarList.indeterminateDrawable.setColorFilter(
+                Color.BLACK, android.graphics.PorterDuff.Mode.SRC_IN)
         val intent = intent
         action = intent.getStringExtra("action")
         if(savedInstanceState!=null){
             movieList = savedInstanceState.getParcelable("list")
+            progressBarList.visibility = View.INVISIBLE
             displayMovies(movieList!!,intent.getStringExtra("toolbarText"))
         }
         else{
@@ -35,12 +38,16 @@ class MovieListActivity : BaseLayoutActivity() {
                     action,
                     ParametersContainer(
                             app = (application as MovieApplication),
-                            successCb = { pair -> displayMovies(pair.first!!, intent.getStringExtra("toolbarText")) },
+                            successCb = { pair ->
+                                run {
+                                    progressBarList.visibility = View.INVISIBLE
+                                    displayMovies(pair.first!!, intent.getStringExtra("toolbarText"))
+                                }
+                            },
                             errorCb = { error -> displayError(error) }
                     )
             )
         }
-
     }
 
     private fun displayMovies(movies: MovieListDto, toolbarText: String) {
@@ -64,16 +71,6 @@ class MovieListActivity : BaseLayoutActivity() {
         movieListView.emptyView = empty
 
         movieListView.setOnItemClickListener { parent, view, position, id ->
-//            AppController.actionHandler(
-//                    "MOVIE_DETAILS",
-//                    ParametersContainer(
-//                            app = (application as MovieApplication),
-//                            id = movieAdapter.getItem(position).id,
-//                            successCb = { pair -> sendIntent(pair.second!!) },
-//                            errorCb = { error -> displayError(error) },
-//                            source = action
-//                    )
-//            )
             sendIntent(movieAdapter.getItem(position).id)
         }
 
