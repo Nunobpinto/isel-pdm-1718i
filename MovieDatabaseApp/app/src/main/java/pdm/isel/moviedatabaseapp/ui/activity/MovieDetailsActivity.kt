@@ -14,6 +14,8 @@ import android.widget.Toast
 import pdm.isel.moviedatabaseapp.domain.AppController
 import pdm.isel.moviedatabaseapp.domain.ParametersContainer
 import pdm.isel.moviedatabaseapp.exceptions.AppException
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class MovieDetailsActivity : BaseLayoutActivity() {
     override val toolbar: Int? = R.id.my_toolbar
@@ -72,8 +74,10 @@ class MovieDetailsActivity : BaseLayoutActivity() {
     }
 
     private fun configureToggleButton(movie: MovieDto) {
-        val date = parseCurrentDate()
-        if (movie.releaseDate != null && movie.releaseDate > date) {
+        val dateString = parseCurrentDate()
+        val today = LocalDate.parse(dateString, DateTimeFormatter.ISO_DATE)
+        val releaseDate = LocalDate.parse(movie.releaseDate, DateTimeFormatter.ISO_DATE)
+        if (movie.releaseDate != null && releaseDate > today) {
             (application as MovieApplication).localRepository.getFollowedMovies(
                     { movies -> toggleButton.isChecked = movies.any { it.id == movie.id } },
                     { Toast.makeText(this, R.string.errorLoadingFollowedMovie, Toast.LENGTH_LONG).show() }
@@ -106,10 +110,18 @@ class MovieDetailsActivity : BaseLayoutActivity() {
 
     private fun parseCurrentDate(): String {
         val calendar: Calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH) + 1
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val year = getRightValue(calendar.get(Calendar.YEAR))
+        val month = getRightValue(calendar.get(Calendar.MONTH) + 1)
+        val day = getRightValue(calendar.get(Calendar.DAY_OF_MONTH))
         return "$year-$month-$day"
+    }
+
+    private fun getRightValue(num: Int): String {
+        var str = num.toString() + ""
+        if(str.length<2){
+            str = "0$num"
+        }
+        return str
     }
 
     private fun makeToast(message: String) {
