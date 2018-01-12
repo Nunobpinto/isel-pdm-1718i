@@ -10,9 +10,9 @@ import kotlinx.android.synthetic.main.activity_movie_list.*
 import pdm.isel.moviedatabaseapp.ui.adapter.MovieAdapter
 import pdm.isel.moviedatabaseapp.MovieApplication
 import pdm.isel.moviedatabaseapp.R
-import pdm.isel.moviedatabaseapp.domain.AppController
-import pdm.isel.moviedatabaseapp.domain.ParametersContainer
-import pdm.isel.moviedatabaseapp.domain.model.MovieListDto
+import pdm.isel.moviedatabaseapp.controller.AppController
+import pdm.isel.moviedatabaseapp.controller.ParametersContainer
+import pdm.isel.moviedatabaseapp.controller.model.MovieListDto
 import pdm.isel.moviedatabaseapp.exceptions.AppException
 
 class MovieListActivity : BaseLayoutActivity() {

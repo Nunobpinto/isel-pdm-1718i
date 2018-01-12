@@ -1,4 +1,4 @@
-package pdm.isel.moviedatabaseapp.domain.content
+package pdm.isel.moviedatabaseapp.data.content
 
 import android.content.ContentProvider
 import android.content.ContentResolver
@@ -10,7 +10,6 @@ import android.net.Uri
 class MovieContentProvider : ContentProvider() {
 
     companion object {
-
         //Tables
         const val UPCOMING = "Upcoming"
         const val NOW_PLAYING = "NowPlaying"

@@ -50,18 +50,18 @@
         </activity>
 
         <service
-            android:name=".services.NowPlayingJobService"
+            android:name=".controller.services.NowPlayingJobService"
             android:enabled="true"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
-            android:name=".services.UpComingJobService"
+            android:name=".controller.services.UpComingJobService"
             android:enabled="true"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <provider
-            android:name=".domain.content.MovieContentProvider"
+            android:name="pdm.isel.moviedatabaseapp.data.content.MovieContentProvider"
             android:authorities="pdm.isel.moviedatabaseapp"
             android:enabled="true"
             android:exported="true"

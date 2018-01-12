@@ -1,12 +1,12 @@
-package pdm.isel.moviedatabaseapp.mapper
+package pdm.isel.moviedatabaseapp.controller.mapper
 
 import android.content.ContentValues
 import android.database.Cursor
-import pdm.isel.moviedatabaseapp.domain.content.MovieContentProvider
-import pdm.isel.moviedatabaseapp.domain.model.FollowedMovie
-import pdm.isel.moviedatabaseapp.domain.model.Genres
-import pdm.isel.moviedatabaseapp.domain.model.MovieDto
-import pdm.isel.moviedatabaseapp.domain.model.MovieListDto
+import pdm.isel.moviedatabaseapp.data.content.MovieContentProvider
+import pdm.isel.moviedatabaseapp.controller.model.FollowedMovie
+import pdm.isel.moviedatabaseapp.controller.model.Genres
+import pdm.isel.moviedatabaseapp.controller.model.MovieDto
+import pdm.isel.moviedatabaseapp.controller.model.MovieListDto
 
 fun MovieDto.toContentValues(): ContentValues {
     val result = ContentValues()
@@ -23,8 +23,6 @@ fun MovieDto.toContentValues(): ContentValues {
     }
     return result
 }
-
-//fun MovieListDto.toContentValues(): Array<ContentValues> = results.map(MovieDto::toContentValues()).toTypedArray()
 
 fun Cursor.toMovieListDto(page: Int): MovieListDto {
     val iter = object : AbstractIterator<MovieDto>() {

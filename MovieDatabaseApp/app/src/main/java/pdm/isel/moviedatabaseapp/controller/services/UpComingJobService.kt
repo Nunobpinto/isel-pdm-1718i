@@ -1,4 +1,4 @@
-package pdm.isel.moviedatabaseapp.services
+package pdm.isel.moviedatabaseapp.controller.services
 
 import android.app.Notification
 import android.app.NotificationManager
@@ -10,12 +10,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.preference.PreferenceManager
+import java.util.*
 import pdm.isel.moviedatabaseapp.MovieApplication
 import pdm.isel.moviedatabaseapp.R
-import pdm.isel.moviedatabaseapp.domain.AppController
-import pdm.isel.moviedatabaseapp.domain.model.FollowedMovie
+import pdm.isel.moviedatabaseapp.controller.AppController
+import pdm.isel.moviedatabaseapp.controller.model.FollowedMovie
 import pdm.isel.moviedatabaseapp.ui.activity.MovieDetailsActivity
-import java.util.*
 
 class UpComingJobService : JobService() {
     @Volatile private var onGoingRequests: MutableList<String> = mutableListOf()

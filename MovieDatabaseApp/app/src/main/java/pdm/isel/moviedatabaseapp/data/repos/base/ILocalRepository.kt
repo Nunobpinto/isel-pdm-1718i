@@ -1,9 +1,9 @@
-package pdm.isel.moviedatabaseapp.domain.repos.base
+package pdm.isel.moviedatabaseapp.data.repos.base
 
 import android.net.Uri
-import pdm.isel.moviedatabaseapp.domain.model.FollowedMovie
-import pdm.isel.moviedatabaseapp.domain.model.MovieDto
-import pdm.isel.moviedatabaseapp.domain.model.MovieListDto
+import pdm.isel.moviedatabaseapp.controller.model.FollowedMovie
+import pdm.isel.moviedatabaseapp.controller.model.MovieDto
+import pdm.isel.moviedatabaseapp.controller.model.MovieListDto
 import pdm.isel.moviedatabaseapp.exceptions.RepoException
 
 interface ILocalRepository {

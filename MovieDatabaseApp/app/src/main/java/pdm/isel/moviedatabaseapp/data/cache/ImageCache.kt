@@ -1,6 +1,5 @@
-package pdm.isel.moviedatabaseapp.cache
+package pdm.isel.moviedatabaseapp.data.cache
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.util.LruCache
 import com.android.volley.toolbox.ImageLoader
@@ -14,5 +13,4 @@ class ImageCache : ImageLoader.ImageCache {
     override fun putBitmap(url: String, bitmap: Bitmap) {
             cache.put(url,bitmap)
     }
-
 }

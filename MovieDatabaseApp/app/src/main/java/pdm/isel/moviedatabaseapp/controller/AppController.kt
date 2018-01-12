@@ -1,15 +1,14 @@
-package pdm.isel.moviedatabaseapp.domain
+package pdm.isel.moviedatabaseapp.controller
 
 import com.android.volley.VolleyError
 import pdm.isel.moviedatabaseapp.MovieApplication
-import pdm.isel.moviedatabaseapp.domain.model.MovieDto
-import pdm.isel.moviedatabaseapp.domain.model.MovieListDto
+import pdm.isel.moviedatabaseapp.controller.model.MovieDto
+import pdm.isel.moviedatabaseapp.controller.model.MovieListDto
 import pdm.isel.moviedatabaseapp.exceptions.*
 
 class AppController {
 
     companion object {
-
         const val MOST_POPULAR = "MOST_POPULAR"
         const val UPCOMING = "UPCOMING"
         const val NOW_PLAYING = "NOW_PLAYING"
@@ -27,7 +26,7 @@ class AppController {
 
         private fun movieDetails(params: ParametersContainer) {
             when (params.source) {
-                UPCOMING, NOW_PLAYING  -> params.app.localRepository.getMovieDetails(
+                UPCOMING, NOW_PLAYING -> params.app.localRepository.getMovieDetails(
                         params.id,
                         params.source,
                         { movie -> params.successCb(Pair(null, movie)) },

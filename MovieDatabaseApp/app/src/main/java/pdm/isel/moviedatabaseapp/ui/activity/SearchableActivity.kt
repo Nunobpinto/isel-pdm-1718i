@@ -11,8 +11,8 @@ import com.android.volley.VolleyError
 import kotlinx.android.synthetic.main.activity_searchable.*
 import pdm.isel.moviedatabaseapp.MovieApplication
 import pdm.isel.moviedatabaseapp.R
-import pdm.isel.moviedatabaseapp.domain.AppController
-import pdm.isel.moviedatabaseapp.domain.model.MovieListDto
+import pdm.isel.moviedatabaseapp.controller.AppController
+import pdm.isel.moviedatabaseapp.controller.model.MovieListDto
 import pdm.isel.moviedatabaseapp.ui.adapter.MovieAdapter
 
 class SearchableActivity : BaseLayoutActivity() {
@@ -113,5 +113,4 @@ class SearchableActivity : BaseLayoutActivity() {
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         this.movieList = savedInstanceState!!.getParcelable("list")
     }
-
 }

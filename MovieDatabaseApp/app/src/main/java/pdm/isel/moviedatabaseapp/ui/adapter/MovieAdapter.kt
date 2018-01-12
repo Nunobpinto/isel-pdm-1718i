@@ -9,7 +9,7 @@ import android.widget.TextView
 import com.android.volley.toolbox.ImageLoader
 import com.android.volley.toolbox.NetworkImageView
 import pdm.isel.moviedatabaseapp.R
-import pdm.isel.moviedatabaseapp.domain.model.MovieDto
+import pdm.isel.moviedatabaseapp.controller.model.MovieDto
 
 class MovieAdapter(
         private val ctx: Context,
@@ -60,4 +60,3 @@ class ViewHolder(
         val movieTitle: TextView,
         val extraInfo: TextView
 )
-

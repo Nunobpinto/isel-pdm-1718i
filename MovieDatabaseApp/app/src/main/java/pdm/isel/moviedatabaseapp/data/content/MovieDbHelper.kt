@@ -1,4 +1,4 @@
-package pdm.isel.moviedatabaseapp.domain.content
+package pdm.isel.moviedatabaseapp.data.content
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -16,7 +16,6 @@ class MovieDbHelper(
 ) {
 
     companion object {
-
         const val DROP_UPCOMING =
                 "drop table if exists ${MovieContentProvider.UPCOMING}"
         const val DROP_NOW_PLAYING =
@@ -52,7 +51,6 @@ class MovieDbHelper(
                         "${MovieContentProvider.POSTER} text ," +
                         "${MovieContentProvider.TITLE} text not null, " +
                         "${MovieContentProvider.RELEASE_DATE} text)"
-
     }
 
     override fun onCreate(db: SQLiteDatabase?) {

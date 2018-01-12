@@ -7,22 +7,20 @@ import android.app.job.JobInfo
 import android.app.job.JobScheduler
 import android.content.*
 import android.graphics.Color
-import android.os.BatteryManager
 import android.preference.PreferenceManager
-import com.android.volley.RequestQueue
-import com.android.volley.toolbox.ImageLoader
-import com.android.volley.toolbox.Volley
-import pdm.isel.moviedatabaseapp.cache.ImageCache
-import pdm.isel.moviedatabaseapp.domain.repos.LocalMovieRepository
-import pdm.isel.moviedatabaseapp.domain.repos.TMDBMovieRepository
-import pdm.isel.moviedatabaseapp.domain.repos.base.ILocalRepository
-import pdm.isel.moviedatabaseapp.domain.repos.base.ITMDBMovieRepository
-import pdm.isel.moviedatabaseapp.services.NowPlayingJobService
-import pdm.isel.moviedatabaseapp.services.UpComingJobService
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.concurrent.TimeUnit
-
+import com.android.volley.RequestQueue
+import com.android.volley.toolbox.ImageLoader
+import com.android.volley.toolbox.Volley
+import pdm.isel.moviedatabaseapp.data.cache.ImageCache
+import pdm.isel.moviedatabaseapp.data.repos.LocalMovieRepository
+import pdm.isel.moviedatabaseapp.data.repos.TMDBMovieRepository
+import pdm.isel.moviedatabaseapp.data.repos.base.ILocalRepository
+import pdm.isel.moviedatabaseapp.data.repos.base.ITMDBMovieRepository
+import pdm.isel.moviedatabaseapp.controller.services.NowPlayingJobService
+import pdm.isel.moviedatabaseapp.controller.services.UpComingJobService
 
 class MovieApplication : Application() {
     @Volatile lateinit var requestQueue: RequestQueue
@@ -70,7 +68,6 @@ class MovieApplication : Application() {
         mChannel.lightColor = Color.YELLOW
         mChannel.enableVibration(true)
         mNotificationManager.createNotificationChannel(mChannel)
-
     }
 
 

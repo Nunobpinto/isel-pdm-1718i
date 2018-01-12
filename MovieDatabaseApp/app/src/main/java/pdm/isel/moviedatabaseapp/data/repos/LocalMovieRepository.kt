@@ -1,4 +1,4 @@
-package pdm.isel.moviedatabaseapp.domain.repos
+package pdm.isel.moviedatabaseapp.data.repos
 
 import android.content.AsyncQueryHandler
 import android.content.ContentResolver
@@ -6,16 +6,16 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
-import pdm.isel.moviedatabaseapp.domain.content.MovieContentProvider
-import pdm.isel.moviedatabaseapp.domain.model.FollowedMovie
-import pdm.isel.moviedatabaseapp.domain.model.MovieDto
-import pdm.isel.moviedatabaseapp.domain.model.MovieListDto
-import pdm.isel.moviedatabaseapp.domain.repos.base.ILocalRepository
+import pdm.isel.moviedatabaseapp.data.content.MovieContentProvider
+import pdm.isel.moviedatabaseapp.controller.model.FollowedMovie
+import pdm.isel.moviedatabaseapp.controller.model.MovieDto
+import pdm.isel.moviedatabaseapp.controller.model.MovieListDto
+import pdm.isel.moviedatabaseapp.data.repos.base.ILocalRepository
 import pdm.isel.moviedatabaseapp.exceptions.RepoException
-import pdm.isel.moviedatabaseapp.mapper.toContentValues
-import pdm.isel.moviedatabaseapp.mapper.toFollowedMovies
-import pdm.isel.moviedatabaseapp.mapper.toMovieDto
-import pdm.isel.moviedatabaseapp.mapper.toMovieListDto
+import pdm.isel.moviedatabaseapp.controller.mapper.toContentValues
+import pdm.isel.moviedatabaseapp.controller.mapper.toFollowedMovies
+import pdm.isel.moviedatabaseapp.controller.mapper.toMovieDto
+import pdm.isel.moviedatabaseapp.controller.mapper.toMovieListDto
 
 class LocalMovieRepository(private val ctx: Context) : ILocalRepository {
 
@@ -160,28 +160,12 @@ class LocalMovieRepository(private val ctx: Context) : ILocalRepository {
 class MyAsyncQueryHandler(
         contentResolver: ContentResolver,
         private val errorCb: (RepoException) -> Unit,
-//        private val asyncQueryListener: ((Pair<MovieDto?, MovieListDto?>) -> Unit)? = null,
         private val asyncInsertListener: ((Uri?) -> Unit)? = null,
         private val asyncUpdateListener: ((Int) -> Unit)? = null,
         private val asyncDeleteListener: ((Int) -> Unit)? = null
 ) : AsyncQueryHandler(contentResolver) {
 
-    override fun onQueryComplete(token: Int, cookie: Any?, cursor: Cursor?) {
-        if(cursor === null) return errorCb(RepoException("Exception querying database"))
-//        if(asyncQueryListener === null) return
-//
-//        val action = cookie as? String
-//        val res = when(action) {
-//            "GET_MOVIE" -> cursor.toMovieDto()
-//            "GET_MOVIES" -> cursor.toMovieListDto(1)
-//            else -> return errorCb(RepoException("Action not inserted"))
-//        }
-//        cursor.close()
-//        asyncQueryListener.invoke(Pair(res as MovieDto?, null))
-    }
-
     override fun onInsertComplete(token: Int, cookie: Any?, uri: Uri?) {
-//        if(uri === null) return errorCb(RepoException("Exception inserting in database"))
         if(asyncInsertListener === null || uri === null) return
 
         asyncInsertListener.invoke(uri)

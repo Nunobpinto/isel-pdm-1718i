@@ -1,4 +1,4 @@
-package pdm.isel.moviedatabaseapp.services
+package pdm.isel.moviedatabaseapp.controller.services
 
 import android.app.job.JobParameters
 import android.app.job.JobService

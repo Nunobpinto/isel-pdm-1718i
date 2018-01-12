@@ -5,17 +5,17 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
+import java.util.*
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import kotlinx.android.synthetic.main.activity_movie_details.*
 import pdm.isel.moviedatabaseapp.MovieApplication
 import pdm.isel.moviedatabaseapp.R
-import pdm.isel.moviedatabaseapp.domain.model.MovieDto
-import java.util.*
-import android.widget.Toast
-import pdm.isel.moviedatabaseapp.domain.AppController
-import pdm.isel.moviedatabaseapp.domain.ParametersContainer
+import pdm.isel.moviedatabaseapp.controller.model.MovieDto
+import pdm.isel.moviedatabaseapp.controller.AppController
+import pdm.isel.moviedatabaseapp.controller.ParametersContainer
 import pdm.isel.moviedatabaseapp.exceptions.AppException
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 class MovieDetailsActivity : BaseLayoutActivity() {
     override val toolbar: Int? = R.id.my_toolbar
