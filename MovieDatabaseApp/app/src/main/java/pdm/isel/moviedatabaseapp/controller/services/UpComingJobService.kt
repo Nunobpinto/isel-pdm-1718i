@@ -10,6 +10,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.preference.PreferenceManager
+import android.util.Log
 import java.util.*
 import pdm.isel.moviedatabaseapp.MovieApplication
 import pdm.isel.moviedatabaseapp.R
@@ -45,7 +46,7 @@ class UpComingJobService : JobService() {
         (application as MovieApplication).localRepository.getFollowedMovies(
                 { movies ->
                     movies.forEach {
-                        if(it.releaseDate >= currDate && PreferenceManager.getDefaultSharedPreferences(this).getBoolean("notifications", false))
+                        if(it.releaseDate <= currDate && PreferenceManager.getDefaultSharedPreferences(this).getBoolean("notifications", false))
                             sendNotification(it)
                     }
                 },
@@ -112,13 +113,32 @@ class UpComingJobService : JobService() {
                 .setChannelId("followed_movies_channel")
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(11, mBuilder.build())
+        deleteMovieFromFollowTable(movie)
     }
+
+    private fun deleteMovieFromFollowTable(movie: FollowedMovie) {
+        (application as MovieApplication).localRepository.unfollowMovie(
+                movie.id,
+                {id-> Log.d("UpcomingJobService","Movie with id $id unfollowed")},
+                {Log.e("UpcomingJobService","Couldn´t unfollowed notified movie")}
+        )
+    }
+
 
     private fun parseCurrentDate(): String {
         val calendar: Calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH) + 1
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val year = getRightValue(calendar.get(Calendar.YEAR))
+        val month = getRightValue(calendar.get(Calendar.MONTH) + 1)
+        val day = getRightValue(calendar.get(Calendar.DAY_OF_MONTH))
         return "$year-$month-$day"
     }
+
+    private fun getRightValue(num: Int): String {
+        var str = num.toString() + ""
+        if(str.length<2){
+            str = "0$num"
+        }
+        return str
+    }
+
 }
